@@ -1,0 +1,864 @@
+{% extends 'rentals/base.html' %}
+{% load static %}
+{% load humanize %}
+
+{% block content %}
+
+
+
+
+	<!-- page title -->
+	<section class="section section--first section--last section--head" data-bg="{% static 'img/cart_bg.jpeg' %}">
+		<div class="container">
+			<div class="row">
+				<div class="col-12">
+					<div class="section__wrap">
+						<!-- section title -->
+						<h2 class="section__title">Profile</h2>
+						<!-- end section title -->
+
+						<!-- breadcrumb -->
+						<ul class="breadcrumb">
+							<li class="breadcrumb__item"><a href="/">Home</a></li>
+							<li class="breadcrumb__item breadcrumb__item--active">Profile</li>
+						</ul>
+						<!-- end breadcrumb -->
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	<!-- end page title -->
+
+
+	
+	
+	<!-- section -->
+	<section class="section section--last">
+		<div class="container">
+			<div class="row">
+				<div class="col-12">
+					<div class="profile">
+						<div class="profile__user">
+							<div class="profile__avatar">
+
+							<a href="#profile-photo-update" class="open-modal"> <img src="{% if request.user.profile %} {{request.user.profile.photo.url}} {% else %} {% static 'img/user.svg' %} {% endif %}" width="50" height="50"  alt=""> </a>
+							</div>
+							<div class="profile__meta">
+								<h3>{% if profile.first_name %} {{profile.first_name}} {% else %} {{profile.user.email}} {% endif %} {% if profile.last_name %} {{profile.last_name}} {% else %} {% endif %} </h3>
+								<span>GameOn  ID: {{profile.user_code}}</span>
+							</div>
+						</div>
+
+						<ul class="nav nav-tabs profile__tabs" id="profile__tabs" role="tablist">
+							<li class="nav-item">
+								<a class="nav-link active" data-toggle="tab" href="#tab-2" role="tab" aria-controls="tab-2" aria-selected="true">Settings</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link" data-toggle="tab" href="#tab-4" role="tab" aria-controls="tab-4" aria-selected="false">KYC</a>
+							</li>
+							<li class="nav-item">
+
+								<a class="nav-link" data-toggle="tab" href="#tab-1" role="tab" aria-controls="tab-1" aria-selected="false">My Purchases</a>
+							</li>
+                            <li class="nav-item">
+								<a class="nav-link" data-toggle="tab" href="#tab-3" role="tab" aria-controls="tab-3" aria-selected="false">My Rentals</a>
+							</li>
+
+							<li class="nav-item">
+								<a class="nav-link" data-toggle="tab" href="#tab-6" role="tab" aria-controls="tab-6" aria-selected="false">Returns </a>
+							</li>
+
+
+						
+
+							
+						</ul>
+
+						<!-- <a href="/shop" class="profile__logout" >
+							<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><path d='M304 336v40a40 40 0 01-40 40H104a40 40 0 01-40-40V136a40 40 0 0140-40h152c22.09 0 48 17.91 48 40v40M368 336l80-80-80-80M176 256h256' fill='none' stroke-linecap='round' stroke-linejoin='round' stroke-width='32'/></svg>
+							<span>Go to Shop </span>
+                        </a> -->
+					</div>
+				</div>
+			</div>	
+		</div>
+
+		<div class="container">
+			<!-- content tabs -->
+			<div id="update_profile_alert" >
+				
+			</div>
+			
+
+			<div class="tab-content">
+				<div class="tab-pane fade " id="tab-1" role="tabpanel">
+					<div class="row">
+						<div class="col-12">
+							<div class="table-responsive table-responsive--border">
+								<table class="profile__table">
+									<thead>
+										<tr>
+											<th>Ref</th>
+											<th><a href="#">Product <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.71,10.21,12,7.91l2.29,2.3a1,1,0,0,0,1.42,0,1,1,0,0,0,0-1.42l-3-3a1,1,0,0,0-1.42,0l-3,3a1,1,0,0,0,1.42,1.42Zm4.58,4.58L12,17.09l-2.29-2.3a1,1,0,0,0-1.42,1.42l3,3a1,1,0,0,0,1.42,0l3-3a1,1,0,0,0-1.42-1.42Z"/></svg></a></th>
+											<th><a href="#" class="active">Title <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17,13.41,12.71,9.17a1,1,0,0,0-1.42,0L7.05,13.41a1,1,0,0,0,0,1.42,1,1,0,0,0,1.41,0L12,11.29l3.54,3.54a1,1,0,0,0,.7.29,1,1,0,0,0,.71-.29A1,1,0,0,0,17,13.41Z"/></svg></a></th>
+											<th><a href="#">Platform <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.71,10.21,12,7.91l2.29,2.3a1,1,0,0,0,1.42,0,1,1,0,0,0,0-1.42l-3-3a1,1,0,0,0-1.42,0l-3,3a1,1,0,0,0,1.42,1.42Zm4.58,4.58L12,17.09l-2.29-2.3a1,1,0,0,0-1.42,1.42l3,3a1,1,0,0,0,1.42,0l3-3a1,1,0,0,0-1.42-1.42Z"/></svg></a></th>
+											<th><a href="#" class="active">Date <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17,9.17a1,1,0,0,0-1.41,0L12,12.71,8.46,9.17a1,1,0,0,0-1.41,0,1,1,0,0,0,0,1.42l4.24,4.24a1,1,0,0,0,1.42,0L17,10.59A1,1,0,0,0,17,9.17Z"/></svg></a></th>
+											<th><a href="#">Price <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.71,10.21,12,7.91l2.29,2.3a1,1,0,0,0,1.42,0,1,1,0,0,0,0-1.42l-3-3a1,1,0,0,0-1.42,0l-3,3a1,1,0,0,0,1.42,1.42Zm4.58,4.58L12,17.09l-2.29-2.3a1,1,0,0,0-1.42,1.42l3,3a1,1,0,0,0,1.42,0l3-3a1,1,0,0,0-1.42-1.42Z"/></svg></a></th>
+											<th><a href="#">Status <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.71,10.21,12,7.91l2.29,2.3a1,1,0,0,0,1.42,0,1,1,0,0,0,0-1.42l-3-3a1,1,0,0,0-1.42,0l-3,3a1,1,0,0,0,1.42,1.42Zm4.58,4.58L12,17.09l-2.29-2.3a1,1,0,0,0-1.42,1.42l3,3a1,1,0,0,0,1.42,0l3-3a1,1,0,0,0-1.42-1.42Z"/></svg></a></th>
+										
+										</tr>
+									</thead>
+                                   
+                              
+									<tbody>
+                                        {% if orders %}
+                                        {% for order in orders %}
+                                        {% for item in order.items.all %}
+										<tr>
+											<td><a href="#order-info-{{item.id}}" class="open-modal">{{order.ref_code}}</a></td>
+                                            
+											<td>
+												<div class="profile__img">
+													<img src="{{item.item.thumbnailImagePath.url}}" alt="">
+												</div>
+											</td>
+											<td>{{item.item.name}}</td>
+											<td>{{item.item.platform.name}}</td>
+											<td>{{order.ordered_date|naturalday}} </td>
+											<td><span class="profile__price">₦{{order.get_total|intcomma}} </span></td>
+											<td><span class="profile__status">{% if order.received == True %} Received {% else %} In transit {% endif %}</span></td>
+										</tr>
+
+
+										<div id="order-info-{{item.id}}" class="zoom-anim-dialog mfp-hide modal">
+											<button class="modal__close" type="button"><svg xmlns='http://www.w3.org/2000/svg' width='512' height='512' viewBox='0 0 512 512'><line x1='368' y1='368' x2='144' y2='144' style='fill:none;stroke-linecap:round;stroke-linejoin:round;stroke-width:32px'/><line x1='368' y1='144' x2='144' y2='368' style='fill:none;stroke-linecap:round;stroke-linejoin:round;stroke-width:32px'/></svg></button>
+										
+											<h4 class="modal__title">Receipt</h4>
+										
+											<div class="modal__group">
+												<label class="modal__label" for="value">Total cost:</label>
+												<span class="modal__value">₦{{order.get_total|intcomma}}</span>
+											</div>
+										
+											<div class="modal__group">
+												<label class="modal__label" for="method">Payment method: <b>Card</b></label>
+										
+												<span class="modal__text">There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable.</span>
+											</div>
+										</div>
+
+                                        {% endfor %}
+                                        {% endfor %}
+
+
+
+                                        {% endif %}
+									</tbody>
+                                    
+								</table>
+							</div>
+						</div>
+
+
+					
+					</div>
+				</div>
+
+
+                <div class="tab-pane fade" id="tab-3" role="tabpanel">
+					<div class="row">
+						<div class="col-12">
+							<div class="table-responsive table-responsive--border">
+								<table class="profile__table">
+									<thead>
+										<tr>
+											<th>№</th>
+											<th><a href="#">Product </a></th>
+											<th><a href="#" class="active">Title </a></th>
+											<th><a href="#">Platform </a></th>
+											<th><a href="#" class="active">Order Date </a></th>
+											<th><a href="#">Duration </a></th>
+											<th><a href="#">From </a></th>
+											<th><a href="#">To </a></th>
+											<th><a href="#">Final Price </a></th>
+											<th><a href="#">Status </a></th>
+											<th></th>
+										</tr>
+									</thead>
+
+									<tbody>
+										{% if ques %}
+                                        {% for que in ques %}
+                                        {% for val in que.items.all %}
+
+										<tr>
+											<td><a href="#que-info-{{val.id}}" class="open-modal">{{que.ref_code}}</a></td>
+                                            
+											<td>
+												<div class="profile__img">
+													<img src="{{val.item.thumbnailImagePath.url}}" alt="">
+												</div>
+											</td>
+											<td>{{val.item.name}}</td>
+											<td>{{val.item.platform.name}}</td>
+											<td>{{que.ordered_date|naturalday}} </td>
+											<td>{{val.no_of_days}} </td>
+
+											<td> {% if val.from_date %} {{val.from_date|naturalday}} {% else %} Not Received {% endif %} </td>
+											<td> {% if val.to_date %} {{val.to_date|naturalday}} {% else %} Not Received {% endif %} </td>
+											<td><span class="profile__price">₦{{que.get_total|intcomma}} </span></td>
+											<td><span class="profile__status">{% if que.received == True %} Received {% else %} In transit {% endif %}</span></td>
+										</tr>
+
+
+										<div id="que-info-{{val.id}}" class="zoom-anim-dialog mfp-hide modal">
+											<button class="modal__close" type="button"><svg xmlns='http://www.w3.org/2000/svg' width='512' height='512' viewBox='0 0 512 512'><line x1='368' y1='368' x2='144' y2='144' style='fill:none;stroke-linecap:round;stroke-linejoin:round;stroke-width:32px'/><line x1='368' y1='144' x2='144' y2='368' style='fill:none;stroke-linecap:round;stroke-linejoin:round;stroke-width:32px'/></svg></button>
+										
+											<h4 class="modal__title">Receipt</h4>
+										
+											<div class="modal__group">
+												<label class="modal__label" for="value">Total cost:</label>
+												<span class="modal__value">₦{{que.get_total|intcomma}}</span>
+											</div>
+										
+											<div class="modal__group">
+												<label class="modal__label" for="method">Payment method: <b>Card</b></label>
+										
+												<span class="modal__text">There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable.</span>
+											</div>
+										</div>
+
+										{% endfor %}
+                                        {% endfor %}
+                                        {% endif %}
+										
+										
+									</tbody>
+								</table>
+							</div>
+						</div>
+
+				
+					</div>
+				</div>
+
+
+
+
+				<div class="tab-pane fade show active" id="tab-2" role="tabpanel">
+				
+			
+					<div class="row">
+						<!-- details form -->
+						
+
+						<div class="col-12 col-lg-6">
+							<div  class="form">
+								<div class="row">
+									<div class="col-12">
+										<h4 class="form__title">Profile details</h4>
+									</div>
+
+									<div class="col-12 col-md-6 col-lg-12 col-xl-6">
+										<label class="form__label" for="first_name">First Name</label>
+										<input id="first_name" type="text" name="first_name" class="form__input" placeholder="{{request.user.profile.first_name}}">
+									</div>
+
+									<div class="col-12 col-md-6 col-lg-12 col-xl-6">
+										<label class="form__label" for="last_name">Last Name</label>
+										<input id="last_name" type="text" name="last_name" class="form__input" placeholder="{{request.user.profile.last_name}}">
+									</div>
+
+									<div class="col-12 col-md-6 col-lg-12 col-xl-6">
+										<label class="form__label" for="phone">Phone Number</label>
+										<input id="phone" type="text" name="phone" class="form__input" placeholder="{{request.user.profile.phone}}">
+									</div>
+
+									<div class="col-12 col-md-6 col-lg-12 col-xl-6">
+										<label class="form__label" for="email">Email</label>
+										<input id="email" type="email" name="email" class="form__input" placeholder="{{request.user.email}}" disabled>
+									</div>
+
+									<div class="col-12">
+										<button id="update_profile" class="form__btn">Update Profile</button>
+									</div>
+								</div>
+							</div>
+						</div>
+						<!-- end details form -->
+
+						<!-- password form -->
+						<div class="col-12 col-lg-6">
+							<form action="#" class="form">
+								<div class="row">
+									<div class="col-12">
+										<h4 class="form__title">Change password</h4>
+									</div>
+
+									<div class="col-12 col-md-6 col-lg-12 col-xl-6">
+										<label class="form__label" for="id_oldpassword">Old Password</label>
+										<input id="id_oldpassword" type="password" name="oldpassword" class="form__input">
+									</div>
+
+									<div class="col-12 col-md-6 col-lg-12 col-xl-6">
+										<label class="form__label" for="id_password1">New Password</label>
+										<input id="id_password1" type="password" name="password1" class="form__input">
+									</div>
+
+									<div class="col-12 col-md-6 col-lg-12 col-xl-6">
+										<label class="form__label" for="id_password2">Confirm New Password</label>
+										<input id="id_password2" type="password" name="password2" class="form__input">
+									</div>
+
+									
+
+									<div class="col-12">
+										<button id="update-password" class="form__btn" type="button">Change</button>
+									</div>
+								</div>
+							</form>
+						</div>
+						<!-- end password form -->
+
+						<div class="col-12 col-lg-12">
+							<form action="#" class="form">
+								<div class="row">
+									<div class="col-12">
+										<h4 class="form__title">Update Address</h4>
+									</div>
+									
+									<div class="col-12 col-md-6 col-lg-12 col-xl-6">
+										<label class="form__label" for="street_address">Street Address</label>
+										<input id="street_address" type="text" name="street_address" class="form__input" placeholder="{% if user_add %} {{user_add.street_address}} {% endif %}" required>
+									</div>
+
+									<div class="col-12 col-md-6 col-lg-12 col-xl-6">
+										<label class="form__label" for="apartment_address">Apartment Address</label>
+										<input id="apartment_address" type="text" name="apartment_address" class="form__input" placeholder="{% if user_add %} {{user_add.apartment_address}} {% endif %}" required>
+									</div>
+
+									<div class="col-12 col-md-6 col-lg-12 col-xl-6">
+										<label class="form__label" for="city">City </label>
+										<input id="city" type="text" name="city" class="form__input" placeholder="{% if user_add %} {{user_add.city}} {% endif %}" required>
+									</div>
+
+									<div class="col-12 col-md-6 col-lg-12 col-xl-6">
+										<label class="form__label" for="state">State </label>
+										<input id="state" type="text" name="state" class="form__input" placeholder="{% if user_add %} {{user_add.state}} {% endif %}" required>
+									</div>
+
+									
+
+									<div class="col-12">
+										<button id="update-address" class="form__btn" type="button">Update Address</button>
+									</div>
+								</div>
+							</form>
+						</div>
+
+						
+					</div>
+				</div>
+
+
+				<div class="tab-pane fade" id="tab-4" role="tabpanel">
+				
+			
+					<div class="row">
+	
+						<div class="col-12 col-lg-6">
+							<form action="{% url 'users:update-identity' %}" method="POST" class="subscribe" id="id_verfification_form"  enctype="multipart/form-data">
+								{% csrf_token %}
+								{% if request.user.profile.kyc_status == None %}
+								<div class="subscribe__img">
+									<!-- <ion-icon style="visibility: visible;" name="alert-circle-outline"></ion-icon> -->
+								</div>
+								<h4 class="subscribe__title">Identity Verification </h4>
+								<p class="subscribe__text">Kindly upload any valid means of Identification to help us in our KYC verification process </p>
+								<input name="id_verification" id="id_verification" type="file" accept="image/*" class="form__input">
+								<button type="submit" id="update-id" class="form__btn">Submit</button>
+								{% elif request.user.profile.kyc_status == "pending" %}
+								<div class="subscribe__img">
+						
+								</div>
+								<h4 class="subscribe__title">Identity Verification </h4>
+								<p class="subscribe__text">Our teams are working on your Identity verification, you will be notified once your ID is verified </p>
+								
+								{% elif request.user.profile.kyc_status == "submitted" %}
+								<div class="subscribe__img">
+									
+								</div>
+								<h4 class="subscribe__title">Identity Verification </h4>
+								<p class="subscribe__text">Our teams are working on your Identity verification, you will be notified once your ID is verified </p>
+								{% elif request.user.profile.kyc_status == "rejected" %}
+								<div class="subscribe__img">
+									
+								</div>
+								<h4 class="subscribe__title">Identity Verification </h4>
+								<p class="subscribe__text">We are terribly sorry we could not verify your identity. Please uploade a clearer document and submit again  </p>
+								<input name="id_verification" id="id_verification" type="file" accept="image/*" class="form__input">
+								<button type="submit" id="update-id" class="form__btn">Submit</button>
+								{% elif request.user.profile.kyc_status == "approved" %}
+								<div class="subscribe__img">
+									
+								</div>
+								<h4 class="subscribe__title">Identity Verification </h4>
+								<p class="subscribe__text">Congratulations, your identity has been verified! </p>
+								{% endif %}
+							</form>
+
+						</div>
+
+
+						
+
+						<div class="col-12 col-lg-6">
+							<form action="{% url 'users:update-address-verification' %}" method="POST" class="subscribe" id="add_verfification_form" enctype="multipart/form-data">
+								{% csrf_token %}
+								{% if request.user.profile.address_verification_status == None %}
+								<div class="subscribe__img">
+									<!-- <ion-icon style="visibility: visible;" name="alert-circle-outline"></ion-icon> -->
+								</div>
+								<h4 class="subscribe__title">Address Verification </h4>
+								<p class="subscribe__text">Kindly upload any valid utility bill/bank statement with your address on it to help us in our Address verification process </p>
+								<input name="address_verification" id="address_verification" type="file" accept="image/*" class="form__input">
+								<button type="submit" id="update-add" class="form__btn">Submit</button>
+								{% elif request.user.profile.address_verification_status == "pending" %}
+								<div class="subscribe__img">
+						
+								</div>
+								<h4 class="subscribe__title">Address Verification </h4>
+								<p class="subscribe__text">Our teams are working on your address verification, you will be notified once your ID is verified </p>
+								
+								{% elif request.user.profile.address_verification_status == "submitted" %}
+								<div class="subscribe__img">
+									
+								</div>
+								<h4 class="subscribe__title">Address Verification </h4>
+								<p class="subscribe__text">Our teams are working on your address verification, you will be notified once your ID is verified </p>
+								{% elif request.user.profile.address_verification_status == "rejected" %}
+								<div class="subscribe__img">
+									
+								</div>
+								<h4 class="subscribe__title">Address Verification </h4>
+								<p class="subscribe__text">We are terribly sorry we could not verify your address. Please upload a clearer document and submit again  </p>
+								<input name="address_verification" id="address_verification" type="file" accept="image/*" class="form__input">
+								<button type="submit" id="update-add" class="form__btn">Submit</button>
+								{% elif request.user.profile.address_verification_status == "approved" %}
+								<div class="subscribe__img">
+								</div>
+								<h4 class="subscribe__title">Address Verification </h4>
+								<p class="subscribe__text">Congratulations, your address has been verified! </p>
+								{% endif %}
+							</form>
+
+						</div>
+
+
+					</div>
+				</div>
+
+
+			</div>
+
+		</div>
+	</section>
+
+
+
+
+	
+
+
+
+{% endblock content %}
+{% block modals %}
+
+<div id="profile-photo-update" class="zoom-anim-dialog mfp-hide modal">
+	<button id="uplaod_profile_photo_close_modal" class="modal__close" type="button"><svg xmlns='http://www.w3.org/2000/svg' width='512' height='512' viewBox='0 0 512 512'><line x1='368' y1='368' x2='144' y2='144' style='fill:none;stroke-linecap:round;stroke-linejoin:round;stroke-width:32px'/><line x1='368' y1='144' x2='144' y2='368' style='fill:none;stroke-linecap:round;stroke-linejoin:round;stroke-width:32px'/></svg></button>
+
+	<h4 class="modal__title">Update Profile Photo</h4>
+	<form action="{% url 'users:update-profile-photo' %}" method="POST" class="subscribe" id="update_profile_photo_form"  enctype="multipart/form-data">
+		{% csrf_token %}
+
+		<input name="update_profile_photo_input" id="update_profile_photo_input" type="file" accept="image/*" class="form__input">
+		<button type="submit" id="update-photo-btn" class="form__btn">Submit</button>
+
+
+
+		<form>
+	
+</div>	
+
+{% endblock modals %}
+
+{% block extra_scripts %}
+
+<script>
+$(document).ready(function(){
+
+
+// Update Fullname 
+$(document).on("click","#update_profile",function(){
+
+var first_name = document.getElementById("first_name").value;
+var last_name = document.getElementById("last_name").value;
+var phone = document.getElementById("phone").value;
+
+
+// let cookie = document.cookie
+// let csrfToken = cookie.substring(cookie.indexOf('=') + 1)
+
+
+if (!first_name || !last_name || !phone){
+	document.getElementById('update_profile_alert').innerHTML = ' <p  class="comments__text"><span style="color: #ff9909 !important;"> First Name, Last Name or Phone number field cannot be empty </span></p> '; 
+}else{
+	$.ajax({
+		type:"POST", 
+		headers: {
+				'X-CSRFToken': csrftoken
+				},
+		url: "{% url 'users:update-profile' %}",
+		data:{'first_name':first_name, 'last_name':last_name, 'phone':phone, 'csrfmiddlewaretoken':csrftoken},
+		dataType: 'json',
+		success: function (data){
+			if (data.status) {
+				console.log("Profile Updated")
+				console.log(data.msg)
+				document.getElementById('update_profile_alert').innerHTML = ' <p  class="comments__text"><span > Your profile has been updated, refreshing page!  </span></p> '; 
+				setTimeout(function(){
+					location.reload();
+			         }, 1000);
+
+			} else{
+				console.log("Error updating names ")
+				console.log(data.msg)
+				
+				document.getElementById('update_profile_alert').innerHTML = ' <p  class="comments__text"><span style="color: #ff9909 !important;"> Error updating profile </span></p> '; 
+				
+				
+			}
+		}
+	})
+}
+
+
+
+});
+
+
+
+
+$(document).on("click","#update-password",function(){
+
+var oldpassword = document.getElementById("id_oldpassword").value;
+var password1 = document.getElementById("id_password1").value;
+var password2 = document.getElementById("id_password2").value;
+
+
+
+if (!oldpassword || !password1  || !password2){
+
+  document.getElementById('update_profile_alert').innerHTML = ' <p  class="comments__text"><span style="color: #ff9909 !important;"> Password fields cannot be empty  </span></p> '; 
+}else{
+  $.ajax({
+		type:"POST", 
+		headers: {
+				'X-CSRFToken': csrftoken
+				},
+		url: "{% url 'account_change_password' %}",
+		data: {'csrfmiddlewaretoken':csrftoken,
+				'oldpassword':oldpassword,
+				'password1':password1,
+				'password2':password2,
+				  },
+		dataType: 'json',
+		success: function (){
+		  console.log("Password Change Successful")
+		  
+		  document.getElementById('update_profile_alert').innerHTML = ' <p  class="comments__text"><span > Your password has been updated. You will be logged out of all sessions  </span></p> '; 
+		  setTimeout(function(){
+			  window.location.href = '{% url "account_logout" %}';
+	            
+	           }, 2000);
+
+			},
+			error: function (er){
+			  console.log(er)
+
+			  document.getElementById('update_profile_alert').innerHTML = ' <p  class="comments__text"><span style="color: #ff9909 !important;"> Error changing password, Please try again   </span></p> '; 
+
+			  setTimeout(function(){
+			  location.reload()
+	            
+	           }, 3000);
+
+			}
+		})
+
+}
+
+});
+
+
+
+
+
+
+
+
+
+// Update Address 
+$(document).on("click","#update-address",function(){
+
+var street_address = document.getElementById("street_address").value;
+var apartment_address = document.getElementById("apartment_address").value;
+var city = document.getElementById("city").value;
+var state = document.getElementById("state").value;
+
+
+
+
+
+if (!street_address || !apartment_address || !city || !state){
+	document.getElementById('update_profile_alert').innerHTML = ' <p  class="comments__text"><span style="color: #ff9909 !important;"> All address fields are required </span></p> '; 
+}else{
+	$.ajax({
+		type:"POST", 
+		headers: {
+				'X-CSRFToken': csrftoken
+				},
+		url: "{% url 'users:update-address' %}",
+		data:{'street_address':street_address, 'apartment_address':apartment_address, 'city':city, 'state':state, 'csrfmiddlewaretoken':csrftoken},
+		dataType: 'json',
+		success: function (data){
+			if (data.status) {
+				console.log("Address Updated")
+				console.log(data.msg)
+				document.getElementById('update_profile_alert').innerHTML = ' <p  class="comments__text"><span > Your address has been updated, refreshing page!  </span></p> '; 
+				setTimeout(function(){
+					location.reload();
+			         }, 1000);
+
+			} else{
+				console.log("Error updating names ")
+				console.log(data.msg)
+				
+				document.getElementById('update_profile_alert').innerHTML = ' <p  class="comments__text"><span style="color: #ff9909 !important;"> Error updating address </span></p> '; 
+				
+				
+			}
+		}
+	})
+}
+
+
+
+});
+
+// End Update Address 
+
+
+
+// Update Identity 
+
+$('#id_verification').on('change', function() {
+        const fileSize = this.files[0].size / 1024 / 1024
+        if (fileSize > 5){
+            console.log('This file size is: ' + fileSize + "MiB");
+            this.value = null;
+            alert(`File size must be less than 4.5mb`);
+            
+        }        
+});
+
+$(document).on("submit","#id_verfification_form",function(){
+	event.preventDefault();
+
+var id_file = document.getElementById("id_verification").value;
+var data = new FormData($('#id_verfification_form').get(0));
+
+if (!id_file ){
+	document.getElementById('update_profile_alert').innerHTML = ' <p  class="comments__text"><span style="color: #ff9909 !important;">  Please upload file  </span></p> '; 
+}else{
+
+	$.ajax({
+		type:"POST", 
+		headers: {
+				'X-CSRFToken': csrftoken
+				},
+		url: "{% url 'users:update-identity' %}",
+		data:data,
+		cache: false,
+		processData: false,
+		contentType: false,
+		success: function (data){
+			if (data.status) {
+				console.log("KYC Updated")
+				console.log(data.msg)
+				document.getElementById('update_profile_alert').innerHTML = ' <p  class="comments__text"><span > Your identity file has been updated, refreshing page!  </span></p> '; 
+				setTimeout(function(){
+					location.reload();
+			         }, 1000);
+
+			} else{
+				console.log("Error updating your identity document ")
+				console.log(data.msg)
+				
+				document.getElementById('update_profile_alert').innerHTML = ' <p  class="comments__text"><span style="color: #ff9909 !important;"> Error updating your identity document </span></p> '; 
+				
+				
+			}
+		}
+	})
+}
+
+});
+
+// End Identity Upload 
+
+
+
+
+// Address Upload
+
+$('#address_verification').on('change', function() {
+        const fileSize = this.files[0].size / 1024 / 1024
+        if (fileSize > 5){
+            console.log('This file size is: ' + fileSize + "MiB");
+            this.value = null;
+            alert(`File size must be less than 4.5mb`);
+            
+        }        
+});
+
+$(document).on("submit","#add_verfification_form",function(){
+	event.preventDefault();
+
+var address_file = document.getElementById("address_verification").value;
+var data = new FormData($('#add_verfification_form').get(0));
+
+if (!address_file ){
+	document.getElementById('update_profile_alert').innerHTML = ' <p  class="comments__text"><span style="color: #ff9909 !important;">  Please upload file  </span></p> '; 
+}else{
+	$.ajax({
+		type:"POST", 
+		headers: {
+				'X-CSRFToken': csrftoken
+				},
+		url: "{% url 'users:update-address-verification' %}",
+		data:data,
+		cache: false,
+		processData: false,
+		contentType: false,
+		success: function (data){
+			if (data.status) {
+				console.log("Address Updated")
+				console.log(data.msg)
+				document.getElementById('update_profile_alert').innerHTML = ' <p  class="comments__text"><span > Your address verification document has been submitted, refreshing page!  </span></p> '; 
+				setTimeout(function(){
+					location.reload();
+			         }, 1000);
+
+			} else{
+				console.log("Error verifying your address ")
+				console.log(data.msg)
+				
+				document.getElementById('update_profile_alert').innerHTML = ' <p  class="comments__text"><span style="color: #ff9909 !important;"> Error verifying your address </span></p> '; 
+				
+				
+			}
+		}
+	})
+}
+
+});
+
+
+// End Address upload
+
+
+// Profile Photo Update 
+
+
+
+$('#update_profile_photo_input').on('change', function() {
+        const fileSize = this.files[0].size / 1024 / 1024
+        if (fileSize > 1){
+            console.log('This file size is: ' + fileSize + "MiB");
+            this.value = null;
+            alert(`File size must be less than 1mb`);
+            
+        }        
+});
+
+
+$(document).on("submit","#update_profile_photo_form",function(){
+	event.preventDefault();
+
+var profile_photo_file = document.getElementById("update_profile_photo_input").value;
+var data = new FormData($('#update_profile_photo_form').get(0));
+
+
+if (!profile_photo_file ){
+	document.getElementById('update_profile_alert').innerHTML = ' <p  class="comments__text"><span style="color: #ff9909 !important;">  Please upload file  </span></p> '; 
+}else{
+	$.ajax({
+		type:"POST", 
+		headers: {
+				'X-CSRFToken': csrftoken
+				},
+		url: "{% url 'users:update-profile-photo' %}",
+		data:data,
+		cache: false,
+		processData: false,
+		contentType: false,
+		success: function (data){
+			if (data.status) {
+				$('#uplaod_profile_photo_close_modal').click();
+				console.log("Profile Photo Updated")
+				console.log(data.msg)
+				document.getElementById('update_profile_alert').innerHTML = ' <p  class="comments__text"><span > Profile Photo Updated! </span></p> '; 
+				setTimeout(function(){
+					location.reload();
+			         }, 1000);
+
+			} else{
+				console.log("Error updating profile photo")
+				console.log(data.msg)
+				$('#uplaod_profile_photo_close_modal').click();
+				document.getElementById('update_profile_alert').innerHTML = ' <p  class="comments__text"><span style="color: #ff9909 !important;"> Error updating profile photo </span></p> '; 
+				
+				
+			}
+		}
+	})
+}
+
+
+
+
+});
+
+
+
+
+
+
+// End Profile Photo Update 
+
+
+
+
+
+
+});
+
+
+
+
+
+</script>
+
+{% endblock extra_scripts %}

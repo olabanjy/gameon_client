@@ -1,0 +1,174 @@
+{% extends 'rentals/base.html' %}
+
+{% load static %}
+{% load humanize %}
+
+{% block content %}
+
+	<!-- page title -->
+	<section class="section section--first section--last section--head" data-bg="{% static 'img/cart_bg.jpeg' %}">
+		<div class="container">
+			<div class="row">
+				<div class="col-12">
+					<div class="section__wrap">
+						<!-- section title -->
+						<h2 class="section__title">Checkout</h2>
+						<!-- end section title -->
+
+						<!-- breadcrumb -->
+						<ul class="breadcrumb">
+							<li class="breadcrumb__item"><a href="/">Home</a></li>
+							<li class="breadcrumb__item breadcrumb__item--active">Checkout</li>
+						</ul>
+						<!-- end breadcrumb -->
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	<!-- end page title -->
+	
+	<!-- section -->
+	<div class="section">
+		<div class="container">
+            <form action="#" id="checkout_form">
+			<div class="row">
+				<div class="col-12 col-lg-8">
+					<!-- cart -->
+					<div class="cart">
+                        
+						<div class="form">
+
+                            <div class="hideable_shipping_form">
+                            <p style="color: whitesmoke !important;"> Shipping Address </p>
+                            <input type="text" name="shipping_address" class="form__input" placeholder="Street Address" required>
+                            <input type="text" name="shipping_address2" class="form__input" placeholder="Apartment Address" required>
+                            <input type="text" name="shipping_city" class="form__input" placeholder="City" required>
+                            <input type="text" name="shipping_state" class="form__input" placeholder="State" required>
+         
+                             </div>
+                            <br>
+                            <br>
+                            <div class="hideable_billing_form">
+
+                            <p style="color: whitesmoke !important;"> Billing Address </p>
+                            <input type="text" name="billing_address" class="form__input" placeholder="Street Address" required>
+                            <input type="text" name="billing_address2" class="form__input" placeholder="Apartment Address" required>
+                          
+                            <input type="text" name="billing_city" class="form__input" placeholder="City" required>
+                            <input type="text" name="billing_state" class="form__input" placeholder="State" required>
+
+                            </div>
+
+                        </div>
+
+						
+					</div>
+					<!-- end cart -->
+				</div>
+
+				<div class="col-12 col-lg-4">
+					<!-- checkout -->
+					<div class="form form--first form--coupon">
+						<input type="text" class="form__input" placeholder="Coupon code">
+						<button type="button" class="form__btn">Apply</button>
+                    </div>
+					<!-- end checkout -->
+
+					<!-- checkout -->
+					<div action="#" class="form">
+                        <p style="color: whitesmoke !important;">MyQ Summary </p>
+						<input type="text"  class="form__input" value="Total: ₦{{que.get_total|intcomma}}" disabled>
+						
+						<span class="form__text">There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form.</span>
+						<button type="submit" class="form__btn">>> Payment</button>
+					</div>
+
+                    
+				</div>
+			</div>	
+        </form>
+		</div>
+	</div>
+	<!-- end section -->
+
+
+{% endblock content %}
+
+{% block extra_scripts %}
+
+<script type="text/javascript">
+
+
+var total = '{{que.get_total}}'
+
+console.log(user)
+
+
+    var form = document.getElementById('checkout_form')
+        form.addEventListener('submit', function(e){
+            e.preventDefault()
+            console.log('Form Submitted...')
+            submitFormData()
+        })
+
+
+        function submitFormData(){
+            console.log("Form Submitted")
+
+            
+
+            var shippingInfo = {
+                'shipping_address':form.shipping_address.value,
+				'shipping_address2':form.shipping_address2.value,
+				'shipping_city':form.shipping_city.value,
+				'shipping_state':form.shipping_state.value
+            }
+
+
+            var billingInfo = {
+                'billing_address':form.billing_address.value,
+				'billing_address2':form.billing_address2.value,
+				'billing_city':form.billing_city.value,
+				'billing_state':form.billing_state.value
+            }
+
+
+            
+
+            
+            console.log("shipping info", shippingInfo)
+            console.log("billing info", billingInfo)
+
+
+            var url = "/process_checkout/"
+            fetch(url, {
+                method: 'POST',
+                headers:{
+                    'Content-Type':'applicaiton/json',
+	    			'X-CSRFToken':csrftoken,
+                },
+
+                body:JSON.stringify({'shippingInfo':shippingInfo, 'billingInfo': billingInfo}),
+            })
+            .then((response) => response.json())
+            .then((data) => {
+                console.log("Q Order sent for payment ")
+
+                console.log(data)
+
+               
+
+                profile_id = data['the_profile_id']
+                console.log(profile_id)
+                que_id = data['the_que_id']
+                console.log(que_id)
+                window.location.href = `/payment/${profile_id}/${que_id}/`
+
+            })
+
+
+        }
+
+</script>
+{% endblock extra_scripts %}

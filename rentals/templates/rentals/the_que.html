@@ -1,0 +1,134 @@
+{% extends 'rentals/base.html' %}
+
+{% load static %}
+{% load humanize %}
+
+
+{% block content %}
+
+	<!-- page title -->
+	<section class="section section--first section--last section--head" data-bg="{% static 'img/cart_bg.jpeg' %}">
+		<div class="container">
+			<div class="row">
+				<div class="col-12">
+					<div class="section__wrap">
+						<!-- section title -->
+						<h2 class="section__title">My Q</h2>
+						<!-- end section title -->
+
+						<!-- breadcrumb -->
+						<ul class="breadcrumb">
+							<li class="breadcrumb__item"><a href="/">Home</a></li>
+							<li class="breadcrumb__item breadcrumb__item--active">My Q</li>
+						</ul>
+						<!-- end breadcrumb -->
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	<!-- end page title -->
+	
+	<!-- section -->
+	<div class="section">
+		<div class="container">
+			<div class="row">
+				<div class="col-12 col-lg-8">
+					<!-- cart -->
+					<div class="cart" >
+						<div class="table-responsive">
+							<table class="cart__table">
+								<thead>
+									<tr>
+										<th><a href="#">Item </a></th>
+										<th><a href="#" class="active">Name </a></th>
+                                        <th><a href="#">Rental Rate </a></th>
+										<th><a href="#">Qty </a></th>
+										<th><a href="#">No of Days </a></th>
+										<th><a href="#">Total </a></th>
+										<th></th>
+									</tr>
+								</thead>
+
+								{% if items %}
+								<tbody >
+                                    
+                                    {% for item in items %}
+									<tr >
+										<td>
+											<div class="cart__img">
+												<img src="{{item.item.displayImagePath.url}}" alt="">
+											</div>
+										</td>
+										<td><a href="#">{{item.item.name}}</a></td>
+                                        <td><span class="cart__price">₦{{item.item.dailyRentalRate |intcomma}}/day</span></td>
+										<td>
+
+                                            <div class="section__nav-wrap">
+
+                                           
+
+                                            <button data-product="{{item.item.id}}" data-action="remove-single" class="update-que section__nav section__nav--bg section__nav--prev"  >
+                                                <svg xmlns='http://www.w3.org/2000/svg' width='512' height='512' viewBox='0 0 512 512'><polyline points='328 112 184 256 328 400' style='fill:none;stroke-linecap:round;stroke-linejoin:round;stroke-width:48px'/></svg>
+                                            </button>
+                                            <span id="cartBody" >{{item.quantity}}</span>
+                                            <button  data-product="{{item.item.id}}" data-action="add" class="update-que section__nav section__nav--bg section__nav--next" >
+                                                <svg xmlns='http://www.w3.org/2000/svg' width='512' height='512' viewBox='0 0 512 512'><polyline points='184 112 328 256 184 400' style='fill:none;stroke-linecap:round;stroke-linejoin:round;stroke-width:48px'/></svg>
+                                            </button>
+
+                                            </div>
+
+                                    
+                                        </td>
+                                        <td><a href="#">#{{item.no_of_days}}</a></td>
+										<td><span  class="cart__price">₦{{item.get_final_price|intcomma}}</span></td>
+										
+										<td><button  data-product="{{item.item.id}}" data-action="remove" class="update-que cart__delete" type="button"><svg xmlns='http://www.w3.org/2000/svg' width='512' height='512' viewBox='0 0 512 512'><line x1='368' y1='368' x2='144' y2='144' style='fill:none;stroke-linecap:round;stroke-linejoin:round;stroke-width:32px'/><line x1='368' y1='144' x2='144' y2='368' style='fill:none;stroke-linecap:round;stroke-linejoin:round;stroke-width:32px'/></svg></button></td>
+									</tr>
+                                    {% endfor %}
+                                   
+								</tbody>
+								{% else %}
+								<tbody>
+									<span class="cart__info"> Shopping Cart is empty </span>
+								</tbody>
+								
+								{% endif %}
+							</table>
+						</div>
+
+						<div class="cart__info">
+							<div class="cart__total">
+								<p>Total:</p>
+								<span>₦{{que.get_total | intcomma}}</span>
+							</div>
+
+							<div class="cart__systems">
+								<i class="pf pf-visa"></i>
+								<i class="pf pf-mastercard"></i>
+								<i class="pf pf-paypal"></i>
+							</div>
+						</div>
+					</div>
+					<!-- end cart -->
+				</div>
+
+				<div class="col-12 col-lg-4">
+					<!-- checkout -->
+				
+
+					<!-- checkout -->
+					
+						
+						<span class="form__text">There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form.</span>
+						<a href="{% url 'rentals:checkout' %}" class="form__btn">Checkout</a>
+					
+					<!-- end checkout -->
+				</div>
+			</div>	
+		</div>
+	</div>
+	<!-- end section -->
+
+
+{% endblock content %}

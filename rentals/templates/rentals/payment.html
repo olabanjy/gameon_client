@@ -1,0 +1,142 @@
+{% extends 'rentals/base.html' %}
+
+{% load static %}
+
+{% block content %}
+
+	<!-- page title -->
+	<section class="section section--first section--last section--head" data-bg="{% static 'img/cart_bg.jpeg' %}">
+		<div class="container">
+			<div class="row">
+				<div class="col-12">
+					<div class="section__wrap">
+						<!-- section title -->
+						<h2 class="section__title">Payment</h2>
+						<!-- end section title -->
+
+						<!-- breadcrumb -->
+						<ul class="breadcrumb">
+							<li class="breadcrumb__item"><a href="/">Rentals</a></li>
+							<li class="breadcrumb__item breadcrumb__item--active">Payment</li>
+						</ul>
+						<!-- end breadcrumb -->
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	<!-- end page title -->
+	
+	<!-- section -->
+	<div class="section">
+		<div class="container">
+            
+			<div class="row" style="text-align: center !important;">
+                    <div class="container col-12 col-lg-6">
+                        <form id="paystack-payment-form"  action="#" class="form" method="POST">
+                            {% csrf_token %}
+                            <div class="row">
+                                <div class="col-12">
+                                    <h4 class="form__title">Pay with Paystack </h4>
+                                </div>
+                                <script src="https://js.paystack.co/v1/inline.js"></script>
+                                <input type="hidden" name="payment_type" value="paystack">
+
+                                <input id="amount" type="hidden" value="{{que.get_total}}" />
+                                <input id="paystack_public_key" type="hidden" value="{{TEST_PAYSTACK_PUBLIC_KEY}}" />
+
+                                <input id="pay-email" type="hidden" value="{{the_profile.user.email}}" />
+
+                                <div class="">
+                                    <img src="{% static 'img/paystack.png' %}" width="50%"  height="auto" alt=""> 
+                                </div>
+
+                            </div>
+
+                            <div class="col-12">
+                                <button class="form__btn" onclick= "payWithPaystack()" type="button">Proceed </button>
+                            </div>
+
+                        </form>
+                      
+                    </div>
+
+                    <div class="container col-12 col-lg-6">
+                        
+                            <div class="row">
+                                <div class="col-12">
+                                    <h4 class="form__title">Pay with Paypal</h4>
+                                </div>
+                             
+
+                                <div class="col-12">
+                                    <img src="{% static 'img/paypal.png' %}" width="50%"  height="auto" alt=""> 
+                                </div>
+                                
+                                
+                            </div>
+                            <div class="col-12">
+                                {{paypal_form.render}}
+                            </div>
+                        
+                    
+                    </div>
+        
+
+
+			</div>	
+		</div>
+	</div>
+	<!-- end section -->
+
+
+{% endblock content %}
+
+{% block extra_scripts %}
+
+<script type="text/javascript">
+
+    console.log($("input#pay-email").val());
+    console.log($("input#amount").val());
+
+    var formm = document.getElementById("paystack-payment-form");
+
+    formm.addEventListener("submit", function (event) {
+        event.preventDefault();
+    });
+
+
+
+    function payWithPaystack() {
+        var handler = PaystackPop.setup({
+            key: $("input#paystack_public_key").val(),
+            email: $("input#pay-email").val(),
+            amount: $("input#amount").val().concat('00'),
+            currency: "NGN",
+            metadata: {
+                custom_fields: [{
+                    display_name: "Mobile Number",
+                    variable_name: "mobile_number",
+                    value: "+2348012345678"
+                }]
+            },
+            callback: function (response) {
+                var element = document.createElement("input");
+                element.setAttribute("type", "hidden");
+                element.setAttribute("name", "paystackToken");
+                element.setAttribute("value", response.reference);
+                var form = document.getElementById("paystack-payment-form");
+                form.appendChild(element);
+
+                form.submit();
+            },
+
+            onClose: function () {
+                alert("window closed");
+            }
+        });
+
+        handler.openIframe();
+    }
+</script>
+{% endblock extra_scripts %}

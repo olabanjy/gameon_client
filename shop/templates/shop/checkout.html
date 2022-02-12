@@ -1,0 +1,228 @@
+{% extends 'rentals/base.html' %}
+
+{% load static %}
+
+{% block content %}
+
+	<!-- page title -->
+	<section class="section section--first section--last section--head" data-bg="{% static 'img/cart_bg.jpeg' %}">
+		<div class="container">
+			<div class="row">
+				<div class="col-12">
+					<div class="section__wrap">
+						<!-- section title -->
+						<h2 class="section__title">Checkout</h2>
+						<!-- end section title -->
+
+						<!-- breadcrumb -->
+						<ul class="breadcrumb">
+							<li class="breadcrumb__item"><a href="/shop">Home</a></li>
+							<li class="breadcrumb__item breadcrumb__item--active">Checkout</li>
+						</ul>
+						<!-- end breadcrumb -->
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	<!-- end page title -->
+	
+	<!-- section -->
+	<div class="section">
+		<div class="container">
+            <form action="#" id="checkout_form">
+			<div class="row">
+				<div class="col-12 col-lg-8">
+					<!-- cart -->
+					<div class="cart">
+                        
+						<div class="form">
+
+                            <div id="user-info" class="row">
+                                <div class="col-12 col-md-6 col-lg-12 col-xl-6">
+                                    <input id="first_name" type="text" name="first_name" class="form__input" placeholder="First Name" required>
+                                </div>
+
+                                <div class="col-12 col-md-6 col-lg-12 col-xl-6">
+                                    <input id="last_name" type="text" name="last_name" class="form__input" placeholder="Last Name" required>
+                                </div>
+                                <div class="col-12 col-md-6 col-lg-12 col-xl-6">
+                                    <input id="phone" type="text" name="phone" class="form__input" placeholder="Phone" required>
+                                </div>
+
+                                <div class="col-12 col-md-6 col-lg-12 col-xl-6">
+                                
+                                    <input id="email" type="email" name="email" class="form__input" placeholder="email@email.com" required>
+                                </div>
+
+                            </div>
+
+
+                            
+
+                           
+
+                            <div class="hideable_shipping_form">
+                            <p style="color: whitesmoke !important;"> Shipping Address </p>
+                            <input type="text" name="shipping_address" class="form__input" placeholder="Street Address" required>
+                            <input type="text" name="shipping_address2" class="form__input" placeholder="Apartment Address" required>
+                            <input type="text" name="shipping_city" class="form__input" placeholder="City" required>
+                            <input type="text" name="shipping_state" class="form__input" placeholder="State" required>
+                        
+                        
+
+                            <!-- <div class="filter__group">
+                                <ul class="filter__checkboxes">
+                                    <li>
+                                        <input class="form__input" id="same_billing_address" type="checkbox" name="same_billing_address">
+                                        <label for="same_billing_address">Billing address is the same as my shipping address</label>
+                                    </li>
+                                 
+                                  
+                                </ul>
+                            </div> -->
+                             </div>
+
+                            <br>
+                            <br>
+                            <div class="hideable_billing_form">
+
+                            
+                            <p style="color: whitesmoke !important;"> Billing Address </p>
+                            <input type="text" name="billing_address" class="form__input" placeholder="Street Address" required>
+                            <input type="text" name="billing_address2" class="form__input" placeholder="Apartment Address" required>
+                          
+                            <input type="text" name="billing_city" class="form__input" placeholder="City" required>
+                            <input type="text" name="billing_state" class="form__input" placeholder="State" required>
+
+                           
+
+                            </div>
+
+                        </div>
+
+						
+					</div>
+					<!-- end cart -->
+				</div>
+
+				<div class="col-12 col-lg-4">
+					<!-- checkout -->
+					<div class="form form--first form--coupon">
+						<input type="text" class="form__input" placeholder="Coupon code">
+						<button type="button" class="form__btn">Apply</button>
+                    </div>
+					<!-- end checkout -->
+
+					<!-- checkout -->
+					<div action="#" class="form">
+                        <p style="color: whitesmoke !important;"> Order Summary </p>
+						<input type="text"  class="form__input" value="Total: {{order.get_total}}" disabled>
+						
+						<span class="form__text">There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form.</span>
+						<button type="submit" class="form__btn">>> Payment</button>
+					</div>
+
+                    
+				</div>
+			</div>	
+        </form>
+		</div>
+	</div>
+	<!-- end section -->
+
+
+{% endblock content %}
+
+{% block extra_scripts %}
+
+<script type="text/javascript">
+
+
+var total = '{{order.get_total}}'
+
+console.log(user)
+
+if (user != 'AnonymousUser'){
+		 	document.getElementById('user-info').innerHTML = ''
+	 }
+
+    var form = document.getElementById('checkout_form')
+        form.addEventListener('submit', function(e){
+            e.preventDefault()
+            console.log('Form Submitted...')
+            submitFormData()
+        })
+
+
+        function submitFormData(){
+            console.log("Form Submitted")
+
+            var userFormData = {
+                'first_name': null,
+                'last_name': null,
+                'email': null,
+                'phone': null,
+                'totla': total,
+            }
+
+            var shippingInfo = {
+                'shipping_address':form.shipping_address.value,
+				'shipping_address2':form.shipping_address2.value,
+				'shipping_city':form.shipping_city.value,
+				'shipping_state':form.shipping_state.value
+            }
+
+
+            var billingInfo = {
+                'billing_address':form.billing_address.value,
+				'billing_address2':form.billing_address2.value,
+				'billing_city':form.billing_city.value,
+				'billing_state':form.billing_state.value
+            }
+
+
+            if (user == 'AnonymousUser'){
+	    		userFormData.first_name = form.first_name.value
+	    		userFormData.last_name = form.last_name.value
+	    		userFormData.email = form.email.value
+	    		userFormData.phone = form.phone.value
+	    	}
+
+            console.log("user info", userFormData)
+            console.log("shipping info", shippingInfo)
+            console.log("billing info", billingInfo)
+
+
+            var url = "/shop/process_checkout/"
+            fetch(url, {
+                method: 'POST',
+                headers:{
+                    'Content-Type':'applicaiton/json',
+	    			'X-CSRFToken':csrftoken,
+                },
+
+                body:JSON.stringify({'userInfo':userFormData, 'shippingInfo':shippingInfo, 'billingInfo': billingInfo}),
+            })
+            .then((response) => response.json())
+            .then((data) => {
+                console.log("Order sent for payment ")
+
+                console.log(data)
+
+                cart = {}
+                document.cookie = "cart=" + JSON.stringify(cart) + ";domain=;path=/";
+
+                profile_id = data['the_profile_id']
+                console.log(profile_id)
+                order_id = data['the_order_id']
+                console.log(order_id)
+                window.location.href = `/shop/payment/${profile_id}/${order_id}/`
+
+            })
+
+
+        }
+
+</script>
+{% endblock extra_scripts %}
