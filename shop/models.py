@@ -159,6 +159,7 @@ class Order(models.Model):
     coupon = models.ForeignKey(
         "Coupon", on_delete=models.SET_NULL, blank=True, null=True
     )
+    shipping_fee = models.IntegerField(default=0)
     being_delivered = models.BooleanField(default=False)
     received = models.BooleanField(default=False)
     refund_requested = models.BooleanField(default=False)
@@ -173,6 +174,8 @@ class Order(models.Model):
             total += order_item.get_final_price()
         if self.coupon:
             total -= self.coupon.amount
+        if self.shipping_fee:
+            total += self.shipping_fee
         return total
 
 

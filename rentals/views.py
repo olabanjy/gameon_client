@@ -238,6 +238,12 @@ def process_checkout(request):
             )
             que.shipping_address = shipping_address
             que.save()
+
+        if "lagos" in shipping_state.lower():
+            que.shipping_fee = 3000
+        else:
+            que.shipping_fee = 5000
+        que.save()
     except ObjectDoesNotExist:
         print("You don not have any item in the Q")
         return redirect("rentals:rental-home")
@@ -316,9 +322,11 @@ class PaymentView(View):
 
                 que_items = que.items.all()
                 # order_items.update(ordered=True)
+                que_item_total = 0
                 for item in que_items:
                     item.ordered = True
                     item.save()
+                    que_item_total += item.get_final_price()
 
                 que.ordered = True
                 que.payment = payment
@@ -326,6 +334,28 @@ class PaymentView(View):
                 que.save()
 
                 # send a successful card payment with receipt
+
+                try:
+                    subject, from_email, to = (
+                        "YOUR ORDER IS ON THE WAY",
+                        "GameOn <noreply@gameon.com.ng>",
+                        [que.user.user.email],
+                    )
+
+                    html_content = render_to_string(
+                        "events/order_successfull.html",
+                        {
+                            "que_items": que_items,
+                            "que_item_total": que_item_total,
+                            "que": que,
+                        },
+                    )
+                    msg = EmailMessage(subject, html_content, from_email, to)
+                    msg.content_subtype = "html"
+                    msg.send()
+
+                except Exception as e:
+                    print("error", e)
 
                 messages.success(self.request, "Payment is successful")
                 return redirect("rentals:rental-home")

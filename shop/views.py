@@ -184,6 +184,11 @@ def process_checkout(request):
                 )
                 order.shipping_address = shipping_address
                 order.save()
+            if "lagos" in shipping_state.lower():
+                order.shipping_fee = 3000
+            else:
+                order.shipping_fee = 5000
+            order.save()
         except ObjectDoesNotExist:
             print("You don not have any item in the cart")
             return redirect("shop:shop-home")
@@ -259,11 +264,9 @@ class PaymentView(View):
 
         reference = self.request.POST.get("paystackToken")
         pay_method = self.request.POST.get("payment_type")
-        # order = Order.objects.get(user=self.request.user.profile, ordered=False)
+
         order = Order.objects.get(pk=the_order_id, ordered=False)
         the_profile = Profile.objects.get(pk=the_profile_id)
-
-        # if pay_method == 'paystack':
 
         headers = {"Authorization": f"Bearer {settings.TEST_PAYSTACK_SECRET_KEY}"}
         resp = requests.get(
@@ -281,10 +284,12 @@ class PaymentView(View):
                 payment.save()
 
                 order_items = order.items.all()
-                # order_items.update(ordered=True)
+                order_item_total = 0
                 for item in order_items:
                     item.ordered = True
                     item.save()
+
+                    order_item_total += item.get_final_price()
 
                 order.ordered = True
                 order.payment = payment
@@ -292,6 +297,28 @@ class PaymentView(View):
                 order.save()
 
                 # send a successful card payment with receipt
+
+                try:
+                    subject, from_email, to = (
+                        "YOUR ORDER IS ON THE WAY",
+                        "GameOn <noreply@gameon.com.ng>",
+                        [order.user.user.email],
+                    )
+
+                    html_content = render_to_string(
+                        "events/order_successfull.html",
+                        {
+                            "order_items": order_items,
+                            "order_item_total": order_item_total,
+                            "order": order,
+                        },
+                    )
+                    msg = EmailMessage(subject, html_content, from_email, to)
+                    msg.content_subtype = "html"
+                    msg.send()
+
+                except Exception as e:
+                    print("error", e)
 
                 messages.success(self.request, "Payment is successful")
                 return redirect("shop:shop-home")

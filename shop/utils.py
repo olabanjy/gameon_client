@@ -88,10 +88,14 @@ def guestOrder(request, data):
 
     user_password = f"{user_email.split('@', 1)[0]}{1234}"
     # User = get_user_model
-    the_user, created = User.objects.get_or_create(
-        username=str(user_email.split("@", 1)[0]),
-        defaults={"email": user_email, "password": make_password(user_password)},
-    )
+    try:
+        the_user = User.objects.get(email=user_email)
+        print("this user exists as", the_user)
+    except User.DoesNotExist:
+        the_user, created = User.objects.get_or_create(
+            username=str(user_email.split("@", 1)[0]),
+            defaults={"email": user_email, "password": make_password(user_password)},
+        )
 
     the_profile, created = Profile.objects.get_or_create(user=the_user)
 
@@ -121,6 +125,12 @@ def guestOrder(request, data):
         shipping_address=guest_shipping_address,
         billing_address=guest_billing_address,
     )
+
+    if "lagos" in shipping_state.lower():
+        order.shipping_fee = 3000
+    else:
+        order.shipping_fee = 5000
+    order.save()
 
     for item in items:
         the_item = Item.objects.get(id=item["id"])
