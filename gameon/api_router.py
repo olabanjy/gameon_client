@@ -6,9 +6,16 @@ from rentals.api.views import (
     RentalPlatformViewSet,
     RentalCatViewSet,
     RentalGamesViewSet,
+    RentalQueViewSet,
 )
 
-from shop.api.views import ItemPlatformViewSet, ItemCatViewSet, ItemTypeViewSet
+from shop.api.views import (
+    ItemPlatformViewSet,
+    ItemCatViewSet,
+    ItemTypeViewSet,
+    ItemsViewSet,
+    OrderViewSet,
+)
 
 from users.api.views import ProfileViewSet
 
@@ -21,9 +28,15 @@ else:
 router.register("rental/platform", RentalPlatformViewSet)
 router.register("rental/cat", RentalCatViewSet)
 router.register("rental/items", RentalGamesViewSet)
+router.register("rental/que", RentalQueViewSet)
+
+
 router.register("shop/item/platform", ItemPlatformViewSet)
 router.register("shop/item/cat", ItemCatViewSet)
 router.register("shop/item/type", ItemTypeViewSet)
+router.register("shop/items", ItemsViewSet)
+router.register("shop/items", ItemsViewSet)
+router.register("shop/item/order", OrderViewSet)
 
 
 router.register("users", ProfileViewSet)
