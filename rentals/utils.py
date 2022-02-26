@@ -9,9 +9,14 @@ from django.contrib.auth import get_user_model
 def queData(request):
     if request.user.is_authenticated:
         customer = request.user.profile
+
         que, created = RentalQue.objects.get_or_create(user=customer, ordered=False)
-        items = que.items.all()
+        print(que)
+
         qty = 0
+
+        # if que.items
+        items = que.items.all()
         for que_item in que.items.all():
             qty += que_item.quantity
         cartItems = qty

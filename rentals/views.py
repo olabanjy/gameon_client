@@ -343,7 +343,7 @@ class PaymentView(View):
                     )
 
                     html_content = render_to_string(
-                        "events/order_successfull.html",
+                        "events/rental_order_successfull.html",
                         {
                             "que_items": que_items,
                             "que_item_total": que_item_total,
@@ -356,6 +356,32 @@ class PaymentView(View):
 
                 except Exception as e:
                     print("error", e)
+                    pass
+
+                # send a mail to admin too
+
+                try:
+                    subject, from_email, to = (
+                        "NEW RENTAL ORDER MADE ",
+                        "GameOn <noreply@gameon.com.ng>",
+                        ["admin@gameon.com.ng"],
+                    )
+
+                    html_content = render_to_string(
+                        "events/new_rental_order_admin.html",
+                        {
+                            "que_items": que_items,
+                            "que_item_total": que_item_total,
+                            "que": que,
+                            "email": que.user.user.email,
+                        },
+                    )
+                    msg = EmailMessage(subject, html_content, from_email, to)
+                    msg.content_subtype = "html"
+                    msg.send()
+
+                except:
+                    pass
 
                 messages.success(self.request, "Payment is successful")
                 return redirect("rentals:rental-home")

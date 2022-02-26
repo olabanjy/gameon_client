@@ -276,6 +276,8 @@ class PaymentView(View):
         try:
             status = response["data"]["status"]
             auth_code = response["data"]["authorization"]["authorization_code"]
+            if auth_code:
+                print(auth_code)
             if status == "success":
                 payment = Payment()
                 payment.txn_code = reference
@@ -306,7 +308,7 @@ class PaymentView(View):
                     )
 
                     html_content = render_to_string(
-                        "events/order_successfull.html",
+                        "events/sales_order_successfull.html",
                         {
                             "order_items": order_items,
                             "order_item_total": order_item_total,
@@ -319,6 +321,32 @@ class PaymentView(View):
 
                 except Exception as e:
                     print("error", e)
+                    pass
+
+                # send a mail to admin also
+
+                try:
+                    subject, from_email, to = (
+                        "NEW SALES ORDER",
+                        "GameOn <noreply@gameon.com.ng>",
+                        ["admin@gameon.com.ng"],
+                    )
+
+                    html_content = render_to_string(
+                        "events/new_sales_order_admin.html",
+                        {
+                            "order_items": order_items,
+                            "order_item_total": order_item_total,
+                            "order": order,
+                            "email": order.user.user.email,
+                        },
+                    )
+                    msg = EmailMessage(subject, html_content, from_email, to)
+                    msg.content_subtype = "html"
+                    msg.send()
+
+                except:
+                    pass
 
                 messages.success(self.request, "Payment is successful")
                 return redirect("shop:shop-home")

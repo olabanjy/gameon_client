@@ -52,7 +52,11 @@ def cookieCart(request):
 def cartData(request):
     if request.user.is_authenticated:
         customer = request.user.profile
-        order, created = Order.objects.get_or_create(user=customer, ordered=False)
+        try:
+            order = Order.objects.filter(user=customer, ordered=False).last()
+        except Order.DoesNotExist:
+            order, created = Order.objects.get_or_create(user=customer, ordered=False)
+
         items = order.items.all()
         qty = 0
         for order_item in order.items.all():
@@ -96,6 +100,7 @@ def guestOrder(request, data):
             username=str(user_email.split("@", 1)[0]),
             defaults={"email": user_email, "password": make_password(user_password)},
         )
+        # send an email to the user here!
 
     the_profile, created = Profile.objects.get_or_create(user=the_user)
 

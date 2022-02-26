@@ -179,6 +179,31 @@ def update_identity(request):
                 user_kyc.status = "submitted"
                 user_kyc.save()
                 print(f"updated kyc of {profile.first_name}, {profile.last_name}")
+                # send a kyc submitted to admin
+                try:
+                    subject, from_email, to = (
+                        "NEW KYC(IDENTITY) SUBMITTED",
+                        "GameOn <noreply@gameon.com.ng>",
+                        ["admin@gameon.com.ng"],
+                    )
+
+                    html_content = render_to_string(
+                        "events/admin_prompt.html",
+                        {
+                            "first_name": profile.first_name,
+                            "last_name": profile.last_name,
+                            "email": request.user.email,
+                            "doc_type": "Identity Document",
+                        },
+                    )
+                    msg = EmailMessage(subject, html_content, from_email, to)
+                    msg.content_subtype = "html"
+                    msg.send()
+
+                    profile.welcome_email = "sent"
+                    profile.save()
+                except:
+                    pass
                 data.update({"status": True, "msg": "Identity Document Updated"})
             except:
                 print("Error occured!")
@@ -226,6 +251,32 @@ def update_address_verification(request):
                 user_add.status = "submitted"
                 user_add.save()
                 print(f"updated kyc of {profile.first_name}, {profile.last_name}")
+                # send kyc submitted to admin
+                try:
+                    subject, from_email, to = (
+                        "NEW KYC(ADDRESS) SUBMITTED",
+                        "GameOn <noreply@gameon.com.ng>",
+                        ["admin@gameon.com.ng"],
+                    )
+
+                    html_content = render_to_string(
+                        "events/admin_prompt.html",
+                        {
+                            "first_name": profile.first_name,
+                            "last_name": profile.last_name,
+                            "email": request.user.email,
+                            "doc_type": "Proof of Address!",
+                        },
+                    )
+                    msg = EmailMessage(subject, html_content, from_email, to)
+                    msg.content_subtype = "html"
+                    msg.send()
+
+                    profile.welcome_email = "sent"
+                    profile.save()
+                except:
+                    pass
+
                 data.update({"status": True, "msg": "Address Document Updated"})
             except:
                 print("Error occured!")

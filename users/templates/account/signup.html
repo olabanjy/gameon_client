@@ -28,6 +28,18 @@
 	<meta name="author" content="Game On">
 	<title>Game On| Create New Account</title>
 
+<style type="text/css">
+	.sign__group--eye  {
+	position: absolute;
+	top: 30%;
+	right: 5%;
+
+
+	cursor: pointer; 
+	color: whitesmoke;
+	}
+</style>
+
 </head>
 <body>
 	<!-- sign in -->
@@ -62,6 +74,7 @@
 
 							<div class="sign__group">
                                 <input type="password" name="password1" class="sign__input" id="signup_password1" placeholder="Enter password">
+								<ion-icon  name="eye-outline" class="sign__group--eye" onclick="toggleViewPassword()" ></ion-icon>
                                 <div>
                                     {% if form.password1.errors %}
                                         {% for error in form.password1.errors %}
@@ -116,7 +129,22 @@
                 }).trigger('change');
         
         });    
-      </script>
+    </script>
+
+<script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+<script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+
+<script type="text/javascript">
+	function toggleViewPassword() {
+		var x = document.getElementById("signup_password1");
+		if (x.type === "password") {
+			x.type = "text";
+		} else {
+			x.type = "password";
+		}
+		}
+
+</script>
 </body>
 </html>
 
