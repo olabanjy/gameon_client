@@ -39,12 +39,12 @@ class RentalGameSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
-class RentalGameTrailerSerializer(serializers.ModelSerializer):
-    platform = RentalPlatformSerializer()
+# class RentalGameTrailerSerializer(serializers.ModelSerializer):
+#     platform = RentalPlatformSerializer()
 
-    class Meta:
-        model = RentalGameTrailer
-        fields = "__all__"
+#     class Meta:
+#         model = RentalGameTrailer
+#         fields = "__all__"
 
 
 class RentalQueItemsSerializer(serializers.ModelSerializer):
@@ -116,3 +116,20 @@ class RentalQueSerializer(serializers.ModelSerializer):
 
     def get_ordered_date(self, object):
         return naturalday(object.ordered_date)
+
+
+class TrailerSerializer(serializers.ModelSerializer):
+    platform = RentalPlatformSerializer(read_only=True)
+
+    class Meta:
+        model = RentalGameTrailer
+        fields = [
+            "name",
+            "platform",
+            "trailer_banner",
+            "trailer_yt_link",
+            "highlight_title",
+            "highlight_desc",
+            "views",
+            "created_at",
+        ]

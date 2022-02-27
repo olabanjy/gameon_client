@@ -33,6 +33,20 @@ class ProfileViewSet(ModelViewSet):
         return Response(status=status.HTTP_200_OK, data=serializer.data)
 
     @action(detail=False, methods=["POST"])
+    def get_user_details(self, request):
+        try:
+            the_user = User.objects.get(email=request.data["email"])
+        except User.DoesNotExist:
+            return Response(
+                {"message": "User does not exist"}, status=status.HTTP_400_BAD_REQUEST
+            )
+
+        user_profile = Profile.objects.get(user=the_user)
+        serializer = self.get_serializer(user_profile)
+
+        return Response(status=status.HTTP_200_OK, data=serializer.data)
+
+    @action(detail=False, methods=["POST"])
     def approve_kyc(self, request):
         try:
             kyc_id = request.data["kyc_id"]

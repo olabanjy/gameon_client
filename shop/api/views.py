@@ -90,6 +90,66 @@ class ItemsViewSet(ModelViewSet):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     @action(methods=["POST"], detail=False)
+    def admin_delete_item(self, request):
+        try:
+            the_item = Item.objects.get(id=int(request.data["id"]))
+            the_item.delete()
+            return Response(
+                {"message": ["Shop Item deleted "]},
+                status=status.HTTP_200_OK,
+            )
+
+        except Item.DoesNotExist:
+            return Response(
+                {"message": ["Shop Item not exist"]},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+    @action(methods=["POST"], detail=False)
+    def update_shop_item(self, request):
+        try:
+            the_item = Item.objects.get(id=int(request.data["id"]))
+        except Item.DoesNotExist:
+            return Response(
+                {"message": ["The selected Item does not exist!"]},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+        try:
+
+            if request.data.get("name"):
+                the_item.name = request.data["name"]
+
+            if request.data.get("numberInStock"):
+                the_item.numberInStock = request.data["numberInStock"]
+
+            if request.data.get("price"):
+                the_item.price = request.data["price"]
+
+            if request.data.get("discount_price"):
+                the_item.discount_price = request.data["discount_price"]
+
+            if request.data.get("featured"):
+                the_item.featured = bool(strtobool(request.data["featured"]))
+
+            if "displayImagePath" in request.FILES:
+                the_item.displayImagePath = request.FILES["displayImagePath"]
+
+            if "thumbnailImagePath" in request.FILES:
+                the_item.thumbnailImagePath = request.FILES["thumbnailImagePath"]
+
+            if "bannerImagePath" in request.FILES:
+                the_item.bannerImagePath = request.FILES["bannerImagePath"]
+
+            the_item.save()
+
+            serializer = self.get_serializer(the_item)
+
+            return Response(serializer.data, status=status.HTTP_200_OK)
+
+        except Exception as e:
+            return Response({"message": f"{e}"}, status=status.HTTP_400_BAD_REQUEST)
+
+    @action(methods=["POST"], detail=False)
     def admin_create_item(self, request):
         try:
             the_platform = ItemPlatform.objects.get(id=int(request.data["platformId"]))
@@ -104,9 +164,12 @@ class ItemsViewSet(ModelViewSet):
                 name=request.data["name"],
                 platform=the_platform,
                 numberInStock=int(request.data["numberInStock"]),
-                dailyRentalRate=int(request.data["dailyRentalRate"]),
+                price=int(request.data["price"]),
                 featured=bool(strtobool(request.data["featured"])),
             )
+
+            if request.data.get("discount_price"):
+                new_item.discount_price = request.data["discount_price"]
 
             if request.data.get("displayImagePath"):
                 new_item.displayImagePath = request.data["displayImagePath"]
@@ -134,6 +197,18 @@ class OrderViewSet(ModelViewSet):
             self.queryset, many=True, context={"request": request}
         )
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+    @action(methods=["POST"], detail=False)
+    def get_order_details(self, request):
+        try:
+            order = Order.objects.get(id=int(request.data["id"]))
+            serializer = self.get_serializer(order)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        except Order.DoesNotExist:
+            return Response(
+                {"message": "Sales Order Does not Exist"},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
 
     @action(methods=["POST"], detail=False)
     def mark_as_delivered(self, request):

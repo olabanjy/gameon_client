@@ -7,6 +7,7 @@ from rentals.api.views import (
     RentalCatViewSet,
     RentalGamesViewSet,
     RentalQueViewSet,
+    TrailersViewSet,
 )
 
 from shop.api.views import (
@@ -37,6 +38,9 @@ router.register("shop/item/type", ItemTypeViewSet)
 router.register("shop/items", ItemsViewSet)
 router.register("shop/items", ItemsViewSet)
 router.register("shop/item/order", OrderViewSet)
+
+
+router.register("trailers", TrailersViewSet)
 
 
 router.register("users", ProfileViewSet)

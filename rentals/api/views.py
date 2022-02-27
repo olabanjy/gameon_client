@@ -5,18 +5,23 @@ from rest_framework.decorators import action
 import secrets, datetime, pytz
 from distutils.util import strtobool
 
-from rentals.models import RentalQue
 from .serializers import (
     RentalPlatformSerializer,
     RentalGameSerializer,
     RentalCatSerializer,
-    RentalGameTrailerSerializer,
+    TrailerSerializer,
     RentalQueSerializer,
     RentalQueItemsSerializer,
     AddressSerializer,
 )
 
-from rentals.models import RentalPlatform, RentalCat, RentalGame, RentalGameTrailer
+from rentals.models import (
+    RentalQue,
+    RentalPlatform,
+    RentalCat,
+    RentalGame,
+    RentalGameTrailer,
+)
 
 from django.core.mail import send_mail, EmailMessage
 from django.template.loader import render_to_string
@@ -43,6 +48,24 @@ class RentalPlatformViewSet(ModelViewSet):
             self.queryset, many=True, context={"request": request}
         )
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+    @action(methods=["POST"], detail=False)
+    def admin_delete_plat(self, request):
+        try:
+            the_platform = RentalPlatform.objects.get(
+                id=int(request.data["platformId"])
+            )
+            the_platform.delete()
+            return Response(
+                {"message": ["Platform deleted "]},
+                status=status.HTTP_200_OK,
+            )
+
+        except RentalPlatform.DoesNotExist:
+            return Response(
+                {"platformId": ["Platform does not exist"]},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
 
     @action(methods=["POST"], detail=False)
     def admin_create_plat(self, request):
@@ -80,6 +103,63 @@ class RentalGamesViewSet(ModelViewSet):
             self.queryset, many=True, context={"request": request}
         )
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+    @action(methods=["POST"], detail=False)
+    def admin_delete_item(self, request):
+        try:
+            the_item = RentalGame.objects.get(id=int(request.data["id"]))
+            the_item.delete()
+            return Response(
+                {"message": ["Rental Game deleted "]},
+                status=status.HTTP_200_OK,
+            )
+
+        except RentalGame.DoesNotExist:
+            return Response(
+                {"message": ["Game does not exist"]},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+    @action(methods=["POST"], detail=False)
+    def update_rental_game(self, request):
+        try:
+            the_game = RentalGame.objects.get(id=int(request.data["id"]))
+        except RentalGame.DoesNotExist:
+            return Response(
+                {"message": ["The selected Game does not exist!"]},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+        try:
+
+            if request.data.get("name"):
+                the_game.name = request.data["name"]
+
+            if request.data.get("numberInStock"):
+                the_game.numberInStock = request.data["numberInStock"]
+
+            if request.data.get("dailyRentalRate"):
+                the_game.dailyRentalRate = request.data["dailyRentalRate"]
+
+            if request.data.get("featured"):
+                the_game.featured = bool(strtobool(request.data["featured"]))
+
+            if "displayImagePath" in request.FILES:
+                the_game.displayImagePath = request.FILES["displayImagePath"]
+
+            if "thumbnailImagePath" in request.FILES:
+                the_game.thumbnailImagePath = request.FILES["thumbnailImagePath"]
+
+            if "bannerImagePath" in request.FILES:
+                the_game.bannerImagePath = request.FILES["bannerImagePath"]
+
+            the_game.save()
+
+            serializer = self.get_serializer(the_game)
+
+            return Response(serializer.data, status=status.HTTP_200_OK)
+
+        except Exception as e:
+            return Response({"message": f"{e}"}, status=status.HTTP_400_BAD_REQUEST)
 
     @action(methods=["POST"], detail=False)
     def admin_create_item(self, request):
@@ -120,7 +200,7 @@ class RentalGamesViewSet(ModelViewSet):
 
 
 class RentalQueViewSet(ModelViewSet):
-    queryset = RentalQue.objects.filter(ordered=True).all()
+    queryset = RentalQue.objects.all()
     serializer_class = RentalQueSerializer
 
     def list(self, request):
@@ -128,6 +208,18 @@ class RentalQueViewSet(ModelViewSet):
             self.queryset, many=True, context={"request": request}
         )
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+    @action(methods=["POST"], detail=False)
+    def get_que_details(self, request):
+        try:
+            the_que = RentalQue.objects.get(id=int(request.data["id"]))
+            serializer = self.get_serializer(the_que)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        except RentalQue.DoesNotExist:
+            return Response(
+                {"message": "Rental Order Does not Exist"},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
 
     @action(methods=["POST"], detail=False)
     def mark_as_delivered(self, request):
@@ -141,6 +233,49 @@ class RentalQueViewSet(ModelViewSet):
             print(the_que.received)
 
             serializer = self.get_serializer(the_que)
+
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response({"message": f"{e}"}, status=status.HTTP_400_BAD_REQUEST)
+
+
+class TrailersViewSet(ModelViewSet):
+    queryset = RentalGameTrailer.objects.all()
+    serializer_class = TrailerSerializer
+
+    def list(self, request):
+        serializer = TrailerSerializer(
+            self.queryset, many=True, context={"request": request}
+        )
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    @action(methods=["POST"], detail=False)
+    def admin_create_trailer(self, request):
+        try:
+            the_platform = RentalPlatform.objects.get(
+                id=int(request.data["platformId"])
+            )
+        except RentalPlatform.DoesNotExist:
+            return Response(
+                {"platformId": ["Platform does not exist"]},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        try:
+            new_trailer, created = RentalGameTrailer.objects.get_or_create(
+                name=request.data["name"],
+                platform=the_platform,
+                trailer_banner=request.FILES["trailerBanner"],
+                trailer_yt_link=request.data["yt_url"],
+                highlight_title=request.data["title"],
+            )
+
+            if request.data.get("desc"):
+                new_trailer.highlight_desc = request.data["desc"]
+
+            new_trailer.save()
+
+            serializer = self.get_serializer(new_trailer)
 
             return Response(serializer.data, status=status.HTTP_200_OK)
         except Exception as e:

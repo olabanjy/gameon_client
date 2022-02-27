@@ -23,6 +23,7 @@ class UserKYCSerializer(serializers.ModelSerializer):
             "status",
             "verified",
             "verified_at",
+            "created_at",
         ]
 
 
@@ -36,6 +37,20 @@ class AddressVerificationSerializer(serializers.ModelSerializer):
             "status",
             "verified",
             "verified_at",
+            "created_at",
+        ]
+
+
+class BasicUserAddressSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Address
+        fields = [
+            "street_address",
+            "apartment_address",
+            "city",
+            "state",
+            "address_type",
+            "default",
         ]
 
 
@@ -44,6 +59,7 @@ class ProfileSerializer(serializers.ModelSerializer):
     last_login = serializers.SerializerMethodField()
     user_email = serializers.SerializerMethodField()
     user_kyc = UserKYCSerializer(many=True, read_only=True)
+    user_prim_address = serializers.SerializerMethodField()
     user_address_verification = AddressVerificationSerializer(many=True, read_only=True)
 
     class Meta:
@@ -61,3 +77,10 @@ class ProfileSerializer(serializers.ModelSerializer):
 
     def get_user_email(self, object):
         return object.user.email
+
+    def get_user_prim_address(self, object):
+        user_add_obj = Address.objects.filter(user=object, address_type="P")
+        if user_add_obj.exists():
+            user_add = user_add_obj.first()
+            return BasicUserAddressSerializer(user_add).data
+        return None

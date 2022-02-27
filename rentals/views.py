@@ -56,7 +56,7 @@ def rentalsHome(request):
     featured_rentals = RentalGame.objects.filter(featured=True).all()
     the_featured_banner = RentalGame.objects.filter(featured_banner=True).last()
 
-    trailers = RentalGameTrailer.objects.all()
+    trailers = RentalGameTrailer.objects.all().order_by("created_at")[:4]
 
     page = request.GET.get("page", 1)
 
