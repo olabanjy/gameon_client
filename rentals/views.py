@@ -51,12 +51,42 @@ def rentalsHome(request):
 
     template = "rentals/rentalHome.html"
 
-    all_games = RentalGame.objects.all()
+    get_category = request.GET.get("que_categories", None)
+    get_plat = request.GET.get("que_platforms", None)
+    print(get_category, get_plat)
+
+    # all_games = RentalGame.objects.all()
     # all_games = RentalGame.objects.filter(featured=False).all()
     featured_rentals = RentalGame.objects.filter(featured=True).all()
     the_featured_banner = RentalGame.objects.filter(featured_banner=True).last()
 
     trailers = RentalGameTrailer.objects.all().order_by("created_at")[:4]
+
+    showing_cat = "All categories"
+    showing_plat = "All platforms"
+
+    if get_category or get_plat is not None:
+        # if get_cat is all
+        if get_category == "all" and get_plat != "all":
+            the_plat = RentalPlatform.objects.get(name=get_plat)
+            print(the_plat)
+            all_games = RentalGame.objects.filter(platform=the_plat).all()
+            showing_plat = the_plat.name
+        elif get_plat == "all" and get_category != "all":
+            the_cat = RentalCat.objects.get(name=get_category)
+            all_games = RentalGame.objects.filter(cat=the_cat).all()
+            showing_cat = the_cat.name
+        elif get_plat and get_category == "all":
+            all_games = RentalGame.objects.all()
+        else:
+            the_cat = RentalCat.objects.get(name=get_category)
+            the_plat = RentalPlatform.objects.get(name=get_plat)
+            all_games = RentalGame.objects.filter(platform=the_plat, cat=the_cat).all()
+            showing_plat = the_plat.name
+            showing_cat = the_cat.name
+
+    else:
+        all_games = RentalGame.objects.all()
 
     page = request.GET.get("page", 1)
 
@@ -69,11 +99,18 @@ def rentalsHome(request):
     except EmptyPage:
         all_games = paginator.page(paginator.num_pages)
 
+    platforms = RentalPlatform.objects.all()
+    cats = RentalCat.objects.all()
+    print(showing_cat, showing_plat)
     context = {
         "featured_rentals": featured_rentals,
         "all_items": all_games,
         "the_featured_banner": the_featured_banner,
         "trailers": trailers,
+        "platforms": platforms,
+        "cats": cats,
+        "showing_cat": showing_cat,
+        "showing_plat": showing_plat,
     }
 
     return render(request, template, context)
@@ -416,9 +453,15 @@ def paypal_payment_done(request):
     # order.payment = payment
     # order.ref_code = create_ref_code()
     # order.save()
-    return render(request, "shop/paypal_payment_done.html")
+    return render(request, "rentals/paypal_payment_done.html")
 
 
 @csrf_exempt
 def paypal_payment_canceled(request):
-    return render(request, "shop/paypal_payment_canceled.html")
+    return render(request, "rentals/paypal_payment_canceled.html")
+
+
+def about_us(request):
+    template = "rentals/about_us.html"
+    context = {"page_title": "About Us"}
+    return render(request, template, context)

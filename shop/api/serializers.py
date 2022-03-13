@@ -51,9 +51,10 @@ class OrderItemsSerializer(serializers.ModelSerializer):
         ]
 
     def get_final_price(self, object):
+
         if object.item.discount_price:
             return object.get_total_discount_item_price()
-        return object.get_total_item_price()
+        return object.get_final_price()
 
 
 class AddressSerializer(serializers.ModelSerializer):

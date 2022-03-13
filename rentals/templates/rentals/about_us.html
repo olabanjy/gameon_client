@@ -1,0 +1,47 @@
+{% extends 'rentals/base.html' %}
+
+{% load static %}
+
+
+{% block content %}
+
+	<!-- section -->
+	<section class="section section--first section--bg" data-bg="img/bg.jpg">
+		<div class="container">
+			<!-- article -->
+			<div class="article">
+				<div class="row">
+					<div class="col-12">
+						<!-- article content -->
+						<div class="article__content article__content--page">
+							<img src="{% static 'img/posts/about.jpg' %}" alt="">
+
+							<h1>About Us</h1>
+
+							<p>Games are great for having fun, relaxing, bonding and exercising one’s mind. They can however be a strain on your wallet.</p>
+
+							<p>Game On is a platform where individual gamers and groups can:</p>
+
+                            <ul>
+                                <li>Rent video games and party games to play. 
+                                    (Why spend so much money on a game you’ll finish in one week or play at a games night for just a few hours?)  
+                                    </li>
+                                <li>Rent out their idle games to others to earn a passive income.
+                                    (Instead of your completed or idle games sitting on your shelf, why not have them generate income for you and bring joy to others?)
+                                     </li>
+                                <li>Buy Games and Gaming related items</li>
+                            </ul>
+
+							
+
+
+						</div>
+						<!-- end article content -->
+					</div>
+				</div>
+			</div>
+			<!-- end article -->
+		</div>
+	</section>
+	<!-- end section -->
+{% endblock content %}

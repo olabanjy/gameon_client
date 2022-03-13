@@ -132,6 +132,12 @@
 									<a class="header__nav-link {% if request.resolver_match.namespace == 'shop' and request.resolver_match.url_name == 'shop-home' %} my-header--active {% endif %} " href="{% url 'shop:shop-home' %}"  >Shop </a>
 
 								</li>
+
+								<li class="header__nav-item">
+									<a class="header__nav-link {% if request.resolver_match.namespace == 'rentals' and request.resolver_match.url_name == 'about-us' %} my-header--active {% endif %} " href="{% url 'rentals:about-us' %}"  >About Us </a>
+
+								</li>
+								
 							
 
 							</ul>
@@ -287,7 +293,7 @@
 							<img src="{% static 'img/logo_white.png' %}" alt="">
 						</a>
 
-						<span class="footer__copyright">&copy; <script>document.write(new Date().getFullYear())</script>, Some rights reserved</span>
+						<span class="footer__copyright">&copy; <script>document.write(new Date().getFullYear())</script>, Developed by <a href="https://blacktreeng.com/">BlackTree Creative</a> </span>
 					</div>
 				</div>
 			</div>

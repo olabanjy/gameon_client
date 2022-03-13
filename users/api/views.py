@@ -17,6 +17,8 @@ from django.utils import datetime_safe
 
 from rest_framework.viewsets import GenericViewSet, ModelViewSet
 from .serializers import *
+from django.core.mail import EmailMultiAlternatives, send_mail, EmailMessage
+from django.template.loader import render_to_string
 
 
 User = get_user_model()
@@ -55,6 +57,28 @@ class ProfileViewSet(ModelViewSet):
             the_kyc.status = "approved"
 
             the_kyc.save()
+            # send email to user here
+            #########################
+            try:
+                print(the_kyc.user.user.email)
+                subject, from_email, to = (
+                    "KYC APPROVED",
+                    "GameOn <noreply@gameon.com.ng>",
+                    [the_kyc.user.user.email],
+                )
+
+                html_content = render_to_string(
+                    "events/kyc_accepted.html",
+                    {
+                        "email": the_kyc.user.user.email,
+                        "doc_type": "Identity Document",
+                    },
+                )
+                msg = EmailMessage(subject, html_content, from_email, to)
+                msg.content_subtype = "html"
+                msg.send()
+            except:
+                pass
 
             return Response({"message": "KYC Approved"}, status=status.HTTP_200_OK)
 
@@ -72,6 +96,29 @@ class ProfileViewSet(ModelViewSet):
             the_ad.status = "approved"
 
             the_ad.save()
+            # send email to user here
+            #########################
+
+            try:
+                print(the_ad.user.user.email)
+                subject, from_email, to = (
+                    "KYC APPROVED",
+                    "GameOn <noreply@gameon.com.ng>",
+                    [the_ad.user.user.email],
+                )
+
+                html_content = render_to_string(
+                    "events/kyc_accepted.html",
+                    {
+                        "email": the_ad.user.user.email,
+                        "doc_type": "Proof of Address!",
+                    },
+                )
+                msg = EmailMessage(subject, html_content, from_email, to)
+                msg.content_subtype = "html"
+                msg.send()
+            except:
+                pass
 
             return Response({"message": "Address Approved"}, status=status.HTTP_200_OK)
 
