@@ -280,3 +280,19 @@ class TrailersViewSet(ModelViewSet):
             return Response(serializer.data, status=status.HTTP_200_OK)
         except Exception as e:
             return Response({"message": f"{e}"}, status=status.HTTP_400_BAD_REQUEST)
+
+    @action(methods=["POST"], detail=False)
+    def admin_delete_trailer(self, request):
+        try:
+            the_trailer = RentalGameTrailer.objects.get(id=int(request.data["id"]))
+            the_trailer.delete()
+            return Response(
+                {"message": ["Trailer deleted "]},
+                status=status.HTTP_200_OK,
+            )
+
+        except RentalGameTrailer.DoesNotExist:
+            return Response(
+                {"message": ["Trailer does not exist"]},
+                status=status.HTTP_400_BAD_REQUEST,
+            )

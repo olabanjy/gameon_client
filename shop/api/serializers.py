@@ -39,7 +39,7 @@ class ItemSerializer(serializers.ModelSerializer):
 
 class OrderItemsSerializer(serializers.ModelSerializer):
     item = ItemSerializer()
-    final_price = serializers.SerializerMethodField()
+    # final_price = serializers.SerializerMethodField()
 
     class Meta:
         model = OrderItem
@@ -47,14 +47,13 @@ class OrderItemsSerializer(serializers.ModelSerializer):
             "ordered",
             "item",
             "quantity",
-            "final_price",
         ]
 
-    def get_final_price(self, object):
+    # def get_final_price(self, object):
 
-        if object.item.discount_price:
-            return object.get_total_discount_item_price()
-        return object.get_final_price()
+    #     if object.item.discount_price:
+    #         return object.get_total_discount_item_price()
+    #     return object.get_final_price()
 
 
 class AddressSerializer(serializers.ModelSerializer):

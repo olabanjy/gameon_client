@@ -49,7 +49,7 @@ class RentalGameSerializer(serializers.ModelSerializer):
 
 class RentalQueItemsSerializer(serializers.ModelSerializer):
     item = RentalGameSerializer()
-    final_price = serializers.SerializerMethodField()
+    # final_price = serializers.SerializerMethodField()
 
     class Meta:
         model = RentalQueItems
@@ -60,11 +60,10 @@ class RentalQueItemsSerializer(serializers.ModelSerializer):
             "from_date",
             "to_date",
             "no_of_days",
-            "final_price",
         ]
 
-    def get_final_price(self, object):
-        return (object.quantity * object.item.dailyRentalRate) * object.no_of_days
+    # def get_final_price(self, object):
+    #     return (object.quantity * object.item.dailyRentalRate) * object.no_of_days
 
 
 class AddressSerializer(serializers.ModelSerializer):
@@ -124,6 +123,7 @@ class TrailerSerializer(serializers.ModelSerializer):
     class Meta:
         model = RentalGameTrailer
         fields = [
+            "id",
             "name",
             "platform",
             "trailer_banner",
