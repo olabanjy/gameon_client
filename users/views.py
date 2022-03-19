@@ -265,7 +265,7 @@ def update_address_verification(request):
                             "first_name": profile.first_name,
                             "last_name": profile.last_name,
                             "email": request.user.email,
-                            "doc_type": "Proof of Address!",
+                            "doc_type": "Proof of Address",
                         },
                     )
                     msg = EmailMessage(subject, html_content, from_email, to)

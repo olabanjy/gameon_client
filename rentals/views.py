@@ -239,12 +239,12 @@ def process_checkout(request):
     the_profile = request.user.profile
 
     shipping_address = data["shippingInfo"]["shipping_address"]
-    shipping_address2 = data["shippingInfo"]["shipping_address2"]
+    # shipping_address2 = data["shippingInfo"]["shipping_address2"]
     shipping_city = data["shippingInfo"]["shipping_city"]
     shipping_state = data["shippingInfo"]["shipping_state"]
 
     billing_address = data["billingInfo"]["billing_address"]
-    billing_address2 = data["billingInfo"]["billing_address2"]
+    # billing_address2 = data["billingInfo"]["billing_address2"]
     billing_city = data["billingInfo"]["billing_city"]
     billing_state = data["billingInfo"]["billing_state"]
 
@@ -256,7 +256,6 @@ def process_checkout(request):
             billing_address = Address.objects.create(
                 user=the_profile,
                 street_address=billing_address,
-                apartment_address=billing_address2,
                 city=billing_city,
                 state=billing_state,
                 address_type="B",
@@ -268,7 +267,6 @@ def process_checkout(request):
             shipping_address = Address.objects.create(
                 user=the_profile,
                 street_address=shipping_address,
-                apartment_address=shipping_address2,
                 city=shipping_city,
                 state=shipping_state,
                 address_type="S",

@@ -119,7 +119,10 @@ class RentalQueItems(models.Model):
         return f"{self.pk} - {self.user} -{self.quantity}"
 
     def get_total_item_price(self):
-        return (self.quantity * self.item.dailyRentalRate) * self.no_of_days
+        if self.item:
+            return (self.quantity * self.item.dailyRentalRate) * self.no_of_days
+        else:
+            return 0
 
     def get_final_price(self):
         return self.get_total_item_price()
@@ -162,8 +165,9 @@ class RentalQue(models.Model):
 
     def get_total(self):
         total = 0
-        for que_item in self.items.all():
-            total += que_item.get_final_price()
+        if self.items:
+            for que_item in self.items.all():
+                total += que_item.get_final_price()
         return total
 
 

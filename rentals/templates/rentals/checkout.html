@@ -41,8 +41,8 @@
 
                             <div class="hideable_shipping_form">
                             <p style="color: whitesmoke !important;"> Shipping Address </p>
-                            <input type="text" name="shipping_address" class="form__input" placeholder="Street Address" required>
-                            <input type="text" name="shipping_address2" class="form__input" placeholder="Apartment Address" required>
+                            <input type="text" name="shipping_address" class="form__input" placeholder="Address" required>
+                            <!-- <input type="text" name="shipping_address2" class="form__input" placeholder="Apartment Address" required> -->
                             <input type="text" name="shipping_city" class="form__input" placeholder="City" required>
                             <input type="text" name="shipping_state" class="form__input" placeholder="State" required>
          
@@ -52,8 +52,8 @@
                             <div class="hideable_billing_form">
 
                             <p style="color: whitesmoke !important;"> Billing Address </p>
-                            <input type="text" name="billing_address" class="form__input" placeholder="Street Address" required>
-                            <input type="text" name="billing_address2" class="form__input" placeholder="Apartment Address" required>
+                            <input type="text" name="billing_address" class="form__input" placeholder="Address" required>
+                            <!-- <input type="text" name="billing_address2" class="form__input" placeholder="Apartment Address" required> -->
                           
                             <input type="text" name="billing_city" class="form__input" placeholder="City" required>
                             <input type="text" name="billing_state" class="form__input" placeholder="State" required>
@@ -120,7 +120,7 @@ console.log(user)
 
             var shippingInfo = {
                 'shipping_address':form.shipping_address.value,
-				'shipping_address2':form.shipping_address2.value,
+				// 'shipping_address2':form.shipping_address2.value,
 				'shipping_city':form.shipping_city.value,
 				'shipping_state':form.shipping_state.value
             }
@@ -128,7 +128,7 @@ console.log(user)
 
             var billingInfo = {
                 'billing_address':form.billing_address.value,
-				'billing_address2':form.billing_address2.value,
+				// 'billing_address2':form.billing_address2.value,
 				'billing_city':form.billing_city.value,
 				'billing_state':form.billing_state.value
             }
