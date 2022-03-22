@@ -329,14 +329,14 @@
 									</div>
 									
 									<div class="col-12 col-md-6 col-lg-12 col-xl-6">
-										<label class="form__label" for="street_address">Street Address</label>
+										<label class="form__label" for="street_address">Address</label>
 										<input id="street_address" type="text" name="street_address" class="form__input" placeholder="{% if user_add %} {{user_add.street_address}} {% endif %}" required>
 									</div>
 
-									<div class="col-12 col-md-6 col-lg-12 col-xl-6">
+									<!-- <div class="col-12 col-md-6 col-lg-12 col-xl-6">
 										<label class="form__label" for="apartment_address">Apartment Address</label>
 										<input id="apartment_address" type="text" name="apartment_address" class="form__input" placeholder="{% if user_add %} {{user_add.apartment_address}} {% endif %}" required>
-									</div>
+									</div> -->
 
 									<div class="col-12 col-md-6 col-lg-12 col-xl-6">
 										<label class="form__label" for="city">City </label>
@@ -613,7 +613,7 @@ if (!oldpassword || !password1  || !password2){
 $(document).on("click","#update-address",function(){
 
 var street_address = document.getElementById("street_address").value;
-var apartment_address = document.getElementById("apartment_address").value;
+// var apartment_address = document.getElementById("apartment_address").value;
 var city = document.getElementById("city").value;
 var state = document.getElementById("state").value;
 
@@ -621,7 +621,7 @@ var state = document.getElementById("state").value;
 
 
 
-if (!street_address || !apartment_address || !city || !state){
+if (!street_address || !city || !state){
 	document.getElementById('update_profile_alert').innerHTML = ' <p  class="comments__text"><span style="color: #ff9909 !important;"> All address fields are required </span></p> '; 
 }else{
 	$.ajax({
@@ -630,7 +630,7 @@ if (!street_address || !apartment_address || !city || !state){
 				'X-CSRFToken': csrftoken
 				},
 		url: "{% url 'users:update-address' %}",
-		data:{'street_address':street_address, 'apartment_address':apartment_address, 'city':city, 'state':state, 'csrfmiddlewaretoken':csrftoken},
+		data:{'street_address':street_address, 'city':city, 'state':state, 'csrfmiddlewaretoken':csrftoken},
 		dataType: 'json',
 		success: function (data){
 			if (data.status) {

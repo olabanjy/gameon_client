@@ -128,12 +128,12 @@ def update_profile(request):
 def update_address(request):
     data = {}
     street_address = request.POST.get("street_address", None)
-    apartment_address = request.POST.get("apartment_address", None)
+    # apartment_address = request.POST.get("apartment_address", None)
     city = request.POST.get("city", None)
     state = request.POST.get("state", None)
     print(request.POST.get("csrfmiddlewaretoken", None))
     print(street_address)
-    print(apartment_address)
+    # print(apartment_address)
     print(city)
     profile = request.user.profile
     try:
@@ -143,7 +143,7 @@ def update_address(request):
             the_add.street_address = street_address
             the_add.city = city
             the_add.state = state
-            the_add.apartment_address = apartment_address
+            # the_add.apartment_address = apartment_address
             the_add.save()
         else:
             user_address = Address.objects.create(
@@ -151,7 +151,7 @@ def update_address(request):
                 street_address=street_address,
                 city=city,
                 state=state,
-                apartment_address=apartment_address,
+                # apartment_address=apartment_address,
                 address_type="P",
             )
 
