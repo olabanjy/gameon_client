@@ -1,1 +1,1 @@
-web:gunicorn gameon.wsgi
+web: gunicorn gameon.wsgi
