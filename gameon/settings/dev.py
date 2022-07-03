@@ -4,8 +4,9 @@ from celery.schedules import crontab
 
 DEBUG = True
 
-ALLOWED_HOSTS = ["*"]
+# ALLOWED_HOSTS = ["*"]
 # ALLOWED_HOSTS = ["gameon.com.ng", "3.87.216.135"]
+ALLOWED_HOSTS = ["gameon-ng.herokuapp.com"]
 
 
 INSTALLED_APPS += [
