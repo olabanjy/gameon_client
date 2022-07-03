@@ -93,6 +93,37 @@ class RentalCatViewSet(ModelViewSet):
         )
         return Response(serializer.data, status=status.HTTP_200_OK)
 
+    @action(methods=["POST"], detail=False)
+    def admin_create_cat(self, request):
+        try:
+            new_cat, created = RentalCat.objects.get_or_create(
+                name=request.data["name"],
+                desc=request.data["slug"],
+                iconImagePath=request.data["iconImagePath"],
+            )
+
+            serializer = self.get_serializer(new_cat)
+
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response({"message": f"{e}"}, status=status.HTTP_400_BAD_REQUEST)
+
+    @action(methods=["POST"], detail=False)
+    def admin_delete_cat(self, request):
+        try:
+            the_cat = RentalCat.objects.get(id=int(request.data["catId"]))
+            the_cat.delete()
+            return Response(
+                {"message": ["Category deleted "]},
+                status=status.HTTP_200_OK,
+            )
+
+        except RentalCat.DoesNotExist:
+            return Response(
+                {"catId": ["Category does not exist"]},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
 
 class RentalGamesViewSet(ModelViewSet):
     queryset = RentalGame.objects.all()
@@ -130,7 +161,11 @@ class RentalGamesViewSet(ModelViewSet):
                 status=status.HTTP_400_BAD_REQUEST,
             )
         try:
+            if request.data.get("catId"):
+                for val in request.data["catId"]:
+                    theCat = RentalCat.objects.get(id=int(val))
 
+                    the_game.cat.add(theCat)
             if request.data.get("name"):
                 the_game.name = request.data["name"]
 
@@ -163,24 +198,20 @@ class RentalGamesViewSet(ModelViewSet):
 
     @action(methods=["POST"], detail=False)
     def admin_create_item(self, request):
-        try:
-            the_platform = RentalPlatform.objects.get(
-                id=int(request.data["platformId"])
-            )
-        except RentalPlatform.DoesNotExist:
-            return Response(
-                {"platformId": ["Platform does not exist"]},
-                status=status.HTTP_400_BAD_REQUEST,
-            )
 
         try:
             new_item, created = RentalGame.objects.get_or_create(
                 name=request.data["name"],
-                platform=the_platform,
                 numberInStock=int(request.data["numberInStock"]),
                 dailyRentalRate=int(request.data["dailyRentalRate"]),
                 featured=bool(strtobool(request.data["featured"])),
             )
+
+            if request.data.get("catId"):
+                for val in request.data["catId"]:
+                    theCat = RentalCat.objects.get(id=int(val))
+
+                    new_item.cat.add(theCat)
 
             if request.data.get("displayImagePath"):
                 new_item.displayImagePath = request.data["displayImagePath"]

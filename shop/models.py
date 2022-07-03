@@ -96,7 +96,7 @@ class Item(models.Model):
     featured = models.BooleanField(default=False)
     featured_banner = models.BooleanField(default=False)
     vendor = models.CharField(max_length=200, blank=True, null=True)
-    vendor_code = models.CharField(max_length=200, blank=True, null=True)
+    vendor_code = models.CharField(max_length=200, default="admin")
     comingSoon = models.BooleanField(default=False)
     created_at = models.DateTimeField(default=timezone.now)
 
@@ -166,7 +166,10 @@ class Order(models.Model):
         "Coupon", on_delete=models.SET_NULL, blank=True, null=True
     )
     shipping_fee = models.IntegerField(default=0)
+    delivery_option = models.CharField(max_length=200, default="standard")
     being_delivered = models.BooleanField(default=False)
+    instant_delivery_eligible = models.BooleanField(default=False)
+    instant_delivery_vendor = models.CharField(max_length=200, null=True)
     received = models.BooleanField(default=False)
     refund_requested = models.BooleanField(default=False)
     refund_granted = models.BooleanField(default=False)

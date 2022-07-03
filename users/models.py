@@ -1,3 +1,4 @@
+from decimal import Decimal
 from django.db import models
 from django.conf import settings
 from django.urls import reverse
@@ -134,6 +135,8 @@ class Address(models.Model):
     user = models.ForeignKey(Profile, on_delete=models.CASCADE)
     street_address = models.CharField(max_length=100, null=True)
     apartment_address = models.CharField(max_length=100, null=True)
+    long = models.DecimalField(max_digits=32, decimal_places=22, blank=True, null=True)
+    lat = models.DecimalField(max_digits=32, decimal_places=22, blank=True, null=True)
     city = models.CharField(max_length=300, blank=True, null=True)
     state = models.CharField(max_length=300, blank=True, null=True)
     country = CountryField(multiple=False, blank=True, null=True)

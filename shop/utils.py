@@ -19,9 +19,11 @@ def cookieCart(request):
     order = {"get_total": 0, "get_cart_items": 0}
     cartItems = order["get_cart_items"]
 
+    # vendorList = []
     for i in cart:
         # We use try block to prevent items in cart that may have been removed from causing error
         try:
+
             cartItems += cart[i]["quantity"]
 
             product = Item.objects.get(id=i)
@@ -43,8 +45,20 @@ def cookieCart(request):
             }
             items.append(item)
 
+            # if product.vendor_code not in vendorList:
+            #     vendorList.append(product.vendor_code)
+
         except:
             pass
+
+    # if len(vendorList) == 1:
+    #     order.update(
+    #         {
+    #             "instant_delivery_eligible": True,
+    #             "instant_delivery_vendor": vendorList[0],
+    #         }
+    #     )
+    print(order)
 
     return {"cartItems": cartItems, "order": order, "items": items}
 
@@ -58,16 +72,35 @@ def cartData(request):
             order = order_qs.last()
             items = order.items.all()
             qty = 0
+            # cartVendorList = []
             for order_item in order.items.all():
                 qty += order_item.quantity
+                # if order_item.item.vendor_code not in cartVendorList:
+                #     cartVendorList.append(order_item.item.vendor_code)
+
             cartItems = qty
+            # check if order is single vendor
+            # if len(cartVendorList) == 1:
+            #     order.instant_delivery_eligible = True
+            #     order.instant_delivery_vendor = cartVendorList[0]
+            #     order.save()
+            # print(order.instant_delivery_eligible)
+
         else:
             order, created = Order.objects.get_or_create(user=customer, ordered=False)
             items = order.items.all()
             qty = 0
+            # cartVendorList = []
             for order_item in order.items.all():
                 qty += order_item.quantity
+                # if order_item.item.vendor_code not in cartVendorList:
+                #     cartVendorList.append(order_item.item.vendor_code)
             cartItems = qty
+            # if len(cartVendorList) == 1:
+            #     order.instant_delivery_eligible = True
+            #     order.instant_delivery_vendor = cartVendorList[0]
+            #     order.save()
+            # print(order.instant_delivery_eligible)
 
     else:
         cookieData = cookieCart(request)
@@ -152,3 +185,11 @@ def guestOrder(request, data):
         order.items.add(order_item)
     print("finished processing guest order")
     return the_profile, order
+
+
+def confirmInstantDeliveryFare(data):
+    try:
+        pass
+    except Exception as e:
+        print("error", e)
+        pass

@@ -2,6 +2,20 @@
 
 {% load static %}
 
+{% block extra_styles %}
+
+<style type="text/css">
+    #map{
+    height: 50vh;
+    margin-bottom: 10px;
+    display: none;
+}
+#locationList .card{
+    padding: 10px;
+}
+</style>
+{% endblock extra_styles %}
+
 {% block content %}
 
 	<!-- page title -->
@@ -57,30 +71,46 @@
 
                             </div>
 
-
+                            <br> 
                             
+                            <!-- <div>
+                                <p style="color: whitesmoke !important;"> Delivery Option </p>
+                                <select class="form__select delivery_select" name="delivery_option" id="delivery_option">
+                                    <option id="standard" value="standard"> Standard Delivery </option>
+                                    {% if order.instant_delivery_eligible == True %}
+                                    <option id="instant" value="instant"> Instant Delivery </option>
+                                    {% endif %}
+                                   
+                                   
+                                </select>
+
+                            </div> -->
+
+                            <!-- <br>
+                            <a style="display:none;" href="#/"  id="showMeBtn" class="form__btn  center-align">
+                                Get My Location
+                            </a>
+                             <br>
+                             <div id="map"></div>
+                            <br>
+                            <div id="locationList"></div> -->
 
                            
+                             
 
                             <div class="hideable_shipping_form">
                             <p style="color: whitesmoke !important;"> Shipping Address </p>
-                            <input type="text" name="shipping_address" class="form__input" placeholder="Address" required>
-                            <!-- <input type="text" name="shipping_address2" class="form__input" placeholder="Apartment Address" required> -->
-                            <input type="text" name="shipping_city" class="form__input" placeholder="City" required>
-                            <input type="text" name="shipping_state" class="form__input" placeholder="State" required>
+                            <input type="text" id="shipping_address_iddd"  name="shipping_address" class="form__input" placeholder="Address"  required>
+                           
+                            <input type="text" id="shipping_city_id" name="shipping_city" class="form__input" placeholder="City"  required>
+                            <input type="text" id="shipping_state_id" name="shipping_state" class="form__input" placeholder="State" required>
+                            <!-- <input type="text" id="long_id" name="shipping_long" class="form__input"  hidden >
+                            <input type="text" id="lat_id" name="shipping_lat" class="form__input" hidden> -->
+                            
                         
-                        
+                           
 
-                            <!-- <div class="filter__group">
-                                <ul class="filter__checkboxes">
-                                    <li>
-                                        <input class="form__input" id="same_billing_address" type="checkbox" name="same_billing_address">
-                                        <label for="same_billing_address">Billing address is the same as my shipping address</label>
-                                    </li>
-                                 
-                                  
-                                </ul>
-                            </div> -->
+                           
                              </div>
 
                             <br>
@@ -136,6 +166,27 @@
 
 {% block extra_scripts %}
 
+<!-- <script type="text/javascript">
+
+$(document).ready(function(){
+    console.log("selected")
+    $('#delivery_option').on('change', function () {
+        if ($(this).find('#instant').is(':selected')) {
+        $('#showMeBtn').show();
+        } else {
+        $('#showMeBtn').hide();
+     
+        }
+    })
+})
+</script> -->
+
+<!-- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAUBoCQ9qfFHOOVqGF7Q0XrhpGl1x6cDHw"></script>
+<script src="{% static 'js/mapping.js' %}"></script> -->
+
+
+
+
 <script type="text/javascript">
 
 
@@ -170,7 +221,11 @@ if (user != 'AnonymousUser'){
                 'shipping_address':form.shipping_address.value,
 				// 'shipping_address2':form.shipping_address2.value,
 				'shipping_city':form.shipping_city.value,
-				'shipping_state':form.shipping_state.value
+				'shipping_state':form.shipping_state.value,
+                // 'shipping_long':form.shipping_long.value,
+                // 'shipping_lat': form.shipping_lat.value,
+                // 'delivery_option': form.delivery_option.value,
+
             }
 
 
@@ -218,7 +273,6 @@ if (user != 'AnonymousUser'){
                 order_id = data['the_order_id']
                 console.log(order_id)
                 window.location.href = `/shop/payment/${profile_id}/${order_id}/`
-
             })
 
 

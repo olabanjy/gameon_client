@@ -71,7 +71,6 @@ def search_result(request):
                     "url": prod.get_absolute_url(),
                     "thumbnail": prod.thumbnailImagePath.url,
                     "price": prod.price,
-                    "os": prod.platform.name,
                 }
                 if item not in data:
                     data.append(item)
@@ -93,32 +92,24 @@ def shopHome(request):
     template = "shop/shopHome.html"
 
     get_category = request.GET.get("item_categories", None)
-    get_plat = request.GET.get("item_platforms", None)
+    # get_plat = request.GET.get("item_platforms", None)
 
     featured_items = Item.objects.filter(featured=True).all()
     the_featured_banner = Item.objects.filter(featured_banner=True).last()
     trailers = RentalGameTrailer.objects.all().order_by("created_at")[:4]
     showing_cat = "All categories"
-    showing_plat = "All platforms"
+    # showing_plat = "All platforms"
 
-    if get_category or get_plat is not None:
+    if get_category is not None:
         # if get_cat is all
-        if get_category == "all" and get_plat != "all":
-            the_plat = ItemPlatform.objects.get(name=get_plat)
-            all_items = Item.objects.filter(platform=the_plat).all()
-            showing_plat = the_plat.name
-        elif get_plat == "all" and get_category != "all":
+
+        if get_category != "all":
             the_cat = ItemCat.objects.get(name=get_category)
             all_items = Item.objects.filter(cat=the_cat).all()
             showing_cat = the_cat.name
-        elif get_plat and get_category == "all":
+        elif get_category == "all":
             all_items = Item.objects.all()
-        else:
-            the_cat = ItemCat.objects.get(name=get_category)
-            the_plat = ItemPlatform.objects.get(name=get_plat)
-            all_items = Item.objects.filter(platform=the_plat, cat=the_cat).all()
-            showing_plat = the_plat.name
-            showing_cat = the_cat.name
+
     else:
         all_items = Item.objects.all()
         print(all_items.count())
@@ -133,7 +124,7 @@ def shopHome(request):
     except EmptyPage:
         all_items = paginator.page(paginator.num_pages)
 
-    platforms = ItemPlatform.objects.all()
+    # platforms = ItemPlatform.objects.all()
     cats = ItemCat.objects.all()
 
     context = {
@@ -141,10 +132,10 @@ def shopHome(request):
         "all_items": all_items,
         "the_featured_banner": the_featured_banner,
         "trailers": trailers,
-        "platforms": platforms,
+        # "platforms": platforms,
         "cats": cats,
         "showing_cat": showing_cat,
-        "showing_plat": showing_plat,
+        # "showing_plat": showing_plat,
     }
 
     return render(request, template, context)
@@ -167,7 +158,7 @@ def cart(request):
     order = data["order"]
     items = data["items"]
 
-    print(items)
+    print(order)
 
     context = {"items": items, "order": order}
 
@@ -177,6 +168,7 @@ def cart(request):
 def process_checkout(request):
 
     data = json.loads(request.body)
+    print(data)
 
     if request.user.is_authenticated:
         the_profile = request.user.profile
@@ -231,6 +223,7 @@ def process_checkout(request):
     return JsonResponse(
         data={"the_profile_id": the_profile.pk, "the_order_id": order.pk},
     )
+    # return JsonResponse()
 
 
 def checkout(request):

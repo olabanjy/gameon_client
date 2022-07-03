@@ -42,7 +42,11 @@ class RentalCat(models.Model):
 class RentalGame(models.Model):
     name = models.CharField(max_length=200)
     platform = models.ForeignKey(
-        "RentalPlatform", related_name="game_platform", on_delete=models.CASCADE
+        "RentalPlatform",
+        related_name="game_platform",
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
     )
     cat = models.ManyToManyField("RentalCat", related_name="game_cats")
     numberInStock = models.IntegerField(default=1)

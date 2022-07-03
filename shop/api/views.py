@@ -67,6 +67,21 @@ class ItemCatViewSet(ModelViewSet):
         )
         return Response(serializer.data, status=status.HTTP_200_OK)
 
+    @action(methods=["POST"], detail=False)
+    def admin_create_cat(self, request):
+        try:
+            new_cat, created = ItemCat.objects.get_or_create(
+                name=request.data["name"],
+                desc=request.data["slug"],
+                iconImagePath=request.data["iconImagePath"],
+            )
+
+            serializer = self.get_serializer(new_cat)
+
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response({"message": f"{e}"}, status=status.HTTP_400_BAD_REQUEST)
+
 
 class ItemTypeViewSet(ModelViewSet):
     queryset = ItemType.objects.all()
@@ -151,23 +166,18 @@ class ItemsViewSet(ModelViewSet):
 
     @action(methods=["POST"], detail=False)
     def admin_create_item(self, request):
-        try:
-            the_platform = ItemPlatform.objects.get(id=int(request.data["platformId"]))
-        except ItemPlatform.DoesNotExist:
-            return Response(
-                {"platformId": ["Platform does not exist"]},
-                status=status.HTTP_400_BAD_REQUEST,
-            )
 
         try:
             new_item, created = Item.objects.get_or_create(
                 name=request.data["name"],
-                platform=the_platform,
                 numberInStock=int(request.data["numberInStock"]),
                 price=int(request.data["price"]),
                 featured=bool(strtobool(request.data["featured"])),
             )
-
+            if request.data.get("catId"):
+                for val in request.data["catId"]:
+                    theCat = ItemCat.objects.get(id=int(val))
+                    new_item.cat.add(theCat)
             if request.data.get("discount_price"):
                 new_item.discount_price = request.data["discount_price"]
 
