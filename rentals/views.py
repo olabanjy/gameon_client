@@ -31,6 +31,7 @@ import requests
 from decimal import Decimal
 import hmac
 import hashlib
+from django.views.defaults import page_not_found
 
 
 def create_ref_code():
@@ -43,6 +44,14 @@ def is_valid_form(values):
         if field == "":
             valid = False
     return valid
+
+
+def error404(request, exception):
+    return page_not_found(request, exception, "errors/404.html")
+
+
+def error500(request):
+    return render(request, "errors/500.html")
 
 
 def rentalsHome(request):

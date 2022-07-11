@@ -3,7 +3,7 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
 
-# from rentals.views import error404, error500
+from rentals.views import error404, error500
 from django.contrib.auth.decorators import login_required
 
 
@@ -22,8 +22,8 @@ urlpatterns += [
 ]
 
 
-# handler404 = error404
-# handler500 = error500
+handler404 = error404
+handler500 = error500
 
 
 if settings.DEBUG:
