@@ -111,7 +111,23 @@ class RentalCatViewSet(ModelViewSet):
     @action(methods=["POST"], detail=False)
     def admin_delete_cat(self, request):
         try:
+
             the_cat = RentalCat.objects.get(id=int(request.data["catId"]))
+            if the_cat.desc == "no_category":
+                return Response(
+                    {"message": ["You cannot delete base category!"]},
+                    status=status.HTTP_200_OK,
+                )
+            # reassign all products with category
+            try:
+                getNoCat = RentalCat.objects.filter(desc="no_category").first()
+                for prod in RentalGame.objects.filter(cat=the_cat).all():
+                    prod.cat.remove(the_cat)
+                    prod.cat.add(getNoCat)
+                    prod.save()
+            except Exception as e:
+                print("error", e)
+                pass
             the_cat.delete()
             return Response(
                 {"message": ["Category deleted "]},
