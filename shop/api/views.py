@@ -82,6 +82,42 @@ class ItemCatViewSet(ModelViewSet):
         except Exception as e:
             return Response({"message": f"{e}"}, status=status.HTTP_400_BAD_REQUEST)
 
+    @action(methods=["POST"], detail=False)
+    def admin_delete_cat(self, request):
+        try:
+            the_cat = ItemCat.objects.get(id=int(request.data["catId"]))
+            print("name is", the_cat.name)
+            if the_cat.desc == "no_category":
+                return Response(
+                    {"message": ["You cannot delete base category!"]},
+                    status=status.HTTP_200_OK,
+                )
+            # reassign all products with category
+            try:
+                print("check", Item.objects.filter(cat=the_cat).all())
+                getNoCat = ItemCat.objects.filter(desc="no_category").first()
+                print(getNoCat)
+                print("git here")
+                for prod in Item.objects.filter(cat=the_cat).all():
+                    print(prod)
+                    prod.cat.remove(the_cat)
+                    prod.cat.add(getNoCat)
+                    prod.save()
+            except Exception as e:
+                print("error", e)
+                pass
+            the_cat.delete()
+            return Response(
+                {"message": ["Category deleted "]},
+                status=status.HTTP_200_OK,
+            )
+
+        except ItemCat.DoesNotExist:
+            return Response(
+                {"catId": ["Category does not exist"]},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
 
 class ItemTypeViewSet(ModelViewSet):
     queryset = ItemType.objects.all()

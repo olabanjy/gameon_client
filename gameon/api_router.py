@@ -36,7 +36,7 @@ router.register("shop/item/platform", ItemPlatformViewSet)
 router.register("shop/item/cat", ItemCatViewSet)
 router.register("shop/item/type", ItemTypeViewSet)
 router.register("shop/items", ItemsViewSet)
-router.register("shop/items", ItemsViewSet)
+# router.register("shop/items", ItemsViewSet)
 router.register("shop/item/order", OrderViewSet)
 
 
