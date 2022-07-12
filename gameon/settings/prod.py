@@ -18,25 +18,25 @@ MIDDLEWARE += [
 ]
 
 
-# DATABASES = {
-#     "default": {
-#         "ENGINE": "django.db.backends.sqlite3",
-#         "NAME": BASE_DIR / "db2.sqlite3",
-#     }
-# }
-
-
 DATABASES = {
     "default": {
-        # 'ENGINE': 'django.db.backends.postgresql',
-        "ENGINE": "django.db.backends.postgresql_psycopg2",
-        "NAME": "gameon_client",
-        "USER": "olabanji",
-        "PASSWORD": "olabanji",
-        "HOST": "198.199.120.203",
-        "PORT": "5432",
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": BASE_DIR / "db2.sqlite3",
     }
 }
+
+
+# DATABASES = {
+#     "default": {
+#         # 'ENGINE': 'django.db.backends.postgresql',
+#         "ENGINE": "django.db.backends.postgresql_psycopg2",
+#         "NAME": "gameon_client",
+#         "USER": "olabanji",
+#         "PASSWORD": "olabanji",
+#         "HOST": "localhost",
+#         "PORT": "5432",
+#     }
+# }
 
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_HOST = "smtp.zoho.com"

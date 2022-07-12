@@ -46,8 +46,12 @@ def is_valid_form(values):
     return valid
 
 
+# def error404(request, exception):
+#     return page_not_found(request, exception, "errors/404.html")
+
+
 def error404(request, exception):
-    return page_not_found(request, exception, "errors/404.html")
+    return render(request, "errors/404.html", status=404)
 
 
 def error500(request):
