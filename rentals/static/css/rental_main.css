@@ -5089,8 +5089,8 @@ html:not([dir="rtl"]) .noUi-horizontal .noUi-handle {
 }
 
 .form__btn {
-  display: flex;
-  flex-direction: row;
+  /* display: flex;
+  flex-direction: row; */
   justify-content: center;
   align-items: center;
   width: 100%;
@@ -5103,6 +5103,7 @@ html:not([dir="rtl"]) .noUi-horizontal .noUi-handle {
   letter-spacing: 0.6px;
   text-transform: uppercase;
 }
+
 .form__btn:hover {
   background-color: #ff9909;
   color: #fff;
