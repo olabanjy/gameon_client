@@ -5089,6 +5089,22 @@ html:not([dir="rtl"]) .noUi-horizontal .noUi-handle {
 }
 
 .form__btn {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 44px;
+  border-radius: 6px;
+  background-color: #fe2349;
+  color: #fff;
+  font-weight: 600;
+  font-size: 13px;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+}
+
+.form__btn__payment {
   /* display: flex;
   flex-direction: row; */
   justify-content: center;
