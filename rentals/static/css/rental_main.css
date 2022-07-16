@@ -5109,7 +5109,7 @@ html:not([dir="rtl"]) .noUi-horizontal .noUi-handle {
   flex-direction: row;   */
   justify-content: center;
   align-items: center;
-  width: 100%;
+  width: 40%;
   height: 44px;
   border-radius: 6px;
   background-color: #fe2349;
@@ -5150,6 +5150,9 @@ html:not([dir="rtl"]) .noUi-horizontal .noUi-handle {
     margin-bottom: 0;
   }
   .form__btn {
+    width: 140px;
+  }
+  .form__btn__payment {
     width: 140px;
   }
 }
