@@ -302,20 +302,10 @@ class TrailersViewSet(ModelViewSet):
 
     @action(methods=["POST"], detail=False)
     def admin_create_trailer(self, request):
-        try:
-            the_platform = RentalPlatform.objects.get(
-                id=int(request.data["platformId"])
-            )
-        except RentalPlatform.DoesNotExist:
-            return Response(
-                {"platformId": ["Platform does not exist"]},
-                status=status.HTTP_400_BAD_REQUEST,
-            )
 
         try:
             new_trailer, created = RentalGameTrailer.objects.get_or_create(
                 name=request.data["name"],
-                platform=the_platform,
                 trailer_banner=request.FILES["trailerBanner"],
                 trailer_yt_link=request.data["yt_url"],
                 highlight_title=request.data["title"],

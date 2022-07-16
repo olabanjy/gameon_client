@@ -31,12 +31,12 @@
 	<div class="section">
 		<div class="container">
             
-			<div class="row" style="text-align: center !important;">
-                    <div class="container col-12 col-lg-6">
+		
+                    <div class="container" style="text-align: center !important;">
                         <form id="paystack-payment-form"  action="#" class="form" method="POST">
                             {% csrf_token %}
-                            <div class="row">
-                                <div class="col-12">
+                            <div class="container">
+                                <div class="" >
                                     <h4 class="form__title">Pay with Paystack </h4>
                                 </div>
                                 <script src="https://js.paystack.co/v1/inline.js"></script>
@@ -50,41 +50,17 @@
                                 <div class="">
                                     <img src="{% static 'img/paystack.png' %}" width="50%"  height="auto" alt=""> 
                                 </div>
+                                <br>
+                                
+                                <button style="text-align: center;" class="form__btn" onclick= "payWithPaystack()" type="button">Proceed </button>
+                             
 
                             </div>
-
-                            <div class="col-12">
-                                <button class="form__btn" onclick= "payWithPaystack()" type="button">Proceed </button>
-                            </div>
-
+                           
+                            
                         </form>
-                      
                     </div>
-
-                    <div class="col-12 col-lg-6">
-                        
-                            <div class="row">
-                                <div class="col-12">
-                                    <h4 class="form__title">Pay with Paypal</h4>
-                                </div>
-                              {{paypal_form.render}}
-
-                                <div class="col-12">
-                                    <img src="{% static 'img/paypal.png' %}" width="50%"  height="auto" alt=""> 
-                                </div>
-                                
-                                
-                            </div>
-                            <div class="col-12">
-                                <button class="form__btn" type="button">Proceed </button>
-                            </div>
-                        
-                    
-                    </div>
-        
-
-
-			</div>	
+				
 		</div>
 	</div>
 	<!-- end section -->

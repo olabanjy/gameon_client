@@ -462,3 +462,15 @@ def about_us(request):
     template = "rentals/about_us.html"
     context = {"page_title": "About Us"}
     return render(request, template, context)
+
+
+def privacy_policy(request):
+    template = "rentals/privacy_policy.html"
+    context = {"page_title": "Privacy & Policy"}
+    return render(request, template, context)
+
+
+def t_and_c(request):
+    template = "rentals/t_and_c.html"
+    context = {"page_title": "Terms & Conditions"}
+    return render(request, template, context)

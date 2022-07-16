@@ -81,7 +81,11 @@ class RentalGame(models.Model):
 class RentalGameTrailer(models.Model):
     name = models.CharField(max_length=200)
     platform = models.ForeignKey(
-        "RentalPlatform", related_name="trailer_platform", on_delete=models.CASCADE
+        "RentalPlatform",
+        related_name="trailer_platform",
+        on_delete=models.CASCADE,
+        blank=True,
+        null=True,
     )
     trailer_banner = models.ImageField(
         upload_to="gameon/rental/trailers/bannerImagePath/",
