@@ -5106,7 +5106,7 @@ html:not([dir="rtl"]) .noUi-horizontal .noUi-handle {
 
 .form__btn__payment {
   /* display: flex;
-  flex-direction: row; */
+  flex-direction: row;   */
   justify-content: center;
   align-items: center;
   width: 100%;
