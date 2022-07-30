@@ -42,7 +42,7 @@
 						<div class="profile__user">
 							<div class="profile__avatar">
 
-							<a href="#profile-photo-update" class="open-modal"> <img src="{% if request.user.profile %} {{request.user.profile.photo.url}} {% else %} {% static 'img/user.svg' %} {% endif %}" width="50" height="50"  alt=""> </a>
+							<a href="#profile-photo-update" class="open-modal"> <img src="{% if request.user.profile %}{{request.user.profile.photo.url}}{% else %}{% static 'img/user.svg' %}{% endif %}" width="50" height="50"  alt=""> </a>
 							</div>
 							<div class="profile__meta">
 								<h3>{% if profile.first_name %} {{profile.first_name}} {% else %} {{profile.user.email}} {% endif %} {% if profile.last_name %} {{profile.last_name}} {% else %} {% endif %} </h3>
@@ -383,14 +383,14 @@
 						
 								</div>
 								<h4 class="subscribe__title">Identity Verification </h4>
-								<p class="subscribe__text">Our teams are working on your Identity verification, you will be notified once your ID is verified </p>
+								<p class="subscribe__text">  Our team is working on your identity verification. You will be notified once your ID is verified </p>
 								
 								{% elif request.user.profile.kyc_status == "submitted" %}
 								<div class="subscribe__img">
 									
 								</div>
 								<h4 class="subscribe__title">Identity Verification </h4>
-								<p class="subscribe__text">Our teams are working on your Identity verification, you will be notified once your ID is verified </p>
+								<p class="subscribe__text"> Our team is working on your identity verification. You will be notified once your ID is verified </p>
 								{% elif request.user.profile.kyc_status == "rejected" %}
 								<div class="subscribe__img">
 									

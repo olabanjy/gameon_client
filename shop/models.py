@@ -91,6 +91,7 @@ class Item(models.Model):
         blank=True,
     )
     price = models.IntegerField()
+    desc = models.TextField(blank=True, null=True)
     discount_price = models.IntegerField(blank=True, null=True)
     adminOwned = models.BooleanField(default=True)
     featured = models.BooleanField(default=False)
