@@ -137,6 +137,10 @@ Procfile
 .dmypy.json
 dmypy.json
 
+*.png
+*.jpg
+
+
 # Pyre type checker
 .pyre/
 

@@ -38,6 +38,11 @@
 	cursor: pointer; 
 	color: whitesmoke;
 	}
+
+	#sb_btn:disabled,
+	#sb_btn[disabled]{
+	background-color: grey;
+	}
 </style>
 
 </head>
@@ -91,7 +96,7 @@
 								<label for="t_and_c">I agree to the <a href="/privacy-and-policy">Privacy Policy</a></label>
 							</div>
 							
-							<button class="sign__btn" id="sb-btn" type="submit">Sign up</button>
+							<button class="sign__btn" id="sb_btn" type="submit">Sign up</button>
 
 					
 
@@ -115,17 +120,17 @@
 	<script src="{% static 'js/jquery.mousewheel.min.js' %}"></script>
 	<script src="{% static 'js/jquery.mCustomScrollbar.min.js' %}"></script>
 	<script src="{% static 'js/user_main.js' %}"></script>
-    <!-- <script>
+    <script type="text/javascript">
         $(function () {
-            var t_and_c = $('.t_and_c');
-            var sb_btn = $('#sb-btn');
+            var t_and_c = $('#t_and_c');
+            var sb_btn = $('#sb_btn');
         
             t_and_c.on('change', function() {
                 sb_btn.prop("disabled", !this.checked);
                 }).trigger('change');
         
         });    
-    </script> -->
+    </script>
 
 <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
 <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>

@@ -72,6 +72,7 @@ class RentalGame(models.Model):
     vendor = models.CharField(max_length=200, blank=True, null=True)
     vendor_code = models.CharField(max_length=200, blank=True, null=True)
     comingSoon = models.BooleanField(default=False)
+    desc = models.TextField(blank=True, null=True)
     created_at = models.DateTimeField(default=timezone.now)
 
     def __str__(self):

@@ -40,6 +40,7 @@ class ItemSerializer(serializers.ModelSerializer):
 class OrderItemsSerializer(serializers.ModelSerializer):
     item = ItemSerializer()
     # final_price = serializers.SerializerMethodField()
+    # ordered_date = serializers.SerializerMethodField()
 
     class Meta:
         model = OrderItem
@@ -49,11 +50,12 @@ class OrderItemsSerializer(serializers.ModelSerializer):
             "quantity",
         ]
 
-    # def get_final_price(self, object):
-
-    #     if object.item.discount_price:
-    #         return object.get_total_discount_item_price()
-    #     return object.get_final_price()
+    # def get_ordered_date(self, object):
+    #     try:
+    #         theOrder = Order.objects.filter(items=object).all()
+    #         for obj  in theOrder.
+    #     except Exception as e:
+    #         return None
 
 
 class AddressSerializer(serializers.ModelSerializer):

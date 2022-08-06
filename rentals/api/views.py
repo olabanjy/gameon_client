@@ -5,6 +5,7 @@ from rest_framework.decorators import action
 import secrets, datetime, pytz
 from distutils.util import strtobool
 
+
 from .serializers import (
     RentalPlatformSerializer,
     RentalGameSerializer,
@@ -17,6 +18,7 @@ from .serializers import (
 
 from rentals.models import (
     RentalQue,
+    RentalQueItems,
     RentalPlatform,
     RentalCat,
     RentalGame,
@@ -35,6 +37,9 @@ from dateutil.relativedelta import relativedelta
 from django.utils.timezone import make_aware
 from django.utils import datetime_safe, timezone
 
+
+from django.core.files import File
+from django.core.files.base import ContentFile
 
 import requests, json
 
@@ -189,6 +194,9 @@ class RentalGamesViewSet(ModelViewSet):
             if request.data.get("name"):
                 the_game.name = request.data["name"]
 
+            if request.data.get("desc"):
+                the_game.desc = request.data["desc"]
+
             if request.data.get("numberInStock"):
                 the_game.numberInStock = request.data["numberInStock"]
 
@@ -227,6 +235,9 @@ class RentalGamesViewSet(ModelViewSet):
                 featured=bool(strtobool(request.data["featured"])),
             )
 
+            if request.data.get("desc"):
+                new_item.desc = request.data["desc"]
+
             if request.data.get("catId"):
                 for val in request.data["catId"]:
                     theCat = RentalCat.objects.get(id=int(val))
@@ -249,6 +260,77 @@ class RentalGamesViewSet(ModelViewSet):
         except Exception as e:
             return Response({"message": f"{e}"}, status=status.HTTP_400_BAD_REQUEST)
 
+    @action(methods=["POST"], detail=False)
+    def admin_vendor_create_item(self, request):
+        try:
+            new_item, created = RentalGame.objects.get_or_create(
+                name=request.data["name"],
+                numberInStock=int(request.data["numberInStock"]),
+                dailyRentalRate=int(request.data["dailyRentalRate"]),
+            )
+            if request.data.get("catName"):
+
+                theCat = RentalCat.objects.filter(
+                    name__in=request.data["catName"]
+                ).first()
+                new_item.cat.add(theCat)
+
+            if request.data.get("desc"):
+                new_item.desc = request.data["desc"]
+            if request.data.get("discount_price"):
+
+                new_item.discount_price = request.data["discount_price"]
+
+            if request.data.get("vendor"):
+                new_item.vendor = request.data["vendor"]
+
+            if request.data.get("vendor_code"):
+                new_item.vendor_code = request.data["vendor_code"]
+                new_item.adminOwned = False
+
+            new_item.save()
+
+            if request.data.get("displayImagePath"):
+                fetch_display_img = requests.get(request.data["displayImagePath"])
+                if fetch_display_img.status_code == 200:
+                    data = fetch_display_img.content
+                    filename = request.data["displayImagePath"].split("/")[-1]
+                    new_item.displayImagePath.save(filename, ContentFile(data))
+
+                else:
+                    print(fetch_thumbnail_img)
+            if request.data.get("thumbnailImagePath"):
+                # new_item.thumbnailImagePath = request.data["thumbnailImagePath"]
+                fetch_thumbnail_img = requests.get(request.data["thumbnailImagePath"])
+                if fetch_thumbnail_img.status_code == 200:
+                    data = fetch_thumbnail_img.content
+                    filename = request.data["thumbnailImagePath"].split("/")[-1]
+                    new_item.thumbnailImagePath.save(filename, ContentFile(data))
+
+                else:
+                    print(fetch_thumbnail_img)
+            if request.data.get("bannerImagePath"):
+                # new_item.bannerImagePath = request.data["bannerImagePath"]
+
+                fetch_banner_img = requests.get(request.data["bannerImagePath"])
+                if fetch_banner_img.status_code == 200:
+                    data = fetch_thumbnail_img.content
+                    filename = request.data["bannerImagePath"].split("/")[-1]
+                    new_item.bannerImagePath.save(filename, ContentFile(data))
+
+                else:
+                    print(fetch_thumbnail_img)
+
+            new_item.save()
+
+            serializer = self.get_serializer(new_item)
+
+            return Response(serializer.data, status=status.HTTP_200_OK)
+
+        except Exception as e:
+            print(e)
+            return Response({"message": f"{e}"}, status=status.HTTP_400_BAD_REQUEST)
+
 
 class RentalQueViewSet(ModelViewSet):
     queryset = RentalQue.objects.all()
@@ -269,6 +351,33 @@ class RentalQueViewSet(ModelViewSet):
         except RentalQue.DoesNotExist:
             return Response(
                 {"message": "Rental Order Does not Exist"},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+    @action(methods=["GET"], detail=False)
+    def get_vendor_orders(self, request):
+        try:
+            vendor_code = request.GET.get("vendor_code", None)
+
+            if vendor_code is None:
+                return Response(
+                    {"message": "Vendor code needed to fetch orders"},
+                    status=status.HTTP_400_BAD_REQUEST,
+                )
+            vendorItems = RentalQueItems.objects.filter(item__vendor_code=vendor_code)
+            if vendorItems.exists():
+                print(vendorItems)
+                serializer = RentalQueItemsSerializer(vendorItems, many=True)
+                return Response(serializer.data, status=status.HTTP_200_OK)
+            else:
+                return Response(
+                    {"message": "Vendor code needed to fetch orders"},
+                    status=status.HTTP_400_BAD_REQUEST,
+                )
+        except Exception as e:
+            print("error", e)
+            return Response(
+                {"message": e},
                 status=status.HTTP_400_BAD_REQUEST,
             )
 

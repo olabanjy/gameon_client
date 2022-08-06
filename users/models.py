@@ -34,9 +34,7 @@ class Profile(models.Model):
     welcome_email = models.CharField(max_length=100, default="pending")
     profile_set_up = models.BooleanField(default=False)
     dev_phase = models.CharField(max_length=200, choices=DEV_PHASE, default="beta")
-    photo = models.ImageField(
-        upload_to="gameon/user_profile/", default="default_profile_pics.jpg", blank=True
-    )
+    photo = models.ImageField(upload_to="gameon/user_profile/", null=True, blank=True)
     created_at = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
