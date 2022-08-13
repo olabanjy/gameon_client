@@ -42,7 +42,7 @@
 						<div class="profile__user">
 							<div class="profile__avatar">
 
-							<a href="#profile-photo-update" class="open-modal"> <img src="{% if request.user.profile %}{{request.user.profile.photo.url}}{% else %}{% static 'img/user.svg' %}{% endif %}" width="50" height="50"  alt=""> </a>
+							<a href="#profile-photo-update" class="open-modal"> <img src="{% if request.user.profile.photo %}{{request.user.profile.photo.url}}{% else %}{% static 'img/user.svg' %}{% endif %}" width="50" height="50"  alt=""> </a>
 							</div>
 							<div class="profile__meta">
 								<h3>{% if profile.first_name %} {{profile.first_name}} {% else %} {{profile.user.email}} {% endif %} {% if profile.last_name %} {{profile.last_name}} {% else %} {% endif %} </h3>
@@ -120,7 +120,7 @@
                                             
 											<td>
 												<div class="profile__img">
-													<img src="{{item.item.thumbnailImagePath.url}}" alt="">
+													<img src="{% if item.item.thumbnailImagePath %} {{item.item.thumbnailImagePath.url}} {% endif %}" alt="">
 												</div>
 											</td>
 											<td>{{item.item.name}}</td>
@@ -197,7 +197,7 @@
                                             
 											<td>
 												<div class="profile__img">
-													<img src="{{val.item.thumbnailImagePath.url}}" alt="">
+													<img src="{% if val.item.thumbnailImagePath %}{{val.item.thumbnailImagePath.url}} {% endif %}" alt="">
 												</div>
 											</td>
 											<td>{{val.item.name}}</td>
