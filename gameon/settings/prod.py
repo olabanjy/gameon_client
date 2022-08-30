@@ -39,7 +39,7 @@ DATABASES = {
 # }
 
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
-EMAIL_HOST = "smtp.sendgrid.net"
+EMAIL_HOST = "smtp.zoho.com"
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 
@@ -51,7 +51,7 @@ ADMINS = (("Support", f"{config('ADMINS_USER')}"),)
 
 # EMAIL_HOST = "smtp.zoho.com"
 # EMAIL_HOST_USER = "noreply@gameon.com.ng"
-# EMAIL_HOST_PASSWORD = "Pq3SwK52Jti5"
+# EMAIL_HOST_PASSWORD = "mMn66Bj869AV"
 # ADMINS_USER = "noreply@gameon.com.ng"
 
 DEFAULT_FROM_EMAIL = "Game On <noreply@gameon.com.ng>"
