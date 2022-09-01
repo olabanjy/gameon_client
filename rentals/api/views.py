@@ -239,7 +239,7 @@ class RentalGamesViewSet(ModelViewSet):
                 new_item.desc = request.data["desc"]
 
             if request.data.get("catId"):
-                for val in request.data["catId"]:
+                for val in json.loads(request.data["catId"]):
                     theCat = RentalCat.objects.get(id=int(val))
 
                     new_item.cat.add(theCat)
