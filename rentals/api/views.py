@@ -160,6 +160,19 @@ class RentalGamesViewSet(ModelViewSet):
         )
         return Response(serializer.data, status=status.HTTP_200_OK)
 
+    @action(methods=["GET"], detail=False)
+    def get_list(self, request):
+        all_items = RentalGame.objects.all()
+
+        for val in all_items:
+            print(val.name)
+
+        serializer = RentalGameSerializer(all_items, many=True)
+
+        response = Response(serializer.data, status=status.HTTP_200_OK)
+        response["Cache-Control"] = "no-cache"
+        return response
+
     @action(methods=["POST"], detail=False)
     def admin_delete_item(self, request):
         try:
@@ -341,6 +354,16 @@ class RentalQueViewSet(ModelViewSet):
             self.queryset, many=True, context={"request": request}
         )
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+    @action(methods=["GET"], detail=False)
+    def get_list(self, request):
+        all_items = RentalQue.objects.all()
+
+        serializer = RentalQueSerializer(all_items, many=True)
+
+        response = Response(serializer.data, status=status.HTTP_200_OK)
+        response["Cache-Control"] = "no-cache"
+        return response
 
     @action(methods=["POST"], detail=False)
     def get_que_details(self, request):

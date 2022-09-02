@@ -138,10 +138,29 @@ class ItemsViewSet(ModelViewSet):
     serializer_class = ItemSerializer
 
     def list(self, request):
+        for val in self.queryset:
+            print(val.name)
+
         serializer = ItemSerializer(
             self.queryset, many=True, context={"request": request}
         )
-        return Response(serializer.data, status=status.HTTP_200_OK)
+
+        response = Response(serializer.data, status=status.HTTP_200_OK)
+        response["Cache-Control"] = "no-cache"
+        return response
+
+    @action(methods=["GET"], detail=False)
+    def get_list(self, request):
+        all_items = Item.objects.all()
+
+        for val in all_items:
+            print(val.name)
+
+        serializer = ItemSerializer(all_items, many=True)
+
+        response = Response(serializer.data, status=status.HTTP_200_OK)
+        response["Cache-Control"] = "no-cache"
+        return response
 
     @action(methods=["POST"], detail=False)
     def admin_delete_item(self, request):
@@ -329,6 +348,16 @@ class OrderViewSet(ModelViewSet):
             self.queryset, many=True, context={"request": request}
         )
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+    @action(methods=["GET"], detail=False)
+    def get_list(self, request):
+        all_items = Order.objects.all()
+
+        serializer = OrderSerializer(all_items, many=True)
+
+        response = Response(serializer.data, status=status.HTTP_200_OK)
+        response["Cache-Control"] = "no-cache"
+        return response
 
     @action(methods=["POST"], detail=False)
     def get_order_details(self, request):
