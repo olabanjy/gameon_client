@@ -293,7 +293,7 @@ class PaymentView(View):
         order = Order.objects.get(pk=the_order_id, ordered=False)
         the_profile = Profile.objects.get(pk=the_profile_id)
 
-        headers = {"Authorization": f"Bearer {settings.TEST_PAYSTACK_SECRET_KEY}"}
+        headers = {"Authorization": f"Bearer {settings.LIVE_PAYSTACK_PUBLIC_KEY}"}
         resp = requests.get(
             f"https://api.paystack.co/transaction/verify/{reference}", headers=headers
         )

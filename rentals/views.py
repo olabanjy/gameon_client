@@ -339,7 +339,7 @@ class PaymentView(View):
 
         # if pay_method == 'paystack':
 
-        headers = {"Authorization": f"Bearer {settings.TEST_PAYSTACK_SECRET_KEY}"}
+        headers = {"Authorization": f"Bearer {settings.LIVE_PAYSTACK_PUBLIC_KEY}"}
         resp = requests.get(
             f"https://api.paystack.co/transaction/verify/{reference}", headers=headers
         )
