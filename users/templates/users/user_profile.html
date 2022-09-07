@@ -2,6 +2,29 @@
 {% load static %}
 {% load humanize %}
 
+{% block extra_styles %}
+
+<style type="text/css">
+	
+
+	#update_profile:disabled,
+	#update_profile[disabled],
+	#update-password:disabled,
+	#update-password[disabled],
+	#update-address:disabled,
+	#update-address[disabled],
+	#update-id:disabled,
+	#update-id[disabled],
+	#update-add:disabled,
+	#update-add[disabled],
+	#update-photo-btn:disabled,
+	#update-photo-btn[disabled]{
+	background-color: grey;
+	}
+</style>
+
+{% endblock extra_styles %}
+
 {% block content %}
 
 
@@ -500,7 +523,17 @@ $(document).ready(function(){
 
 
 // Update Fullname 
-$(document).on("click","#update_profile",function(){
+var updateProfBtn = document.getElementById("update_profile");
+
+updateProfBtn.addEventListener('click', function(){
+	console.log(this)
+	
+
+	this.innerHTML = "Updating ...";
+	this.disabled = true;
+
+
+
 
 var first_name = document.getElementById("first_name").value;
 var last_name = document.getElementById("last_name").value;
@@ -513,6 +546,8 @@ var phone = document.getElementById("phone").value;
 
 if (!first_name || !last_name || !phone){
 	document.getElementById('update_profile_alert').innerHTML = ' <p  class="comments__text"><span style="color: #ff9909 !important;"> First Name, Last Name or Phone number field cannot be empty </span></p> '; 
+	this.innerHTML = "Update Profile";
+	this.disabled= false;
 }else{
 	$.ajax({
 		type:"POST", 
@@ -549,8 +584,15 @@ if (!first_name || !last_name || !phone){
 
 
 
+var updatePasswordBtn = document.getElementById("update-password");
 
-$(document).on("click","#update-password",function(){
+
+updatePasswordBtn.addEventListener('click', function(){
+
+	this.innerHTML = "Updating ...";
+	this.disabled = true;
+
+// $(document).on("click","#update-password",function(){
 
 var oldpassword = document.getElementById("id_oldpassword").value;
 var password1 = document.getElementById("id_password1").value;
@@ -561,6 +603,9 @@ var password2 = document.getElementById("id_password2").value;
 if (!oldpassword || !password1  || !password2){
 
   document.getElementById('update_profile_alert').innerHTML = ' <p  class="comments__text"><span style="color: #ff9909 !important;"> Password fields cannot be empty  </span></p> '; 
+  this.innerHTML = "Change";
+  this.disabled = false;
+
 }else{
   $.ajax({
 		type:"POST", 
@@ -610,7 +655,16 @@ if (!oldpassword || !password1  || !password2){
 
 
 // Update Address 
-$(document).on("click","#update-address",function(){
+var updateAddressBtn = document.getElementById("update-address");
+
+
+
+updateAddressBtn.addEventListener('click', function(){
+
+this.innerHTML = "Updating ...";
+this.disabled = true;
+
+// $(document).on("click","#update-address",function(){
 
 var street_address = document.getElementById("street_address").value;
 // var apartment_address = document.getElementById("apartment_address").value;
@@ -623,6 +677,8 @@ var state = document.getElementById("state").value;
 
 if (!street_address || !city || !state){
 	document.getElementById('update_profile_alert').innerHTML = ' <p  class="comments__text"><span style="color: #ff9909 !important;"> All address fields are required </span></p> '; 
+	this.innerHTML = "Update Address";
+	this.disabled = true;
 }else{
 	$.ajax({
 		type:"POST", 
@@ -660,6 +716,13 @@ if (!street_address || !city || !state){
 // End Update Address 
 
 
+function gototab(reload, tab_hash)
+   {
+    window.location.hash = `#${tab_hash}`;
+    window.location.reload(true);
+   }
+
+
 
 // Update Identity 
 
@@ -676,11 +739,25 @@ $('#id_verification').on('change', function() {
 $(document).on("submit","#id_verfification_form",function(){
 	event.preventDefault();
 
+
+
+var addIDBtn = document.getElementById('update-id')
+addIDBtn.disabled = true;
+addIDBtn.innerHTML="Updating ..."
+
+
+
+
+
+
+
 var id_file = document.getElementById("id_verification").value;
 var data = new FormData($('#id_verfification_form').get(0));
 
 if (!id_file ){
 	document.getElementById('update_profile_alert').innerHTML = ' <p  class="comments__text"><span style="color: #ff9909 !important;">  Please upload file  </span></p> '; 
+	addIDBtn.disabled = false;
+	addIDBtn.innerHTML="Submit"
 }else{
 
 	$.ajax({
@@ -699,7 +776,8 @@ if (!id_file ){
 				console.log(data.msg)
 				document.getElementById('update_profile_alert').innerHTML = ' <p  class="comments__text"><span > Your identity file has been updated, refreshing page!  </span></p> '; 
 				setTimeout(function(){
-					location.reload();
+					gototab("tab-4");
+					// location.reload();
 			         }, 1000);
 
 			} else{
@@ -736,11 +814,18 @@ $('#address_verification').on('change', function() {
 $(document).on("submit","#add_verfification_form",function(){
 	event.preventDefault();
 
+
+var addVerBtn = document.getElementById('update-add')
+addVerBtn.disabled = true;
+addVerBtn.innerHTML="Updating ..."
+
 var address_file = document.getElementById("address_verification").value;
 var data = new FormData($('#add_verfification_form').get(0));
 
 if (!address_file ){
 	document.getElementById('update_profile_alert').innerHTML = ' <p  class="comments__text"><span style="color: #ff9909 !important;">  Please upload file  </span></p> '; 
+	addVerBtn.disabled = false;
+	addVerBtn.innerHTML="Submit"
 }else{
 	$.ajax({
 		type:"POST", 

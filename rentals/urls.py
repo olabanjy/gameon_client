@@ -7,6 +7,7 @@ app_name = "rentals"
 
 urlpatterns = [
     path("", rentalsHome, name="rental-home"),
+    path("details/<item_id>/", RentalGameDetails, name="details"),
     path("about-us/", about_us, name="about-us"),
     path("privacy-and-policy/", privacy_policy, name="privacy-and-policy"),
     path("terms-and-conditions/", t_and_c, name="terms-and-conditions"),

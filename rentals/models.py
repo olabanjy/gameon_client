@@ -12,6 +12,8 @@ import uuid
 import random, string
 import pyotp
 
+from django.urls import reverse
+
 
 class RentalPlatform(models.Model):
     name = models.CharField(max_length=200)
@@ -77,6 +79,9 @@ class RentalGame(models.Model):
 
     def __str__(self):
         return self.name
+
+    def get_absolute_url(self):
+        return reverse("rentals:details", kwargs={"item_id": self.id})
 
 
 class RentalGameTrailer(models.Model):

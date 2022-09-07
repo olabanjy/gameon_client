@@ -36,6 +36,8 @@ from decimal import Decimal
 import hmac
 import hashlib
 
+from rentals.models import RentalGame
+
 
 # Create your views here.
 
@@ -60,17 +62,21 @@ def search_result(request):
         print(query)
         # change this to icontains.dinstict in prod
         qs = Item.objects.filter(name__icontains=query)
-        print(qs)
+        # print(qs)
+        # this is for rental,  come back and fix shop
+        rentalqs = RentalGame.objects.filter(name__icontains=query)
+        print(rentalqs)
         # data = {"item": query}
-        if len(qs) > 0 and len(query) > 0:
+        if len(rentalqs) > 0 and len(query) > 0:
+
             data = []
-            for prod in qs:
+            for prod in rentalqs:
                 item = {
                     "pk": prod.pk,
                     "name": prod.name,
                     "url": prod.get_absolute_url(),
                     "thumbnail": prod.thumbnailImagePath.url,
-                    "price": prod.price,
+                    "price": f"{prod.dailyRentalRate}/day",
                 }
                 if item not in data:
                     data.append(item)

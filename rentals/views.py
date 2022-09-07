@@ -59,8 +59,8 @@ def error500(request):
 
 
 def rentalsHome(request):
-    if request.user.is_authenticated and request.user.profile.profile_set_up == False:
-        return redirect("users:user-profile")
+    # if request.user.is_authenticated and request.user.profile.profile_set_up == False:
+    #     return redirect("users:user-profile")
 
     template = "rentals/rentalHome.html"
 
@@ -123,6 +123,9 @@ def update_que(request):
     no_of_days = data["no_of_days"]
     # from_date_data = data["from_date"]
     # to_date_data = data["to_date"]
+
+    if request.user.is_authenticated and request.user.profile.profile_set_up == False:
+        return redirect("users:user-profile")
 
     customer = request.user.profile
     product = RentalGame.objects.get(id=productId)
@@ -473,4 +476,13 @@ def privacy_policy(request):
 def t_and_c(request):
     template = "rentals/t_and_c.html"
     context = {"page_title": "Terms & Conditions"}
+    return render(request, template, context)
+
+
+def RentalGameDetails(request, item_id):
+    template = "rentals/rental_game_details.html"
+    item = RentalGame.objects.get(id=item_id)
+    all_items = RentalGame.objects.all().exclude(id=item_id)[:10]
+    print(item)
+    context = {"item": item, "all_items": all_items}
     return render(request, template, context)
