@@ -58,7 +58,7 @@ function updateUserQue(productId, action, no_of_days = null) {
         location.reload();
       } else {
         $(`#que_modal_response_${productId}`).html(
-          '<span class="modal__text"> Item has been added to your Q </span>'
+          '<span class="modal__text"> Item has been added to your Rental Cart </span>'
         );
       }
     });
