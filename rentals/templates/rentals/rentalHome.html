@@ -82,13 +82,13 @@
         {% if featured_rentals %}
         {% for val in featured_rentals %}
         <div class="card card--big">
-            <a href="{{item.get_absolute_url}}" class="card__cover">
+            <a href="{{val.get_absolute_url}}" class="card__cover">
                 <img src="{{val.thumbnailImagePath.url}}" alt="{{val.name}}" width="240px" height="340px">
             </a>
 
             <div class="card__wrap">
                 <div class="card__title">
-                    <h3><a href="#">{{val.name}}</a></h3>
+                    <h3><a href="{{val.get_absolute_url}}">{{val.name}}</a></h3>
                 </div>
 
                 <ul class="card__list">
