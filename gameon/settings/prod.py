@@ -127,23 +127,27 @@ ADDRESS_REGIONS = [
         "slug": "lagos_island_1",
         "display": "Lagos Island 1",
         "areas": "Ikoyi, VI, Lekki 1 - Chevron",
+        "price": 1500,
     },
     {
         "id": 2,
         "slug": "lagos_mainland_1",
         "display": "Lagos Mainland 1",
         "areas": "Ikeja, Ogba, Agege, Yaba, Surulere",
+        "price": 2000,
     },
     {
         "id": 3,
         "slug": "lagos_island_2",
         "display": "Lagos Island 2",
         "areas": "Ajah Onwards",
+        "price": 2000,
     },
     {
         "id": 4,
         "slug": "lagos_mainland_2",
         "display": "Lagos Mainland 2",
         "areas": "Outside Mainland 1",
+        "price": 2500,
     },
 ]
