@@ -119,3 +119,31 @@ PAYPAL_TEST = True
 
 GAMEON_ADMIN_LAT = 6.4414728785821636
 GAMEON_ADMIN_LONG = 3.4585855392759584
+
+
+ADDRESS_REGIONS = [
+    {
+        "id": 1,
+        "slug": "lagos_island_1",
+        "display": "Lagos Island 1",
+        "areas": "Ikoyi, VI, Lekki 1 - Chevron",
+    },
+    {
+        "id": 2,
+        "slug": "lagos_mainland_1",
+        "display": "Lagos Mainland 1",
+        "areas": "Ikeja, Ogba, Agege, Yaba, Surulere",
+    },
+    {
+        "id": 3,
+        "slug": "lagos_island_2",
+        "display": "Lagos Island 2",
+        "areas": "Ajah Onwards",
+    },
+    {
+        "id": 4,
+        "slug": "lagos_mainland_2",
+        "display": "Lagos Mainland 2",
+        "areas": "Outside Mainland 1",
+    },
+]

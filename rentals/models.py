@@ -158,6 +158,14 @@ class RentalQue(models.Model):
         blank=True,
         null=True,
     )
+    shipping_address_area = models.CharField(max_length=200, null=True)
+    pickup_address = models.ForeignKey(
+        "users.Address",
+        related_name="rental_pickup_address",
+        on_delete=models.SET_NULL,
+        null=True,
+    )
+    pickup_address_area = models.CharField(max_length=200, null=True)
     billing_address = models.ForeignKey(
         "users.Address",
         related_name="rental_billing_address",
@@ -169,6 +177,7 @@ class RentalQue(models.Model):
         "RentalPayment", on_delete=models.SET_NULL, blank=True, null=True
     )
     shipping_fee = models.IntegerField(default=0)
+    pickup_fee = models.IntegerField(default=0)
     being_delivered = models.BooleanField(default=False)
     received = models.BooleanField(default=False)
     refund_requested = models.BooleanField(default=False)
@@ -177,11 +186,43 @@ class RentalQue(models.Model):
     def __str__(self):
         return f"{self.user}"
 
+    def get_shipping_total(self):
+        total = 0
+        if self.shipping_fee == 0:
+            print("adding shipping fee")
+            total += self.shipping_fee
+
+        return total
+
+    def get_pickup_total(self):
+        total = 0
+        if self.pickup_fee == 0:
+            print("adding shipping fee")
+            total += self.pickup_fee
+
+        return total
+
+    def get_que_order_total(self):
+        total = 0
+        if self.items:
+            for que_item in self.items.all():
+                total += que_item.get_final_price()
+        return total
+
     def get_total(self):
         total = 0
         if self.items:
             for que_item in self.items.all():
                 total += que_item.get_final_price()
+
+        if self.shipping_fee != 0:
+            print("adding shipping fee")
+            total += self.shipping_fee
+
+        if self.pickup_fee != 0:
+            print("adding pickup fee")
+            total += self.pickup_fee
+
         return total
 
 

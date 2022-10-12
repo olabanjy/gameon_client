@@ -132,6 +132,7 @@ ADDRESS_CHOICES = (
 class Address(models.Model):
     user = models.ForeignKey(Profile, on_delete=models.CASCADE)
     street_address = models.CharField(max_length=100, null=True)
+    region = models.CharField(max_length=200, null=True)
     apartment_address = models.CharField(max_length=100, null=True)
     long = models.DecimalField(max_digits=32, decimal_places=22, blank=True, null=True)
     lat = models.DecimalField(max_digits=32, decimal_places=22, blank=True, null=True)

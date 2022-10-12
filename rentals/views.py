@@ -230,7 +230,11 @@ def checkout(request):
         print("You don not have any item in your Q")
         return redirect("rentals:rental-home")
 
-    context = {"items": items, "que": order}
+    context = {
+        "items": items,
+        "que": order,
+        "address_regions": settings.ADDRESS_REGIONS,
+    }
 
     return render(request, template, context)
 
@@ -240,10 +244,12 @@ def process_checkout(request):
     data = json.loads(request.body)
     the_profile = request.user.profile
 
+    pickup_option = data["pickupInfo"]["pickup_option"]
+
     shipping_address = data["shippingInfo"]["shipping_address"]
     # shipping_address2 = data["shippingInfo"]["shipping_address2"]
     shipping_city = data["shippingInfo"]["shipping_city"]
-    shipping_state = data["shippingInfo"]["shipping_state"]
+    shipping_area = data["shippingInfo"]["shipping_area"]
 
     billing_address = data["billingInfo"]["billing_address"]
     # billing_address2 = data["billingInfo"]["billing_address2"]
@@ -270,17 +276,62 @@ def process_checkout(request):
                 user=the_profile,
                 street_address=shipping_address,
                 city=shipping_city,
-                state=shipping_state,
+                region=shipping_area,
+                state="Lagos State",
                 address_type="S",
             )
             que.shipping_address = shipping_address
             que.save()
 
-        if "lagos" in shipping_state.lower():
-            que.shipping_fee = 3000
-        else:
-            que.shipping_fee = 5000
+        # if "lagos" in shipping_state.lower():
+        #     que.shipping_fee = 3000
+        # else:
+        #     que.shipping_fee = 5000
+
+        shipping_fee = 0
+        for region in settings.ADDRESS_REGIONS:
+            if region["slug"] == shipping_area:
+                print(region["price"])
+                shipping_fee = int(region["price"])
+
+        print(shipping_fee)
+        try:
+            que.shipping_fee = 0
+            que.pickup_fee = 0
+            que.save()
+        except:
+            pass
+        que.shipping_fee = shipping_fee
         que.save()
+
+        if pickup_option == "pickup":
+            pickup_region = data["pickupInfo"]["hidden_pickup_region"]
+            pickup_address = data["pickupInfo"]["pickup_address"]
+            pickup_city = data["pickupInfo"]["pickup_city"]
+
+            newPickupAdd = Address.objects.create(
+                user=the_profile,
+                street_address=pickup_address,
+                city=pickup_city,
+                region=pickup_region,
+                state="Lagos State",
+                address_type="P",
+            )
+
+            pickup_price = 0
+            for region in settings.ADDRESS_REGIONS:
+                if region["slug"] == pickup_region:
+                    print(region["price"])
+                    pickup_price = int(region["price"])
+            print(pickup_price)
+
+            que.pickup_fee = pickup_price
+            que.pickup_address = newPickupAdd
+            que.save()
+
+        else:
+            pass
+
     except ObjectDoesNotExist:
         print("You don not have any item in the Q")
         return redirect("rentals:rental-home")

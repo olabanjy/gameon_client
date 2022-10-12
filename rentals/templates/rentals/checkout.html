@@ -40,11 +40,23 @@
 						<div class="form">
 
                             <div class="hideable_shipping_form">
+                           
                             <p style="color: whitesmoke !important;"> Shipping Address </p>
-                            <input type="text" name="shipping_address" class="form__input" placeholder="Address" required>
-                            <!-- <input type="text" name="shipping_address2" class="form__input" placeholder="Apartment Address" required> -->
-                            <input type="text" name="shipping_city" class="form__input" placeholder="City" required>
-                            <input type="text" name="shipping_state" class="form__input" placeholder="State" required>
+                           
+                            <select class="form__select" name="shipping_area" id="shipping_area" required>
+                                <option value="" disabled selected hidden>Select your region </option>
+
+                                {% if address_regions %}
+                              
+                                {% for reg in address_regions %}
+                                <option value="{{reg.slug}}"> {{reg.display}} - ({{reg.areas}}) </option>
+                                {% endfor %}
+                                {% endif %}
+                            </select>
+                            <input type="text" name="shipping_address" class="form__input" placeholder="House Address" required>
+    
+                            <input type="text" name="shipping_city" class="form__input" placeholder="LGA" required>
+                       
          
                              </div>
                             <br>
@@ -57,6 +69,42 @@
                           
                             <input type="text" name="billing_city" class="form__input" placeholder="City" required>
                             <input type="text" name="billing_state" class="form__input" placeholder="State" required>
+
+                            </div>
+
+                            <div>
+                                <p style="color: whitesmoke !important;"> Pick Up Option </p>
+                                <select class="form__select" name="pickup_option" id="pickup_option" required>
+                                    <option value="" disabled selected hidden>Do you want us to pickup ?</option>
+                                    <option id="no_pickup" value="no_pickup"> NO</option>
+                                    <option id="pickup" value="pickup"> YES </option>
+                              
+                                </select>
+
+
+                                
+
+                            </div>
+
+                            <div style="display: none;" class="hidden_pickup_address" id="hidden_pickup_address">
+
+
+                                <select  class="form__select" name="hidden_pickup_region" id="hidden_pickup_region">
+                                    <option value="" disabled selected hidden>Select your region </option>
+    
+                                    {% if address_regions %}
+                                  
+                                    {% for reg in address_regions %}
+                                    <option value="{{reg.slug}}"> {{reg.display}} - ({{reg.areas}}) </option>
+                                    {% endfor %}
+                                    {% endif %}
+                                </select>
+
+                                <input type="text" name="pickup_address" class="form__input" placeholder="House Address">
+    
+                                <input type="text" name="pickup_city" class="form__input" placeholder="LGA">
+
+
 
                             </div>
 
@@ -78,7 +126,11 @@
 					<!-- checkout -->
 					<div action="#" class="form">
                         <p style="color: whitesmoke !important;">My Rental Cart Summary </p>
-						<input type="text"  class="form__input" value="Total: ₦{{que.get_total|intcomma}}" disabled>
+                        <input type="text"  class="form__input" value="Que Total: ₦{{que.get_que_order_total|intcomma}}" disabled>
+                        <p style="color: whitesmoke !important; ">Shipping/Pickup Fee </p>
+						<input type="text"  class="form__input" id="final_shipping_fee" value="Shipping Fee: ₦{{que.get_shipping_total|intcomma}}" disabled>
+						<input style="display: none;" type="text"  id="final_pickup_fee" class="form__input" value="Pickup Fee: ₦{{que.get_pickup_total|intcomma}}" disabled>
+						
 						
 						<span class="form__text">Your personal data will be used to process your order, support your experience throughout this website, and for other purposes described in our privacy policy.</span>
 						<button type="submit" class="form__btn">>> Payment</button>
@@ -99,6 +151,54 @@
 
 <script type="text/javascript">
 
+$(document).ready(function(){
+
+    $('#pickup_option').on('change', function () {
+        if ($(this).find('#pickup').is(':selected')) {
+        $('#hidden_pickup_address').show();
+        $('#final_pickup_fee').show()
+        } else {
+        $('#hidden_pickup_address').hide();
+     
+        }
+    })
+
+
+
+    $('#shipping_area').on('change', function () {
+        console.log($(this).children("option:selected").val())
+        if ($(this).children("option:selected").val() == "lagos_island_1") {
+            $('#final_shipping_fee').val('Shipping Fee: ₦1,500')
+        }else if($(this).children("option:selected").val() == "lagos_mainland_1"){
+            $('#final_shipping_fee').val('Shipping Fee: ₦2,000')
+        } else if ($(this).children("option:selected").val() == "lagos_island_2"){
+            $('#final_shipping_fee').val('Shipping Fee: ₦2,000')
+        } else if ($(this).children("option:selected").val() == "lagos_mainland_2"){
+            $('#final_shipping_fee').val('Shipping Fee: ₦2,500')
+        }
+    })
+
+
+    $('#hidden_pickup_region').on('change', function () {
+        console.log($(this).children("option:selected").val())
+        if ($(this).children("option:selected").val() == "lagos_island_1") {
+            $('#final_pickup_fee').val('Pickup Fee: ₦1,500')
+        }else if($(this).children("option:selected").val() == "lagos_mainland_1"){
+            $('#final_pickup_fee').val('Pickup Fee: ₦2,000')
+        } else if ($(this).children("option:selected").val() == "lagos_island_2"){
+            $('#final_pickup_fee').val('Pickup Fee: ₦2,000')
+        } else if ($(this).children("option:selected").val() == "lagos_mainland_2"){
+            $('#final_pickup_fee').val('Pickup Fee: ₦2,500')
+        }
+    })
+
+
+
+})
+</script>
+
+<script type="text/javascript">
+
 
 var total = '{{que.get_total}}'
 
@@ -116,19 +216,42 @@ console.log(user)
         function submitFormData(){
             console.log("Form Submitted")
 
+            // let pickupInfo;
+            // if ($('#pickup_option').find('#pickup').is(':selected')){
+
+            //     pickupInfo = {
+            //     "hidden_pickup_region":form.hidden_pickup_region.value,
+            //     "pickup_address":form.pickup_address.value,
+            //     "pickup_city":form.pickup_city.value,
+            //     "pickup_option":form.pickup_option.value,
+            // }
+            // } else {
+            //     pickupInfo = {
+            //     "hidden_pickup_region":null,
+            //     "pickup_address":null,
+            //     "pickup_city":null,
+            //     "pickup_option":form.pickup_option.value, 
+            //     }
+            // }
+
+            var pickupInfo = {
+                "hidden_pickup_region":form.hidden_pickup_region.value,
+                "pickup_address":form.pickup_address.value,
+                "pickup_city":form.pickup_city.value,
+                "pickup_option":form.pickup_option.value,
+            }
+
             
 
             var shippingInfo = {
                 'shipping_address':form.shipping_address.value,
-				// 'shipping_address2':form.shipping_address2.value,
 				'shipping_city':form.shipping_city.value,
-				'shipping_state':form.shipping_state.value
+				'shipping_area':form.shipping_area.value
             }
 
 
             var billingInfo = {
                 'billing_address':form.billing_address.value,
-				// 'billing_address2':form.billing_address2.value,
 				'billing_city':form.billing_city.value,
 				'billing_state':form.billing_state.value
             }
@@ -139,6 +262,7 @@ console.log(user)
             
             console.log("shipping info", shippingInfo)
             console.log("billing info", billingInfo)
+            console.log("pickup Info", pickupInfo)
 
 
             var url = "/process_checkout/"
@@ -149,7 +273,7 @@ console.log(user)
 	    			'X-CSRFToken':csrftoken,
                 },
 
-                body:JSON.stringify({'shippingInfo':shippingInfo, 'billingInfo': billingInfo}),
+                body:JSON.stringify({'shippingInfo':shippingInfo, 'billingInfo': billingInfo, 'pickupInfo':pickupInfo}),
             })
             .then((response) => response.json())
             .then((data) => {

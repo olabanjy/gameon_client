@@ -280,6 +280,7 @@
                                       <span style="text-transform: uppercase; font-family: &#39;Work Sans&#39;, Verdana, sans-serif !important; font-weight: 300;"> {% if order.user.first_name %} {{order.user.first_name}} {% endif %} {% if order.user.last_name %} {{order.user.last_name}} {% endif %}<br/>
                                                         {{order.shipping_address.street_address}} <br/>
                                                                  {{order.shipping_address.city}}<br/>
+                                                                 {{order.shipping_address.region}} <br>
                                                                {{order.shipping_address.state}} </span>
                                     </td>
                                   </tr>

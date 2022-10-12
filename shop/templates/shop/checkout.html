@@ -1,6 +1,7 @@
 {% extends 'rentals/base.html' %}
 
 {% load static %}
+{% load humanize %}
 
 {% block extra_styles %}
 
@@ -100,17 +101,20 @@
 
                             <div class="hideable_shipping_form">
                             <p style="color: whitesmoke !important;"> Shipping Address </p>
-                            <input type="text" id="shipping_address_iddd"  name="shipping_address" class="form__input" placeholder="Address"  required>
-                           
-                            <input type="text" id="shipping_city_id" name="shipping_city" class="form__input" placeholder="City"  required>
-                            <input type="text" id="shipping_state_id" name="shipping_state" class="form__input" placeholder="State" required>
-                            <!-- <input type="text" id="long_id" name="shipping_long" class="form__input"  hidden >
-                            <input type="text" id="lat_id" name="shipping_lat" class="form__input" hidden> -->
-                            
-                        
-                           
+                            <select class="form__select" name="shipping_area" id="shipping_area" required>
+                                <option value="" disabled selected hidden>Select your region </option>
 
-                           
+                                {% if address_regions %}
+                              
+                                {% for reg in address_regions %}
+                                <option value="{{reg.slug}}"> {{reg.display}} - ({{reg.areas}}) </option>
+                                {% endfor %}
+                                {% endif %}
+                            </select>
+                            <input type="text" id="shipping_address_iddd"  name="shipping_address" class="form__input" placeholder="House Address"  required>
+
+                            <input type="text" id="shipping_city_id" name="shipping_city" class="form__input" placeholder="LGA"  required>
+
                              </div>
 
                             <br>
@@ -147,8 +151,9 @@
 					<!-- checkout -->
 					<div action="#" class="form">
                         <p style="color: whitesmoke !important;"> Order Summary </p>
-						<input type="text"  class="form__input" value="Total: {{order.get_total}}" disabled>
-						
+						<input type="text"  class="form__input" value="Total: {{order.get_order_total}}" disabled>
+                        <p style="color: whitesmoke !important; ">Shipping/Pickup Fee </p>
+						<input type="text"  class="form__input" id="final_shipping_fee" value="Shipping Fee: ₦{{order.get_shipping_total|intcomma}}" disabled>
 						<span class="form__text">Your personal data will be used to process your order, support your experience throughout this website, and for other purposes described in our privacy policy.</span>
 						<button type="submit" class="form__btn">>> Payment</button>
 					</div>
@@ -184,6 +189,28 @@ $(document).ready(function(){
 <!-- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAUBoCQ9qfFHOOVqGF7Q0XrhpGl1x6cDHw"></script>
 <script src="{% static 'js/mapping.js' %}"></script> -->
 
+
+<script type="text/javascript">
+
+    $(document).ready(function(){
+    
+    
+        $('#shipping_area').on('change', function () {
+            console.log($(this).children("option:selected").val())
+            if ($(this).children("option:selected").val() == "lagos_island_1") {
+                $('#final_shipping_fee').val('Shipping Fee: ₦1,500')
+            }else if($(this).children("option:selected").val() == "lagos_mainland_1"){
+                $('#final_shipping_fee').val('Shipping Fee: ₦2,000')
+            } else if ($(this).children("option:selected").val() == "lagos_island_2"){
+                $('#final_shipping_fee').val('Shipping Fee: ₦2,000')
+            } else if ($(this).children("option:selected").val() == "lagos_mainland_2"){
+                $('#final_shipping_fee').val('Shipping Fee: ₦2,500')
+            }
+        })
+
+    
+    })
+</script>
 
 
 
@@ -221,7 +248,7 @@ if (user != 'AnonymousUser'){
                 'shipping_address':form.shipping_address.value,
 				// 'shipping_address2':form.shipping_address2.value,
 				'shipping_city':form.shipping_city.value,
-				'shipping_state':form.shipping_state.value,
+				'shipping_area':form.shipping_area.value
                 // 'shipping_long':form.shipping_long.value,
                 // 'shipping_lat': form.shipping_lat.value,
                 // 'delivery_option': form.delivery_option.value,

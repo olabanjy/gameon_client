@@ -146,6 +146,7 @@ class Order(models.Model):
     start_date = models.DateTimeField(auto_now_add=True)
     ordered_date = models.DateTimeField(default=timezone.now)
     ordered = models.BooleanField(default=False)
+    shipping_address_area = models.CharField(max_length=200, null=True)
     shipping_address = models.ForeignKey(
         Address,
         related_name="shipping_address",
@@ -178,13 +179,27 @@ class Order(models.Model):
     def __str__(self):
         return f"{self.user}"
 
+    def get_shipping_total(self):
+        total = 0
+        if self.shipping_fee == 0:
+            print("adding shipping fee")
+            total += self.shipping_fee
+        return total
+
+    def get_order_total(self):
+        total = 0
+        if self.items:
+            for order_item in self.items.all():
+                total += order_item.get_final_price()
+        return total
+
     def get_total(self):
         total = 0
         if self.items:
             for order_item in self.items.all():
                 total += order_item.get_final_price()
-        if self.coupon:
-            total -= self.coupon.amount
+        # if self.coupon:
+        #     total -= self.coupon.amount
         if self.shipping_fee:
             total += self.shipping_fee
         return total

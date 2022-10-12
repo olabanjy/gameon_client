@@ -16,7 +16,7 @@ def cookieCart(request):
         print("CART:", cart)
 
     items = []
-    order = {"get_total": 0, "get_cart_items": 0}
+    order = {"get_order_total": 0, "get_cart_items": 0}
     cartItems = order["get_cart_items"]
 
     # vendorList = []
@@ -29,7 +29,7 @@ def cookieCart(request):
             product = Item.objects.get(id=i)
             total = product.price * cart[i]["quantity"]
 
-            order["get_total"] += total
+            order["get_order_total"] += total
             order["get_cart_items"] += cart[i]["quantity"]
 
             item = {
@@ -120,7 +120,7 @@ def guestOrder(request, data):
     shipping_address = data["shippingInfo"]["shipping_address"]
     # shipping_address2 = data["shippingInfo"]["shipping_address2"]
     shipping_city = data["shippingInfo"]["shipping_city"]
-    shipping_state = data["shippingInfo"]["shipping_state"]
+    shipping_area = data["shippingInfo"]["shipping_area"]
 
     billing_address = data["billingInfo"]["billing_address"]
     # billing_address2 = data["billingInfo"]["billing_address2"]
@@ -149,9 +149,10 @@ def guestOrder(request, data):
     guest_shipping_address = Address.objects.create(
         user=the_profile,
         street_address=shipping_address,
+        region=shipping_area,
         # apartment_address=shipping_address2,
         city=shipping_city,
-        state=shipping_state,
+        state="Lagos State",
         address_type="S",
     )
 
@@ -171,11 +172,27 @@ def guestOrder(request, data):
         billing_address=guest_billing_address,
     )
 
-    if "lagos" in shipping_state.lower():
-        order.shipping_fee = 3000
-    else:
-        order.shipping_fee = 5000
+    # if "lagos" in shipping_state.lower():
+    #     order.shipping_fee = 3000
+    # else:
+    #     order.shipping_fee = 5000
+
+    shipping_fee = 0
+    for region in settings.ADDRESS_REGIONS:
+        if region["slug"] == shipping_area:
+            print(region["price"])
+            shipping_fee = int(region["price"])
+
+    print(shipping_fee)
+    try:
+        order.shipping_fee = 0
+        order.save()
+    except:
+        pass
+    order.shipping_fee = shipping_fee
+
     order.save()
+    print(order.get_total())
 
     for item in items:
         the_item = Item.objects.get(id=item["id"])

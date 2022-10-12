@@ -181,7 +181,7 @@ def process_checkout(request):
         shipping_address = data["shippingInfo"]["shipping_address"]
         # shipping_address2 = data["shippingInfo"]["shipping_address2"]
         shipping_city = data["shippingInfo"]["shipping_city"]
-        shipping_state = data["shippingInfo"]["shipping_state"]
+        shipping_area = data["shippingInfo"]["shipping_area"]
 
         billing_address = data["billingInfo"]["billing_address"]
         # billing_address2 = data["billingInfo"]["billing_address2"]
@@ -207,17 +207,32 @@ def process_checkout(request):
                 shipping_address = Address.objects.create(
                     user=the_profile,
                     street_address=shipping_address,
+                    region=shipping_area,
                     # apartment_address=shipping_address2,
                     city=shipping_city,
-                    state=shipping_state,
+                    state="Lagos State ",
                     address_type="S",
                 )
                 order.shipping_address = shipping_address
                 order.save()
-            if "lagos" in shipping_state.lower():
-                order.shipping_fee = 3000
-            else:
-                order.shipping_fee = 5000
+            # if "lagos" in shipping_state.lower():
+            #     order.shipping_fee = 3000
+            # else:
+            #     order.shipping_fee = 5000
+
+            shipping_fee = 0
+            for region in settings.ADDRESS_REGIONS:
+                if region["slug"] == shipping_area:
+                    print(region["price"])
+                    shipping_fee = int(region["price"])
+
+            print(shipping_fee)
+            try:
+                order.shipping_fee = 0
+                order.save()
+            except:
+                pass
+            order.shipping_fee = shipping_fee
             order.save()
         except ObjectDoesNotExist:
             print("You don not have any item in the cart")
@@ -225,6 +240,7 @@ def process_checkout(request):
 
     else:
         the_profile, order = guestOrder(request, data)
+        print(order.get_total())
 
     return JsonResponse(
         data={"the_profile_id": the_profile.pk, "the_order_id": order.pk},
@@ -244,7 +260,11 @@ def checkout(request):
         print("You don not have any item in the cart")
         return redirect("shop:shop-home")
 
-    context = {"items": items, "order": order}
+    context = {
+        "items": items,
+        "order": order,
+        "address_regions": settings.ADDRESS_REGIONS,
+    }
 
     return render(request, template, context)
 
@@ -256,6 +276,8 @@ class PaymentView(View):
         the_profile = Profile.objects.get(pk=the_profile_id)
 
         order = Order.objects.get(pk=the_order_id, ordered=False)
+        print(order.get_order_total())
+        print(order.get_total())
         if order.billing_address:
 
             host = self.request.get_host()
