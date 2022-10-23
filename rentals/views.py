@@ -82,13 +82,15 @@ def rentalsHome(request):
 
         if get_category != "all":
             the_cat = RentalCat.objects.get(name=get_category)
-            all_games = RentalGame.objects.filter(cat=the_cat).all()
+            all_games = (
+                RentalGame.objects.filter(cat=the_cat).all().order_by("-created_at")
+            )
             showing_cat = the_cat.name
         elif get_category == "all":
-            all_games = RentalGame.objects.all()
+            all_games = RentalGame.objects.all().order_by("-created_at")
 
     else:
-        all_games = RentalGame.objects.all()
+        all_games = RentalGame.objects.all().order_by("-created_at")
 
     page = request.GET.get("page", 1)
 
