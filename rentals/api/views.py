@@ -327,7 +327,7 @@ class RentalGamesViewSet(ModelViewSet):
 
                 fetch_banner_img = requests.get(request.data["bannerImagePath"])
                 if fetch_banner_img.status_code == 200:
-                    data = fetch_thumbnail_img.content
+                    data = fetch_banner_img.content
                     filename = request.data["bannerImagePath"].split("/")[-1]
                     new_item.bannerImagePath.save(filename, ContentFile(data))
 
