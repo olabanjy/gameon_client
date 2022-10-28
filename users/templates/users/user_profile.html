@@ -783,8 +783,9 @@ if (!id_file ){
 			} else{
 				console.log("Error updating your identity document ")
 				console.log(data.msg)
-				
-				document.getElementById('update_profile_alert').innerHTML = ' <p  class="comments__text"><span style="color: #ff9909 !important;"> Error updating your identity document </span></p> '; 
+				addIDBtn.disabled = false;
+				addIDBtn.innerHTML="Submit"
+				document.getElementById('update_profile_alert').innerHTML = ` <p  class="comments__text"><span style="color: #ff9909 !important;"> ${data.msg} </span></p> `; 
 				
 				
 			}
@@ -849,8 +850,10 @@ if (!address_file ){
 			} else{
 				console.log("Error verifying your address ")
 				console.log(data.msg)
+				addVerBtn.disabled = false;
+				addVerBtn.innerHTML="Submit"
 				
-				document.getElementById('update_profile_alert').innerHTML = ' <p  class="comments__text"><span style="color: #ff9909 !important;"> Error verifying your address </span></p> '; 
+				document.getElementById('update_profile_alert').innerHTML = ` <p  class="comments__text"><span style="color: #ff9909 !important;"> ${data.msg} </span></p> `; 
 				
 				
 			}

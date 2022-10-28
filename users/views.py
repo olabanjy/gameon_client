@@ -173,41 +173,47 @@ def update_identity(request):
             id_file = request.FILES["id_verification"]
             print(id_file)
             profile = request.user.profile
-            try:
-                user_kyc, created = UserKYC.objects.get_or_create(user=profile)
-                user_kyc.photo = id_file
-                user_kyc.status = "submitted"
-                user_kyc.save()
-                print(f"updated kyc of {profile.first_name}, {profile.last_name}")
-                # send a kyc submitted to admin
+            if profile.first_name and profile.last_name is not None:
                 try:
-                    subject, from_email, to = (
-                        "NEW KYC(IDENTITY) SUBMITTED",
-                        "GameOn <noreply@gameon.com.ng>",
-                        ["admin@gameon.com.ng"],
-                    )
+                    user_kyc, created = UserKYC.objects.get_or_create(user=profile)
+                    user_kyc.photo = id_file
+                    user_kyc.status = "submitted"
+                    user_kyc.save()
+                    print(f"updated kyc of {profile.first_name}, {profile.last_name}")
+                    # send a kyc submitted to admin
+                    try:
+                        subject, from_email, to = (
+                            "NEW KYC(IDENTITY) SUBMITTED",
+                            "GameOn <noreply@gameon.com.ng>",
+                            ["admin@gameon.com.ng"],
+                        )
 
-                    html_content = render_to_string(
-                        "events/admin_prompt.html",
-                        {
-                            "first_name": profile.first_name,
-                            "last_name": profile.last_name,
-                            "email": request.user.email,
-                            "doc_type": "Identity Document",
-                        },
-                    )
-                    msg = EmailMessage(subject, html_content, from_email, to)
-                    msg.content_subtype = "html"
-                    msg.send()
+                        html_content = render_to_string(
+                            "events/admin_prompt.html",
+                            {
+                                "first_name": profile.first_name,
+                                "last_name": profile.last_name,
+                                "email": request.user.email,
+                                "doc_type": "Identity Document",
+                            },
+                        )
+                        msg = EmailMessage(subject, html_content, from_email, to)
+                        msg.content_subtype = "html"
+                        msg.send()
 
-                    profile.welcome_email = "sent"
-                    profile.save()
+                        profile.welcome_email = "sent"
+                        profile.save()
+                    except:
+                        pass
+                    data.update({"status": True, "msg": "Identity Document Updated"})
                 except:
-                    pass
-                data.update({"status": True, "msg": "Identity Document Updated"})
-            except:
-                print("Error occured!")
-                data.update({"status": False, "msg": "Error Occured!"})
+                    print("Error occured!")
+                    data.update({"status": False, "msg": "Error Occured!"})
+            else:
+                data.update(
+                    {"status": False, "msg": "Kindly update profile before proceeding"}
+                )
+
     return JsonResponse(data)
 
 
@@ -243,43 +249,49 @@ def update_address_verification(request):
             address_file = request.FILES["address_verification"]
             print(address_file)
             profile = request.user.profile
-            try:
-                user_add, created = AddressVerification.objects.get_or_create(
-                    user=profile
-                )
-                user_add.photo = address_file
-                user_add.status = "submitted"
-                user_add.save()
-                print(f"updated kyc of {profile.first_name}, {profile.last_name}")
-                # send kyc submitted to admin
+            if profile.first_name and profile.last_name is not None:
                 try:
-                    subject, from_email, to = (
-                        "NEW KYC(ADDRESS) SUBMITTED",
-                        "GameOn <noreply@gameon.com.ng>",
-                        ["admin@gameon.com.ng"],
+                    user_add, created = AddressVerification.objects.get_or_create(
+                        user=profile
                     )
+                    user_add.photo = address_file
+                    user_add.status = "submitted"
+                    user_add.save()
+                    print(f"updated kyc of {profile.first_name}, {profile.last_name}")
+                    # send kyc submitted to admin
+                    try:
+                        subject, from_email, to = (
+                            "NEW KYC(ADDRESS) SUBMITTED",
+                            "GameOn <noreply@gameon.com.ng>",
+                            ["admin@gameon.com.ng"],
+                        )
 
-                    html_content = render_to_string(
-                        "events/admin_prompt.html",
-                        {
-                            "first_name": profile.first_name,
-                            "last_name": profile.last_name,
-                            "email": request.user.email,
-                            "doc_type": "Proof of Address",
-                        },
-                    )
-                    msg = EmailMessage(subject, html_content, from_email, to)
-                    msg.content_subtype = "html"
-                    msg.send()
+                        html_content = render_to_string(
+                            "events/admin_prompt.html",
+                            {
+                                "first_name": profile.first_name,
+                                "last_name": profile.last_name,
+                                "email": request.user.email,
+                                "doc_type": "Proof of Address",
+                            },
+                        )
+                        msg = EmailMessage(subject, html_content, from_email, to)
+                        msg.content_subtype = "html"
+                        msg.send()
 
-                    profile.welcome_email = "sent"
-                    profile.save()
+                        profile.welcome_email = "sent"
+                        profile.save()
+                    except:
+                        pass
+
+                    data.update({"status": True, "msg": "Address Document Updated"})
                 except:
-                    pass
+                    print("Error occured!")
+                    data.update({"status": False, "msg": "Error Occured!"})
 
-                data.update({"status": True, "msg": "Address Document Updated"})
-            except:
-                print("Error occured!")
-                data.update({"status": False, "msg": "Error Occured!"})
+            else:
+                data.update(
+                    {"status": False, "msg": "Kindly update profile before proceeding"}
+                )
 
     return JsonResponse(data)
