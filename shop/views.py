@@ -111,13 +111,13 @@ def shopHome(request):
 
         if get_category != "all":
             the_cat = ItemCat.objects.get(name=get_category)
-            all_items = Item.objects.filter(cat=the_cat).all()
+            all_items = Item.objects.filter(cat=the_cat).all().order_by("-created_at")
             showing_cat = the_cat.name
         elif get_category == "all":
-            all_items = Item.objects.all()
+            all_items = Item.objects.all().order_by("-created_at")
 
     else:
-        all_items = Item.objects.all()
+        all_items = Item.objects.all().order_by("-created_at")
         print(all_items.count())
 
     page = request.GET.get("page", 1)
