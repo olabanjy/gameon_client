@@ -351,7 +351,9 @@ class OrderViewSet(ModelViewSet):
 
     @action(methods=["GET"], detail=False)
     def get_list(self, request):
-        all_items = Order.objects.filter(ordered=True).exclude(items=None).all()
+        all_items = (
+            Order.objects.filter(ordered=True).exclude(items=None, user=None).all()
+        )
 
         serializer = OrderSerializer(all_items, many=True)
 
