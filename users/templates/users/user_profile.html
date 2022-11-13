@@ -356,10 +356,7 @@
 										<input id="street_address" type="text" name="street_address" class="form__input" placeholder="{% if user_add %} {{user_add.street_address}} {% endif %}" required>
 									</div>
 
-									<!-- <div class="col-12 col-md-6 col-lg-12 col-xl-6">
-										<label class="form__label" for="apartment_address">Apartment Address</label>
-										<input id="apartment_address" type="text" name="apartment_address" class="form__input" placeholder="{% if user_add %} {{user_add.apartment_address}} {% endif %}" required>
-									</div> -->
+								
 
 									<div class="col-12 col-md-6 col-lg-12 col-xl-6">
 										<label class="form__label" for="city">City </label>
@@ -387,20 +384,23 @@
 
 				<div class="tab-pane fade" id="tab-4" role="tabpanel">
 				
-			
+					<form action="{% url 'users:update-identity' %}" method="POST" class="subscribe" id="add_kyc_documents_form" enctype="multipart/form-data">
+						{% csrf_token %}
 					<div class="row">
+
+						
 	
 						<div class="col-12 col-lg-6">
-							<form action="{% url 'users:update-identity' %}" method="POST" class="subscribe" id="id_verfification_form"  enctype="multipart/form-data">
-								{% csrf_token %}
+					
+								
 								{% if request.user.profile.kyc_status == None %}
 								<div class="subscribe__img">
-									<!-- <ion-icon style="visibility: visible;" name="alert-circle-outline"></ion-icon> -->
+
 								</div>
 								<h4 class="subscribe__title">Identity Verification </h4>
 								<p class="subscribe__text">Kindly upload any valid means of Identification to help us in our KYC verification process </p>
 								<input name="id_verification" id="id_verification" type="file" accept="image/*" class="form__input">
-								<button type="submit" id="update-id" class="form__btn">Submit</button>
+
 								{% elif request.user.profile.kyc_status == "pending" %}
 								<div class="subscribe__img">
 						
@@ -421,7 +421,7 @@
 								<h4 class="subscribe__title">Identity Verification </h4>
 								<p class="subscribe__text">We are terribly sorry we could not verify your identity. Please uploade a clearer document and submit again  </p>
 								<input name="id_verification" id="id_verification" type="file" accept="image/*" class="form__input">
-								<button type="submit" id="update-id" class="form__btn">Submit</button>
+
 								{% elif request.user.profile.kyc_status == "approved" %}
 								<div class="subscribe__img">
 									
@@ -429,7 +429,7 @@
 								<h4 class="subscribe__title">Identity Verification </h4>
 								<p class="subscribe__text">Congratulations, your identity has been verified! </p>
 								{% endif %}
-							</form>
+				
 
 						</div>
 
@@ -437,16 +437,16 @@
 						
 
 						<div class="col-12 col-lg-6">
-							<form action="{% url 'users:update-address-verification' %}" method="POST" class="subscribe" id="add_verfification_form" enctype="multipart/form-data">
-								{% csrf_token %}
+							
+						
 								{% if request.user.profile.address_verification_status == None %}
 								<div class="subscribe__img">
-									<!-- <ion-icon style="visibility: visible;" name="alert-circle-outline"></ion-icon> -->
+			
 								</div>
 								<h4 class="subscribe__title">Address Verification </h4>
 								<p class="subscribe__text">Kindly upload any valid utility bill/bank statement with your address on it to help us in our Address verification process </p>
 								<input name="address_verification" id="address_verification" type="file" accept="image/*" class="form__input">
-								<button type="submit" id="update-add" class="form__btn">Submit</button>
+
 								{% elif request.user.profile.address_verification_status == "pending" %}
 								<div class="subscribe__img">
 						
@@ -467,19 +467,27 @@
 								<h4 class="subscribe__title">Address Verification </h4>
 								<p class="subscribe__text">We are terribly sorry we could not verify your address. Please upload a clearer document and submit again  </p>
 								<input name="address_verification" id="address_verification" type="file" accept="image/*" class="form__input">
-								<button type="submit" id="update-add" class="form__btn">Submit</button>
+				
 								{% elif request.user.profile.address_verification_status == "approved" %}
 								<div class="subscribe__img">
 								</div>
 								<h4 class="subscribe__title">Address Verification </h4>
 								<p class="subscribe__text">Congratulations, your address has been verified! </p>
 								{% endif %}
-							</form>
+							
 
 						</div>
 
 
+
+						<div  class="col-12 col-lg-6 container text-center" >
+							<button type="submit" id="update-kyc-doc" class="form__btn text-center">Submit</button>
+						</div>
+
+					
 					</div>
+
+				</form>
 				</div>
 
 
@@ -724,7 +732,36 @@ function gototab(reload, tab_hash)
 
 
 
-// Update Identity 
+// Update Identity and Address 
+
+
+
+$(document).on("submit","#add_kyc_documents_form",function(){
+	event.preventDefault();
+
+
+
+var addKYCBtn = document.getElementById('update-kyc-doc')
+addKYCBtn.disabled = true;
+addKYCBtn.innerHTML="Updating ..."
+
+
+send_data = new FormData($('#add_kyc_documents_form').get(0) )
+var id_file = document.getElementById("id_verification").value;
+var address_file = document.getElementById("address_verification").value;
+console.log(send_data)
+
+$('#address_verification').on('change', function() {
+        const fileSize = this.files[0].size / 1024 / 1024
+        if (fileSize > 5){
+            console.log('This file size is: ' + fileSize + "MiB");
+            this.value = null;
+            alert(`File size must be less than 4.5mb`);
+            
+        }        
+});
+
+
 
 $('#id_verification').on('change', function() {
         const fileSize = this.files[0].size / 1024 / 1024
@@ -736,29 +773,14 @@ $('#id_verification').on('change', function() {
         }        
 });
 
-$(document).on("submit","#id_verfification_form",function(){
-	event.preventDefault();
 
 
-
-var addIDBtn = document.getElementById('update-id')
-addIDBtn.disabled = true;
-addIDBtn.innerHTML="Updating ..."
-
-
-
-
-
-
-
-var id_file = document.getElementById("id_verification").value;
-var data = new FormData($('#id_verfification_form').get(0));
-
-if (!id_file ){
-	document.getElementById('update_profile_alert').innerHTML = ' <p  class="comments__text"><span style="color: #ff9909 !important;">  Please upload file  </span></p> '; 
-	addIDBtn.disabled = false;
-	addIDBtn.innerHTML="Submit"
+if (!id_file || !address_file ){
+	document.getElementById('update_profile_alert').innerHTML = ' <p  class="comments__text"><span style="color: #ff9909 !important;">  Please upload file both identity and address document   </span></p> '; 
+	addKYCBtn.disabled = false;
+	addKYCBtn.innerHTML="Submit"
 }else{
+	console.log("sent to backend")
 
 	$.ajax({
 		type:"POST", 
@@ -766,7 +788,7 @@ if (!id_file ){
 				'X-CSRFToken': csrftoken
 				},
 		url: "{% url 'users:update-identity' %}",
-		data:data,
+		data:send_data,
 		cache: false,
 		processData: false,
 		contentType: false,
@@ -783,8 +805,8 @@ if (!id_file ){
 			} else{
 				console.log("Error updating your identity document ")
 				console.log(data.msg)
-				addIDBtn.disabled = false;
-				addIDBtn.innerHTML="Submit"
+				addKYCBtn.disabled = false;
+				addKYCBtn.innerHTML="Submit"
 				document.getElementById('update_profile_alert').innerHTML = ` <p  class="comments__text"><span style="color: #ff9909 !important;"> ${data.msg} </span></p> `; 
 				
 				
@@ -802,66 +824,6 @@ if (!id_file ){
 
 // Address Upload
 
-$('#address_verification').on('change', function() {
-        const fileSize = this.files[0].size / 1024 / 1024
-        if (fileSize > 5){
-            console.log('This file size is: ' + fileSize + "MiB");
-            this.value = null;
-            alert(`File size must be less than 4.5mb`);
-            
-        }        
-});
-
-$(document).on("submit","#add_verfification_form",function(){
-	event.preventDefault();
-
-
-var addVerBtn = document.getElementById('update-add')
-addVerBtn.disabled = true;
-addVerBtn.innerHTML="Updating ..."
-
-var address_file = document.getElementById("address_verification").value;
-var data = new FormData($('#add_verfification_form').get(0));
-
-if (!address_file ){
-	document.getElementById('update_profile_alert').innerHTML = ' <p  class="comments__text"><span style="color: #ff9909 !important;">  Please upload file  </span></p> '; 
-	addVerBtn.disabled = false;
-	addVerBtn.innerHTML="Submit"
-}else{
-	$.ajax({
-		type:"POST", 
-		headers: {
-				'X-CSRFToken': csrftoken
-				},
-		url: "{% url 'users:update-address-verification' %}",
-		data:data,
-		cache: false,
-		processData: false,
-		contentType: false,
-		success: function (data){
-			if (data.status) {
-				console.log("Address Updated")
-				console.log(data.msg)
-				document.getElementById('update_profile_alert').innerHTML = ' <p  class="comments__text"><span > Your address verification document has been submitted, refreshing page!  </span></p> '; 
-				setTimeout(function(){
-					location.reload();
-			         }, 1000);
-
-			} else{
-				console.log("Error verifying your address ")
-				console.log(data.msg)
-				addVerBtn.disabled = false;
-				addVerBtn.innerHTML="Submit"
-				
-				document.getElementById('update_profile_alert').innerHTML = ` <p  class="comments__text"><span style="color: #ff9909 !important;"> ${data.msg} </span></p> `; 
-				
-				
-			}
-		}
-	})
-}
-
-});
 
 
 // End Address upload

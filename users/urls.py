@@ -17,4 +17,5 @@ urlpatterns = [
         update_address_verification,
         name="update-address-verification",
     ),
+    path("fetchUserObject/", fetchUserObject, name="fetchUserObject"),
 ]

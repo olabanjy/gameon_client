@@ -33,6 +33,8 @@ from .tasks import *
 import pyotp
 import random, string, time, re, requests
 
+from django.core import serializers
+
 
 class UserProfile(View):
     def get(self, request, *args, **kwargs):
@@ -165,13 +167,24 @@ def update_address(request):
 
 
 @login_required
+def fetchUserObject(request):
+    print("fetching user here")
+    currentUser = Profile.objects.filter(user=request.user).first()
+    json_data = serializers.serialize("json", [currentUser])
+    return JsonResponse(json_data, safe=False)
+
+
+@login_required
 def update_identity(request):
     data = {}
     if request.method == "POST":
         print("its a post request")
-        if "id_verification" in request.FILES:
+
+        if "id_verification" and "address_verification" in request.FILES:
             id_file = request.FILES["id_verification"]
+            address_file = request.FILES["address_verification"]
             print(id_file)
+            print(address_file)
             profile = request.user.profile
             if profile.first_name and profile.last_name is not None:
                 try:
@@ -179,11 +192,24 @@ def update_identity(request):
                     user_kyc.photo = id_file
                     user_kyc.status = "submitted"
                     user_kyc.save()
-                    print(f"updated kyc of {profile.first_name}, {profile.last_name}")
+                    print(
+                        f"updated identity document for {profile.first_name}, {profile.last_name}"
+                    )
+
+                    user_add, created = AddressVerification.objects.get_or_create(
+                        user=profile
+                    )
+                    user_add.photo = address_file
+                    user_add.status = "submitted"
+                    user_add.save()
+                    print(
+                        f"updated address document for {profile.first_name}, {profile.last_name}"
+                    )
+
                     # send a kyc submitted to admin
                     try:
                         subject, from_email, to = (
-                            "NEW KYC(IDENTITY) SUBMITTED",
+                            "NEW KYC(IDENTITY & ADDRESS) SUBMITTED",
                             "GameOn <noreply@gameon.com.ng>",
                             ["admin@gameon.com.ng"],
                         )
@@ -194,7 +220,7 @@ def update_identity(request):
                                 "first_name": profile.first_name,
                                 "last_name": profile.last_name,
                                 "email": request.user.email,
-                                "doc_type": "Identity Document",
+                                "doc_type": "Identity & Address Document",
                             },
                         )
                         msg = EmailMessage(subject, html_content, from_email, to)
@@ -205,7 +231,9 @@ def update_identity(request):
                         profile.save()
                     except:
                         pass
-                    data.update({"status": True, "msg": "Identity Document Updated"})
+                    data.update(
+                        {"status": True, "msg": "Identity & Address Document Updated"}
+                    )
                 except:
                     print("Error occured!")
                     data.update({"status": False, "msg": "Error Occured!"})

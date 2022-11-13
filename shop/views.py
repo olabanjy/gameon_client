@@ -92,8 +92,8 @@ def search_result(request):
 
 
 def shopHome(request):
-    if request.user.is_authenticated and request.user.profile.profile_set_up == False:
-        return redirect("users:user-profile")
+    # if request.user.is_authenticated and request.user.profile.profile_set_up == False:
+    #     return redirect("users:user-profile")
 
     template = "shop/shopHome.html"
 
@@ -452,9 +452,15 @@ def update_item(request):
     product = Item.objects.get(id=productId)
 
     if action == "add":
-        order_item, created = OrderItem.objects.get_or_create(
+        order_item_qs = OrderItem.objects.filter(
             item=product, user=customer, ordered=False
         )
+        if not order_item_qs.exists():
+            order_item = OrderItem.objects.create(
+                item=product, user=customer, ordered=False
+            )
+        else:
+            order_item = order_item_qs.last()
         order_qs = Order.objects.filter(user=customer, ordered=False)
         if order_qs.exists():
             order = order_qs[0]

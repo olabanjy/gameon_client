@@ -140,11 +140,26 @@ def update_que(request):
 
     if action == "add":
 
-        que_item, created = RentalQueItems.objects.get_or_create(
+        # que_item, created = RentalQueItems.objects.get_or_create(
+        #     item=product,
+        #     user=customer,
+        #     ordered=False,
+        # )
+
+        que_item_qs = RentalQueItems.objects.filter(
             item=product,
             user=customer,
             ordered=False,
         )
+        if not que_item_qs.exists():
+            que_item = RentalQueItems.objects.get_or_create(
+                item=product,
+                user=customer,
+                ordered=False,
+            )
+        else:
+            que_item = que_item_qs.last()
+
         if no_of_days:
             que_item.no_of_days = int(no_of_days)
             que_item.save()

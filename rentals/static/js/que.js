@@ -1,5 +1,5 @@
 let queUpdateBtns = $(".update-que");
-console.log(queUpdateBtns);
+// console.log(queUpdateBtns);
 
 console.log(user);
 

@@ -118,7 +118,15 @@
 					
 						
 						<span class="form__text">Please kindly review our policy for rentals or purchase before proceeding to check out.</span>
+						{% if request.user.is_authenticated %}
+						{% if request.user.profile.profile_set_up == False %}
+						<a href="#authenticated_not_updated_shop_profile" class="form__btn open-modal">Checkout</a>
+						{% else %}
 						<a href="{% url 'shop:shop-checkout' %}" class="form__btn">Checkout</a>
+						{% endif %}
+						{% else %}
+						<a href="{% url 'shop:shop-checkout' %}" class="form__btn">Checkout</a>
+						{% endif %}
 					
 					<!-- end checkout -->
 				</div>
@@ -129,3 +137,62 @@
 
 
 {% endblock content %}
+
+
+
+{% block modals %}
+
+
+<div id="authenticated_not_updated_shop_profile" class="zoom-anim-dialog mfp-hide modal">
+    <button class="modal__close" type="button"><svg xmlns='http://www.w3.org/2000/svg' width='512' height='512' viewBox='0 0 512 512'><line x1='368' y1='368' x2='144' y2='144' style='fill:none;stroke-linecap:round;stroke-linejoin:round;stroke-width:32px'/><line x1='368' y1='144' x2='144' y2='368' style='fill:none;stroke-linecap:round;stroke-linejoin:round;stroke-width:32px'/></svg></button>
+
+    <h3 class="modal__title">Kindly update profile. </h3>
+
+    <div class="modal__group">
+        <span class="modal__text"> To proceed to checkout, Kindly  <a href="/u/account/settings"> <strong>update </strong></a>your profile. </span>
+    </div>
+  
+</div>
+
+<a class="open-modal" id="trigger_authenticated_not_updated_shop_profile" href="#authenticated_not_updated_shop_profile" style="visibility: hidden"></a>
+
+{% endblock modals %}
+
+
+
+
+
+{% block extra_scripts %}
+
+<script type="text/javascript">
+
+    
+
+
+    $(document).ready(function(){
+   
+    if (user === "AnonymousUser") {
+     console.log("user is anonymous")
+    } else {
+        fetch('/u/fetchUserObject/')
+        .then((response) => response.json())
+        .then((data) => {
+            json_data = JSON.parse(data)[0]
+            if (json_data.fields.profile_set_up === false){
+                $("#trigger_authenticated_not_updated_shop_profile").click();
+            }
+          
+        }
+
+        );
+    }
+
+
+        
+});
+</script>
+
+	
+
+{% endblock extra_scripts %}
+
