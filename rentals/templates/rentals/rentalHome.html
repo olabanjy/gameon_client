@@ -374,10 +374,11 @@
 				{% if all_items %}
 				{% for item in all_items %}
 				<!-- card -->
-				<div class="col-12 col-sm-6 col-md-4 col-xl-3 col-xl-20">
+				<!-- <div class="col-12 col-sm-6 col-md-3 col-xl-3 col-xl-20"> -->
+				<div class="col-12 col-sm-6 col-md-3">
 					<div class="card card--catalog">
 						<a href="{{item.get_absolute_url}}" class="card__cover">
-							<img src="{{item.thumbnailImagePath.url}}" width="240px" height="340px" alt="">
+							<img src="{{item.thumbnailImagePath.url}}" width="340px" height="340px" alt="">
 							{% if item.comingSoon == True %}
 							<span class="card__new">Pre-order</span>
 							{% endif %}
