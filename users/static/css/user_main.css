@@ -4738,7 +4738,8 @@ html:not([dir="rtl"]) .noUi-horizontal .noUi-handle {
 }
 .sign__input:focus {
   background-color: rgba(167, 130, 233, 0.04);
-  border-color: rgba(167, 130, 233, 0.5);
+  /* border-color: rgba(167, 130, 233, 0.5); */
+  border-color: #ff9909;
 }
 .sign__group {
   position: relative;
@@ -4783,7 +4784,8 @@ html:not([dir="rtl"]) .noUi-horizontal .noUi-handle {
   width: 20px;
   height: 20px;
   background-color: rgba(167, 130, 233, 0.03);
-  border: 1px solid rgba(167, 130, 233, 0.06);
+  /* border: 1px solid rgba(167, 130, 233, 0.06); */
+  border: 1px solid #ff9909;
   border-radius: 6px;
 }
 .sign__group--checkbox input:not(:checked) + label:after,
