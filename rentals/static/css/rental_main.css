@@ -2495,13 +2495,15 @@ body::-webkit-scrollbar-thumb {
   border: 1px solid rgba(167, 130, 233, 0.06);
   overflow: hidden;
 }
-.post__img {
+.post__img,
+.banner__img {
   display: block;
   width: 100%;
   position: relative;
   padding: 15px 15px 0;
 }
-.post__img img {
+.post__img img,
+.banner__img img {
   width: 100%;
   position: relative;
   z-index: 1;
@@ -2509,7 +2511,8 @@ body::-webkit-scrollbar-thumb {
   border-radius: 6px;
   opacity: 0.8;
 }
-.post__img:hover img {
+.post__img:hover img,
+.banner__img:hover img {
   opacity: 0.6;
 }
 .post__cover {
@@ -2646,10 +2649,12 @@ body::-webkit-scrollbar-thumb {
   height: auto;
   margin-right: 5px;
 }
-.post--big .post__img {
+.post--big .post__img,
+.post--big .banner__img {
   padding: 0;
 }
-.post--big .post__img:before {
+.post--big .post__img:before,
+.post--big .banner__img:before {
   content: "";
   position: absolute;
   display: block;
@@ -2675,14 +2680,16 @@ body::-webkit-scrollbar-thumb {
     rgba(0, 0, 0, 0.6) 100%
   );
 }
-.post--big .post__img img {
+.post--big .post__img img,
+.post--big .banner__img img {
   border-radius: 0;
 }
 @media (min-width: 360px) {
   .post__content {
     padding: 20px;
   }
-  .post__img {
+  .post__img,
+  .banner__img {
     padding: 20px 20px 0;
   }
   .post__video {
@@ -2702,6 +2709,7 @@ body::-webkit-scrollbar-thumb {
     right: 0;
     width: 100%;
   }
+
   .post--big .post__img {
     display: flex;
     flex-direction: row;
@@ -2712,18 +2720,34 @@ body::-webkit-scrollbar-thumb {
     height: 360px;
     cursor: default;
   }
-  .post--big .post__img img {
+
+  .post--big .banner__img {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    width: 100%;
+    height: 480px;
+    cursor: default;
+  }
+
+  .post--big .post__img img,
+  .post--big .banner__img img {
     width: auto;
     height: auto;
     min-width: 100%;
     min-height: 100%;
   }
+
   .post--big .post__title {
     padding-right: 30%;
   }
-  .post--big:hover .post__img img {
+  .post--big:hover .post__img img,
+  .post--big:hover .banner__img img {
     opacity: 0.6;
   }
+
   .post__cover {
     display: flex;
     flex-direction: row;
