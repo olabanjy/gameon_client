@@ -45,46 +45,44 @@
   100% { transform: rotate(360deg); }
 }
 
+.masthead {
+  height: 500px;
+  /* min-height: 500px; */
+  /* background-image: url('https://source.unsplash.com/BtbjCFUvBXs/1920x1080'); */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
 </style>
 {% endblock extra_styles %}
 
 {% block content %}
 
 
-
-<section class="section">
-    <div style="padding-top: 5%;" class="container">
-        <div class="row">
-            <div class="col-12">
-                <div  class="post post--big">
-                    <a  href="#" class="banner__img">
-                        <img src="{% static 'img/banner_bg3.jpg' %}" alt="">
-                    </a>
-
-                    <div>
-
-                        <div  class="post__content">
-                        
-                            <h2  style="font-size: 24px;" class="post__title"><a href="https://vendor.gameon.com.ng/accounts/signup/" target="_blank">Rent out your idle games and earn an income</a></h2>
-                            
-                            <div  class="post__meta">
-
-                                    <span class="post__date">  <a style="width: 200px;" href="https://vendor.gameon.com.ng/accounts/signup/" target="_blank" class="card__buy">Become a Vendor </a></span>
-                      
-                               
-                            </div>
-                       
-                               
-                        </div>
-
+<section class="section section--first section--last section--headbg" data-bg="{% static 'img/banner_bg_2.jpg' %}">
+    <div style="height: 50vh;" class="container">
+        <div class="row align-items-center">
+            <div class="col-md-7">
+                <div style="padding-top: 15%;" class="section__wraped">
+      
+                    <h2 class="section__titledd">Rent out your idle games and earn an income</h2>
+                
+                    <div style="margin-top: 5%;">
+                        <a style="width: 200px;" class="card__buy" href="#"> Become a Vendor </a>
                     </div>
+                   
 
-                    
+                 
                 </div>
             </div>
         </div>
     </div>
 </section>
+
+
+
+
 
 
 
