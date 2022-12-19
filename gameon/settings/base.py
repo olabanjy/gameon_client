@@ -36,6 +36,8 @@ INSTALLED_APPS = [
     "allauth",
     "allauth.account",
     "allauth.socialaccount",
+    # "allauth.socialaccount.providers.facebook",
+    "allauth.socialaccount.providers.google",
     "django_countries",
     "storages",
     "django_celery_beat",
@@ -138,6 +140,10 @@ ACCOUNT_AUTHENTICATION_METHOD = "email"
 ACCOUNT_LOGOUT_ON_GET = True
 
 
+SOCIALACCOUNT_QUERY_EMAIL = True
+SOCIALACCOUNT_EMAIL_REQUIRED = ACCOUNT_EMAIL_REQUIRED
+SOCIALACCOUNT_STORE_TOKENS = False
+
 ACCOUNT_SIGNUP_PASSWORD_ENTER_TWICE = False
 ACCOUNT_EMAIL_CONFIRMATION_AUTHENTICATED_REDIRECT_URL = "/u/account/settings"
 ACCOUNT_EMAIL_CONFIRMATION_HMAC = True
@@ -175,3 +181,16 @@ PAYPAL_TEST = True
 
 
 CORS_ORIGIN_ALLOW_ALL = True
+
+
+SOCIALACCOUNT_PROVIDERS = {
+    "google": {
+        "SCOPE": [
+            "profile",
+            "email",
+        ],
+        "AUTH_PARAMS": {
+            "access_type": "online",
+        },
+    }
+}
