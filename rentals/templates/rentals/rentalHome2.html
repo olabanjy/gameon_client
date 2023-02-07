@@ -45,52 +45,17 @@
   100% { transform: rotate(360deg); }
 }
 
-.masthead {
-  height: 500px;
-  /* min-height: 500px; */
-  /* background-image: url('https://source.unsplash.com/BtbjCFUvBXs/1920x1080'); */
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-}
-
 </style>
 {% endblock extra_styles %}
 
 {% block content %}
 
 
-<section class="section section--first section--last section--headbg" data-bg="{% static 'img/banner_bg_2.jpg' %}">
-    <div style="height: 50vh;" class="container">
-        <div class="row align-items-center">
-            <div class="col-md-7">
-                <div style="padding-top: 15%;" class="section__wraped">
-      
-                    <h2 class="section__titledd">Rent out your idle games and earn an income</h2>
-                
-                    <div style="margin-top: 5%;">
-                        <a style="width: 200px;" class="card__buy" href="https://vendor.gameon.com.ng/accounts/signup" target="_blank"> Become a Vendor </a>
-                    </div>
-                   
-
-                 
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-
-
-
-
-
-
 <!-- home -->
-<section class="section  section--bg" data-bg="{{the_featured_banner.bannerImagePath.url}}">
+<section class="section section--bg section--first" data-bg="{{the_featured_banner.bannerImagePath.url}}">
     <div class="container">
         <div class="row">
-          
+            <!-- title -->
             <div class="col-12">
                 <div class="section__title-wrap">
                     <h2 class="section__title section__title--title"><b>Best pick</b> for the month</h2>
@@ -106,7 +71,7 @@
                     </div>
                 </div>
             </div>
-     
+            <!-- end title -->
         </div>
     </div>
 
@@ -139,7 +104,7 @@
 
                 <div class="card__actions">
                     {% if request.user.is_authenticated %}
-                        {% if request.user.profile.kyc_status == "approved" and request.user.profile.address_verification_status == "approved" %}
+                        {% if request.user.profile.address_setup == True and request.user.profile.profile_set_up == True %}
                         <a class="card__buy open-modal" href="#added_featured_to_que_modal_{{val.id}}">Rent</a>
                         {% else %}
                         <a class="card__buy open-modal" href="#verify_to_rent">Rent</a>
@@ -430,7 +395,7 @@
 						
 
                             {% if request.user.is_authenticated %}
-                                {% if request.user.profile.kyc_status == "approved" and request.user.profile.address_verification_status == "approved" %}
+                                {% if request.user.profile.address_setup == True and request.user.profile.profile_set_up == True %}
                                 <a class="card__buy open-modal" href="#added_to_que_modal_{{item.id}}" >Rent</a>
                                 {% else %}
                                 <a class="card__buy open-modal" href="#verify_to_rent">Rent</a>

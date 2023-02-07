@@ -323,3 +323,32 @@ def update_address_verification(request):
                 )
 
     return JsonResponse(data)
+
+
+# def send_test_email(request):
+#     try:
+
+#         subject, from_email, to = (
+#             "NEW KYC(IDENTITY & ADDRESS) SUBMITTED",
+#             "GameOn <noreply@gameon.com.ng>",
+#             ["admin@gameon.com.ng"],
+#         )
+
+#         html_content = render_to_string(
+#             "events/admin_prompt.html",
+#             {
+#                 "first_name": profile.first_name,
+#                 "last_name": profile.last_name,
+#                 "email": request.user.email,
+#                 "doc_type": "Identity & Address Document",
+#             },
+#         )
+#         msg = EmailMessage(subject, html_content, from_email, to)
+#         msg.content_subtype = "html"
+#         msg.send()
+
+
+#     except:
+#         pass
+
+#     return HttpResponse("Done sending")
