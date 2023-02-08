@@ -139,7 +139,7 @@
 
                 <div class="card__actions">
                     {% if request.user.is_authenticated %}
-                        {% if request.user.profile.kyc_status == "approved" and request.user.profile.address_verification_status == "approved" %}
+                        {% if request.user.profile.address_setup == True and request.user.profile.profile_set_up == True  %}
                         <a class="card__buy open-modal" href="#added_featured_to_que_modal_{{val.id}}">Rent</a>
                         {% else %}
                         <a class="card__buy open-modal" href="#verify_to_rent">Rent</a>
@@ -430,7 +430,7 @@
 						
 
                             {% if request.user.is_authenticated %}
-                                {% if request.user.profile.kyc_status == "approved" and request.user.profile.address_verification_status == "approved" %}
+                                {% if request.user.profile.address_setup == True and request.user.profile.profile_set_up == True  %}
                                 <a class="card__buy open-modal" href="#added_to_que_modal_{{item.id}}" >Rent</a>
                                 {% else %}
                                 <a class="card__buy open-modal" href="#verify_to_rent">Rent</a>

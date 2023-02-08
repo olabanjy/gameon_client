@@ -1,5 +1,6 @@
 {% load static %}
 {% load i18n %}
+{% load account socialaccount %}
 
 
 
@@ -97,6 +98,25 @@
 							</div>
 							
 							<button class="sign__btn" id="sb_btn" type="submit">Sign up</button>
+
+
+
+							<span class="sign__delimiter">sign up with socials </span>
+							
+
+							{% get_providers as socialaccount_providers %}
+							{% if socialaccount_providers %}
+							<div class="sign__social">
+
+								{% include "socialaccount/snippets/provider_list.html" with process="login" %}
+
+									{% include "socialaccount/snippets/login_extra.html" %}
+
+							</div>
+
+								
+							{% else %}
+							{% endif %}
 
 					
 
