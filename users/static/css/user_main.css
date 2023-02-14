@@ -4837,6 +4837,29 @@ html:not([dir="rtl"]) .noUi-horizontal .noUi-handle {
   background-color: #ff9909;
   color: #fff;
 }
+
+.social_sign__btn {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 44px;
+  border-radius: 6px;
+  background-color: #fe2349;
+  color: #fff;
+  font-weight: 600;
+  font-size: 13px;
+  letter-spacing: 0.6px;
+  margin-top: 15px;
+  margin-bottom: 15px;
+  text-transform: uppercase;
+}
+.social_sign__btn:hover {
+  background-color: #ff9909;
+  color: #fff;
+}
+
 .sign__text {
   margin-top: 15px;
   font-size: 14px;
@@ -4864,7 +4887,7 @@ html:not([dir="rtl"]) .noUi-horizontal .noUi-handle {
   margin-bottom: 15px;
   margin-top: 15px;
 }
-.sign__social a {
+/* .sign__social a {
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -4905,7 +4928,7 @@ html:not([dir="rtl"]) .noUi-horizontal .noUi-handle {
 .sign__social a:hover.tw svg {
   stroke: #1da1f2;
   fill: #1da1f2;
-}
+} */
 @media (min-width: 576px) {
   .sign__form {
     padding: 50px;

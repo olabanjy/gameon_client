@@ -101,16 +101,16 @@
 
 
 
-							<span class="sign__delimiter">sign up with socials </span>
+							<span class="sign__delimiter"> or </span>
 							
 
 							{% get_providers as socialaccount_providers %}
 							{% if socialaccount_providers %}
 							<div class="sign__social">
 
-								{% include "socialaccount/snippets/provider_list.html" with process="login" %}
+								{% include "socialaccount/snippets/signup_provider_list.html" with process="login" %}
 
-									{% include "socialaccount/snippets/login_extra.html" %}
+									<!-- {% include "socialaccount/snippets/login_extra.html" %} -->
 
 							</div>
 

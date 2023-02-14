@@ -1,0 +1,26 @@
+{% load socialaccount %}
+
+{% get_providers as socialaccount_providers %}
+
+{% for provider in socialaccount_providers %}
+{% if provider.id == "openid" %}
+{% for brand in provider.get_brands %}
+<a style="visibility: hidden;" href="#"></a>
+<a style="background-color: #df4a32 !important;" title="{{brand.name}}" class="social_sign__btn socialaccount_provider {{provider.id}} {{brand.id}}" href="{% provider_login_url provider.id openid=brand.openid_url process=process %}">
+     <!-- <svg xmlns='http://www.w3.org/2000/svg' width='512' height='512' viewBox='0 0 512 512'><path d='M192,176V136a40,40,0,0,1,40-40H392a40,40,0,0,1,40,40V376a40,40,0,0,1-40,40H240c-22.09,0-48-17.91-48-40V336' style='fill:none;stroke-linecap:round;stroke-linejoin:round;stroke-width:32px'/><polyline points='288 336 368 256 288 176' style='fill:none;stroke-linecap:round;stroke-linejoin:round;stroke-width:32px'/><line x1='80' y1='256' x2='352' y2='256' style='fill:none;stroke-linecap:round;stroke-linejoin:round;stroke-width:32px'/></svg> -->
+     <span>Sign in with Google</span>  
+
+
+
+</a>
+<a style="visibility: hidden;" href="#"></a>
+{% endfor %}
+{% endif %}
+<a style="visibility: hidden;" href="#"></a>
+<a style="background-color: #df4a32 !important;" title="{{provider.name}}"  class="social_sign__btn socialaccount_provider {{provider.id}}" href="{% provider_login_url provider.id process=process scope=scope auth_params=auth_params %}">
+
+    <!-- <svg xmlns='http://www.w3.org/2000/svg' width='512' height='512' viewBox='0 0 512 512'><path d='M192,176V136a40,40,0,0,1,40-40H392a40,40,0,0,1,40,40V376a40,40,0,0,1-40,40H240c-22.09,0-48-17.91-48-40V336' style='fill:none;stroke-linecap:round;stroke-linejoin:round;stroke-width:32px'/><polyline points='288 336 368 256 288 176' style='fill:none;stroke-linecap:round;stroke-linejoin:round;stroke-width:32px'/><line x1='80' y1='256' x2='352' y2='256' style='fill:none;stroke-linecap:round;stroke-linejoin:round;stroke-width:32px'/></svg> -->
+<span>Sign in with Google</span>   
+</a>
+<a style="visibility: hidden;" href="#"></a>
+{% endfor %}
