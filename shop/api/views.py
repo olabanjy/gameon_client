@@ -35,7 +35,7 @@ import shutil
 
 
 class ItemPlatformViewSet(ModelViewSet):
-    queryset = ItemPlatform.objects.all()
+    queryset = ItemPlatform.objects.all().order_by("-id")
     serializer_class = ItemPlatformSerializer
 
     def list(self, request):
@@ -61,7 +61,7 @@ class ItemPlatformViewSet(ModelViewSet):
 
 
 class ItemCatViewSet(ModelViewSet):
-    queryset = ItemCat.objects.all()
+    queryset = ItemCat.objects.all().order_by("-id")
     serializer_class = ItemCatSerializer
 
     def list(self, request):
@@ -123,7 +123,7 @@ class ItemCatViewSet(ModelViewSet):
 
 
 class ItemTypeViewSet(ModelViewSet):
-    queryset = ItemType.objects.all()
+    queryset = ItemType.objects.all().order_by("-id")
     serializer_class = ItemTypeSerializer
 
     def list(self, request):
@@ -134,7 +134,7 @@ class ItemTypeViewSet(ModelViewSet):
 
 
 class ItemsViewSet(ModelViewSet):
-    queryset = Item.objects.all()
+    queryset = Item.objects.all().order_by("-id")
     serializer_class = ItemSerializer
 
     def list(self, request):
@@ -151,7 +151,7 @@ class ItemsViewSet(ModelViewSet):
 
     @action(methods=["GET"], detail=False)
     def get_list(self, request):
-        all_items = Item.objects.all()
+        all_items = Item.objects.all().order_by("-id")
 
         for val in all_items:
             print(val.name)

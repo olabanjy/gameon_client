@@ -45,7 +45,7 @@ import requests, json
 
 
 class RentalPlatformViewSet(ModelViewSet):
-    queryset = RentalPlatform.objects.all()
+    queryset = RentalPlatform.objects.all().order_by("-id")
     serializer_class = RentalPlatformSerializer
 
     def list(self, request):
@@ -89,7 +89,7 @@ class RentalPlatformViewSet(ModelViewSet):
 
 
 class RentalCatViewSet(ModelViewSet):
-    queryset = RentalCat.objects.all()
+    queryset = RentalCat.objects.all().order_by("-id")
     serializer_class = RentalCatSerializer
 
     def list(self, request):
@@ -151,7 +151,7 @@ class RentalCatViewSet(ModelViewSet):
 
 
 class RentalGamesViewSet(ModelViewSet):
-    queryset = RentalGame.objects.all()
+    queryset = RentalGame.objects.all().order_by("-id")
     serializer_class = RentalGameSerializer
 
     def list(self, request):
@@ -162,7 +162,7 @@ class RentalGamesViewSet(ModelViewSet):
 
     @action(methods=["GET"], detail=False)
     def get_list(self, request):
-        all_items = RentalGame.objects.all()
+        all_items = RentalGame.objects.all().order_by("-id")
 
         for val in all_items:
             print(val.name)
