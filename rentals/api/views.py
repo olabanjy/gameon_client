@@ -252,10 +252,14 @@ class RentalGamesViewSet(ModelViewSet):
                 new_item.desc = request.data["desc"]
 
             if request.data.get("catId"):
-                for val in json.loads(request.data["catId"]):
-                    theCat = RentalCat.objects.get(id=int(val))
+                theCat = RentalCat.objects.get(id=int(request.data["catId"]))
 
-                    new_item.cat.add(theCat)
+                new_item.cat.add(theCat)
+
+            # for val in json.loads(request.data["catId"]):
+            #     theCat = RentalCat.objects.get(id=int(val))
+
+            #     new_item.cat.add(theCat)
 
             if request.data.get("displayImagePath"):
                 new_item.displayImagePath = request.data["displayImagePath"]
@@ -311,7 +315,7 @@ class RentalGamesViewSet(ModelViewSet):
                     new_item.displayImagePath.save(filename, ContentFile(data))
 
                 else:
-                    print(fetch_thumbnail_img)
+                    print(fetch_display_img)
             if request.data.get("thumbnailImagePath"):
                 # new_item.thumbnailImagePath = request.data["thumbnailImagePath"]
                 fetch_thumbnail_img = requests.get(request.data["thumbnailImagePath"])

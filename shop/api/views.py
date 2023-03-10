@@ -235,9 +235,11 @@ class ItemsViewSet(ModelViewSet):
                 featured=bool(strtobool(request.data["featured"])),
             )
             if request.data.get("catId"):
-                for val in json.loads(request.data["catId"]):
-                    theCat = ItemCat.objects.get(id=int(val))
-                    new_item.cat.add(theCat)
+                theCat = ItemCat.objects.get(id=int(request.data["catId"]))
+                new_item.cat.add(theCat)
+                # for val in json.loads(request.data["catId"]):
+                #     theCat = ItemCat.objects.get(id=int(val))
+                #     new_item.cat.add(theCat)
             if request.data.get("discount_price"):
                 new_item.discount_price = request.data["discount_price"]
 
