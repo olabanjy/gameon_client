@@ -17,6 +17,10 @@ from users.models import Address, Profile
 from decimal import Decimal
 
 
+class GeneralSetting(models.Model):
+    location_range = models.IntegerField(blank=True, null=True)
+
+
 class ItemPlatform(models.Model):
     name = models.CharField(max_length=200)
     desc = models.CharField(max_length=400, blank=True, null=True)
@@ -98,6 +102,8 @@ class Item(models.Model):
     featured_banner = models.BooleanField(default=False)
     vendor = models.CharField(max_length=200, blank=True, null=True)
     vendor_code = models.CharField(max_length=200, default="admin")
+    vendor_long = models.FloatField(null=True, blank=True)
+    vendor_lat = models.FloatField(null=True, blank=True)
     comingSoon = models.BooleanField(default=False)
     created_at = models.DateTimeField(default=timezone.now)
 

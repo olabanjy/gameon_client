@@ -304,6 +304,11 @@ class RentalGamesViewSet(ModelViewSet):
             if request.data.get("vendor_code"):
                 new_item.vendor_code = request.data["vendor_code"]
                 new_item.adminOwned = False
+            ####
+            if request.data.get("vendor_long"):
+                new_item.vendor_long = request.data["vendor_long"]
+            if request.data.get("vendor_lat"):
+                new_item.vendor_lat = request.data["vendor_lat"]
 
             new_item.save()
 

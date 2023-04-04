@@ -73,6 +73,8 @@ class RentalGame(models.Model):
     featured_banner = models.BooleanField(default=False)
     vendor = models.CharField(max_length=200, blank=True, null=True)
     vendor_code = models.CharField(max_length=200, blank=True, null=True)
+    vendor_long = models.FloatField(null=True, blank=True)
+    vendor_lat = models.FloatField(null=True, blank=True)
     comingSoon = models.BooleanField(default=False)
     desc = models.TextField(blank=True, null=True)
     created_at = models.DateTimeField(default=timezone.now)
