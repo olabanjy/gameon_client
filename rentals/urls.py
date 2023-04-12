@@ -1,4 +1,4 @@
-from django.urls import path, include
+from django.urls import path, include, re_path
 from .views import *
 from django.contrib.auth.decorators import login_required
 from .views import *
@@ -6,9 +6,11 @@ from .views import *
 app_name = "rentals"
 
 urlpatterns = [
-    path("", rentalsHome, name="rental-home"),
+    re_path(r"^$", rentalsHome, name="rental-home"),
+    # path("", rentalsHome, name="rental-home"),
     path("details/<item_id>/", RentalGameDetails, name="details"),
     path("about-us/", about_us, name="about-us"),
+    path("not-available/", not_available, name="not-available"),
     path("privacy-and-policy/", privacy_policy, name="privacy-and-policy"),
     path("terms-and-conditions/", t_and_c, name="terms-and-conditions"),
     path("update-que/", update_que, name="update_que"),

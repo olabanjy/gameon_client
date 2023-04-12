@@ -24,7 +24,7 @@
   position: absolute;
   left: 50%;
   top: 50%;
-  z-index: 1; 
+  z-index: 1;
   width: 50px;
   height: 50px;
   margin: -36px 0 0 -36px;
@@ -54,6 +54,28 @@
   background-repeat: no-repeat;
 }
 
+.card__buyy {
+  display: inline-flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  width: calc(100% - 500px);
+  /* width: 200px; */
+  height: 44px;
+  border-radius: 6px;
+  background-color: #fe2349 !important;
+  color: #fff;
+  font-weight: 600;
+  font-size: 14px;
+  letter-spacing: 0.8px;
+  line-height: 16px;
+}
+
+.card__buyy:hover {
+  background-color: #ff9909;
+  color: #fff;
+}
+
 </style>
 {% endblock extra_styles %}
 
@@ -65,15 +87,15 @@
         <div class="row align-items-center">
             <div class="col-md-7">
                 <div style="padding-top: 15%;" class="section__wraped">
-      
+
                     <h2 class="section__titledd">Rent out your idle games and earn an income</h2>
-                
+
                     <div style="margin-top: 5%;">
                         <a style="width: 200px;" class="card__buy" href="https://vendor.gameon.com.ng/accounts/signup" target="_blank"> Become a Vendor </a>
                     </div>
-                   
 
-                 
+
+
                 </div>
             </div>
         </div>
@@ -90,7 +112,7 @@
 <section class="section  section--bg" data-bg="{{the_featured_banner.bannerImagePath.url}}">
     <div class="container">
         <div class="row">
-          
+
             <div class="col-12">
                 <div class="section__title-wrap">
                     <h2 class="section__title section__title--title"><b>Best pick</b> for the month</h2>
@@ -106,7 +128,7 @@
                     </div>
                 </div>
             </div>
-     
+
         </div>
     </div>
 
@@ -131,13 +153,13 @@
                     <li>{% for the_cat in val.cat.all %}<span class="post__category">{{the_cat.name}}</span>{% endfor %}</li>
                 </ul>
 
-              
 
-                <div class="card__price">
+
+                <!-- <div class="card__price">
                     <span>₦{{val.dailyRentalRate | intcomma }}<small>/day</small></span>
-                </div>
+                </div> -->
 
-                <div class="card__actions">
+                <!-- <div class="card__actions">
                     {% if request.user.is_authenticated %}
                         {% if request.user.profile.address_setup == True and request.user.profile.profile_set_up == True  %}
                         <a class="card__buy open-modal" href="#added_featured_to_que_modal_{{val.id}}">Rent</a>
@@ -147,25 +169,25 @@
                     {% else %}
                     <a class="card__buy open-modal" href="#login_to_rent">Rent</a>
                     {% endif %}
-                    
+
 
                     <button class="card__favorite" type="button">
                         <svg xmlns='http://www.w3.org/2000/svg' width='512' height='512' viewBox='0 0 512 512'><path d='M352.92,80C288,80,256,144,256,144s-32-64-96.92-64C106.32,80,64.54,124.14,64,176.81c-1.1,109.33,86.73,187.08,183,252.42a16,16,0,0,0,18,0c96.26-65.34,184.09-143.09,183-252.42C447.46,124.14,405.68,80,352.92,80Z' style='fill:none;stroke-linecap:round;stroke-linejoin:round;stroke-width:32px'/></svg>
                     </button>
-                </div>
+                </div> -->
             </div>
 
 
             <div id="added_featured_to_que_modal_{{val.id}}" class="zoom-anim-dialog mfp-hide modal">
                 <button class="modal__close" type="button"><svg xmlns='http://www.w3.org/2000/svg' width='512' height='512' viewBox='0 0 512 512'><line x1='368' y1='368' x2='144' y2='144' style='fill:none;stroke-linecap:round;stroke-linejoin:round;stroke-width:32px'/><line x1='368' y1='144' x2='144' y2='368' style='fill:none;stroke-linecap:round;stroke-linejoin:round;stroke-width:32px'/></svg></button>
-        
+
                 <h3 class="modal__title">Add {{val.name}} to your Rental Cart</h3>
-        
+
                 <div class="modal__group">
                     <label class="modal__label" for="value">Rental rate:</label>
                     <span class="modal__value">₦{{val.dailyRentalRate|intcomma}} </span>
                 </div>
-        
+
                 <div class="modal__group">
                     <div id="que_modal_response_{{val.id}}">
                     <label class="modal__label" for="method"><b>Select Duration </b></label>
@@ -174,19 +196,19 @@
                             <div class="col-12 col-md-12 col-lg-12 col-xl-12">
                                 <label class="form__label" for="no_of_days_{{val.id}}">No of Days </label>
                                 <input id="no_of_days_{{val.id}}" type="number" min="1" name="no_of_days" class="form__input">
-                               
+
                             </div>
 
-                            
+
                             <div class="col-12">
-                                
+
                                 <button data-product="{{val.id}}" data-action="add" class="form__btn add-btn update-que" type="button">Proceed </button>
                             </div>
                         </div>
 
-                       
+
                     </form>
-                 
+
                 </div>
                 </div>
             </div>
@@ -219,7 +241,7 @@
                 <div class="section__title-wrap section__title-wrap--single">
                     <h2 class="section__title">Browse other releases</h2>
 
-                   
+
                 </div>
             </div>
 
@@ -228,7 +250,7 @@
 
         <div class="row catalog-page">
             {% if all_items %}
-      
+
             {% for item in all_items %}
             <div class="col-12 col-sm-6 col-md-4 col-lg-3">
                 <div class="card card--catalog">
@@ -248,9 +270,9 @@
 
                     <div class="card__title">
                         <h3><a href="{{item.get_absolute_url}}">{{item.name}}</a></h3>
-                       
+
                         <span>₦{{item.dailyRentalRate | intcomma }}/day</span>
-                    
+
                     </div>
                     {% if request.user.is_authenticated %}
                         {% if request.user.profile.kyc_status == "approved" and request.user.profile.address_verification_status == "approved" %}
@@ -267,32 +289,32 @@
                         <svg xmlns='http://www.w3.org/2000/svg' width='512' height='512' viewBox='0 0 512 512'><line x1='256' y1='112' x2='256' y2='400' style='fill:none;stroke-linecap:round;stroke-linejoin:round;stroke-width:32px'/><line x1='400' y1='256' x2='112' y2='256' style='fill:none;stroke-linecap:round;stroke-linejoin:round;stroke-width:32px'/></svg>
                     </a>
                     {% endif %}
-                   
-                    
+
+
                 </div>
 
                 <div id="added_to_que_modal_{{item.id}}" class="zoom-anim-dialog mfp-hide modal">
                     <button class="modal__close" type="button"><svg xmlns='http://www.w3.org/2000/svg' width='512' height='512' viewBox='0 0 512 512'><line x1='368' y1='368' x2='144' y2='144' style='fill:none;stroke-linecap:round;stroke-linejoin:round;stroke-width:32px'/><line x1='368' y1='144' x2='144' y2='368' style='fill:none;stroke-linecap:round;stroke-linejoin:round;stroke-width:32px'/></svg></button>
-            
+
                     <h3 class="modal__title">Add {{item.name}} to your Q </h3>
-            
+
                     <div class="modal__group">
                         <label class="modal__label" for="value">Rental Rate:</label>
                         <span class="modal__value"> ₦{{item.dailyRentalRate|intcomma}} </span>
                     </div>
-            
+
                     <div class="modal__group">
                         <div id="que_modal_response_{{item.id}}">
                         <label class="modal__label" for="method"><b>Select Duration</b></label>
-                        
+
                             <form action="#" class="form" id="que_form_{{item.id}}">
                                 <div class="row">
                                     <div class="col-12 col-md-12 col-lg-12 col-xl-12">
                                         <label class="form__label" for="no_of_days_{{item.id}}">No of Days </label>
                                         <input id="no_of_days_{{item.id}}" min="1" type="number" name="no_of_days" class="form__input" required>
-                                       
+
                                     </div>
-                                    
+
                                     <div class="col-12">
                                         <button data-product="{{item.id}}" data-action="add" class="form__btn add-btn update-que" type="button">Proceed </button>
                                     </div>
@@ -326,7 +348,7 @@
                                 <svg xmlns='http://www.w3.org/2000/svg' width='512' height='512' viewBox='0 0 512 512'><polyline points='244 400 100 256 244 112' style='fill:none;stroke-linecap:round;stroke-linejoin:round;stroke-width:48px'/><line x1='120' y1='256' x2='412' y2='256' style='fill:none;stroke-linecap:round;stroke-linejoin:round;stroke-width:48px'/></svg>
                             </a>
                         </li>
-                      
+
                         {% endif %}
 
                         {% for i in all_items.paginator.page_range %}
@@ -352,7 +374,7 @@
 
 
         </div>
-  	
+
     </div>
 </section> -->
 <!-- end section -->
@@ -385,28 +407,29 @@
 									<option value="{{cat.name}}">{{cat.name}}</option>
                                     {% endfor %}
                                     {% endif %}
-									
-                                    
+
+
 								</select>
 							</div>
 						</div>
 
 
                         <button class="header__btn" type="submit">
-                            
+
                             <svg  xmlns='http://www.w3.org/2000/svg' width='512' height='512' viewBox='0 0 512 512'><path d='M221.09,64A157.09,157.09,0,1,0,378.18,221.09,157.1,157.1,0,0,0,221.09,64Z' style='fill:none;stroke-miterlimit:10;stroke-width:32px'/><line x1='338.29' y1='338.29' x2='448' y2='448' style='fill:none;stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px'/></svg>
                         </button>
 
 						<div class="sort__results">Showing {{showing_cat}} </div>
-                       
+
 					</div>
 				</div>
 			</div>
         </form>
 			<!-- catalog -->
+
+            {% if all_items|length > 0 %}
 			<div class="row category">
 
-				{% if all_items %}
 				{% for item in all_items %}
 				<!-- card -->
 				<!-- <div class="col-12 col-sm-6 col-md-3 col-xl-3 col-xl-20"> -->
@@ -419,7 +442,7 @@
 							{% endif %}
 						</a>
 
-					
+
 
 						<div class="card__title">
 							<h3><a href="{{item.get_absolute_url}}">{{item.name}}</a></h3>
@@ -427,7 +450,7 @@
 						</div>
 
 						<div class="card__actions">
-						
+
 
                             {% if request.user.is_authenticated %}
                                 {% if request.user.profile.address_setup == True and request.user.profile.profile_set_up == True  %}
@@ -439,32 +462,32 @@
                             <a class="card__buy open-modal" href="#login_to_rent">Rent</a>
                             {% endif %}
 
-                            
+
 						</div>
 
 
                         <div id="added_to_que_modal_{{item.id}}" class="zoom-anim-dialog mfp-hide modal">
                             <button class="modal__close" type="button"><svg xmlns='http://www.w3.org/2000/svg' width='512' height='512' viewBox='0 0 512 512'><line x1='368' y1='368' x2='144' y2='144' style='fill:none;stroke-linecap:round;stroke-linejoin:round;stroke-width:32px'/><line x1='368' y1='144' x2='144' y2='368' style='fill:none;stroke-linecap:round;stroke-linejoin:round;stroke-width:32px'/></svg></button>
-                    
+
                             <h3 class="modal__title">Add {{item.name}} to your Rental Cart </h3>
-                    
+
                             <div class="modal__group">
                                 <label class="modal__label" for="value">Rental Rate:</label>
                                 <span class="modal__value"> ₦{{item.dailyRentalRate|intcomma}} </span>
                             </div>
-                    
+
                             <div class="modal__group">
                                 <div id="que_modal_response_{{item.id}}">
                                 <label class="modal__label" for="method"><b>Select Duration</b></label>
-                                
+
                                     <form action="#" class="form" id="que_form_{{item.id}}">
                                         <div class="row">
                                             <div class="col-12 col-md-12 col-lg-12 col-xl-12">
                                                 <label class="form__label" for="no_of_days_{{item.id}}">No of Days </label>
                                                 <input id="no_of_days_{{item.id}}" min="1" type="number" name="no_of_days" class="form__input" required>
-                                               
+
                                             </div>
-                                            
+
                                             <div class="col-12">
                                                 <button data-product="{{item.id}}" data-action="add" class="form__btn add-btn update-que" type="button">Proceed </button>
                                             </div>
@@ -479,17 +502,14 @@
 				</div>
 
 				{% endfor %}
-				{% endif %}
-				
 
-
-				{% if all_items.has_other_pages %}
+				    {% if all_items.has_other_pages %}
 					<div class="col-12">
 						<div class="paginator">
 							<div class="paginator__counter">
-						
+
 							</div>
-							
+
 							<ul class="paginator__wrap">
 								{% if all_items.has_previous %}
 								<li class="paginator__item paginator__item--prev">
@@ -497,7 +517,7 @@
 										<svg xmlns='http://www.w3.org/2000/svg' width='512' height='512' viewBox='0 0 512 512'><polyline points='244 400 100 256 244 112' style='fill:none;stroke-linecap:round;stroke-linejoin:round;stroke-width:48px'/><line x1='120' y1='256' x2='412' y2='256' style='fill:none;stroke-linecap:round;stroke-linejoin:round;stroke-width:48px'/></svg>
 									</a>
 								</li>
-							
+
 								{% endif %}
 
 								{% for i in all_items.paginator.page_range %}
@@ -516,16 +536,54 @@
 								</li>
 								{% endif %}
 							</ul>
-							
+
 						</div>
 					</div>
 					{% endif %}
-					
 
 
-				
+
+
+
+
 			</div>
-			<!-- end catalog -->	
+            {% else %}
+                    <!-- article -->
+                    <div class="article">
+                        <div class="row align-items-center">
+                            <div class="col-12">
+                                <!-- article content -->
+                                <div class="article__content article__content--page" style="text-align: center;">
+                                    <!-- <img src="{% static 'img/abt_us.jpg' %}" alt=""> -->
+
+                                    <h1>No vendors in your location</h1>
+                                    <p>Sorry! There are no vendors in your location. <br>
+                                        To rent or buy games directly from GameOn; chat with our admin. <br>
+                                        To become a vendor in your location; sign up here </p>
+
+
+
+
+                                        <div class="container" style="margin-top: 5%;">
+                                            <a  class="card__buyy" href="https://vendor.gameon.com.ng/accounts/signup" target="_blank"> Become a Vendor </a>
+                                        </div>
+
+
+
+
+
+
+
+
+                                </div>
+                                <!-- end article content -->
+                            </div>
+                        </div>
+                    </div>
+                    <!-- end article -->
+            {% endif %}
+
+			<!-- end catalog -->
 		</div>
 	</section>
 	<!-- end section -->
@@ -568,8 +626,8 @@
                 </div>
             </div>
             {% endfor %}
-            
-          
+
+
 
         </div>
     </div>
@@ -600,11 +658,11 @@
     <div class="modal__group">
         <span class="modal__text"> Sorry gamer, only verified users are allowed to rent here!  </span>
     </div>
-  
+
 
     <div class="modal__group">
         <label class="modal__label" for="method"><b>Need an Account? </b></label>
-        
+
         <span class="modal__text"> Head over to <a href="{% url 'account_signup' %}">Sign Up </a>  to get started or continue shopping !</span>
     </div>
 </div>
@@ -619,9 +677,9 @@
         <span class="modal__text"> Kindly complete your profile to rent a game. <br>
             If you have, we are still working on verifying your account. </span>
     </div>
-  
 
-    
+
+
 </div>
 
 
@@ -634,9 +692,9 @@
         <span class="modal__text"> To rent any game kindly complete your profile <a href="/u/account/settings"><strong>here</strong></a>. </span>
         <span class="modal__text"> To purchase any game, <a href="/shop"><strong>continue shopping</strong></a>. </span>
     </div>
-  
 
-    
+
+
 </div>
 
 <a class="open-modal" id="trigger_authenticated_not_updated_profile" href="#authenticated_not_updated_profile" style="visibility: hidden"></a>
@@ -648,20 +706,49 @@
 
 
 
-	
+
 {% endblock modals %}
 
 
 
 {% block extra_scripts %}
 
+<!-- <script type="text/javascript">
+
+// document.addEventListener("load", function(event) {
+$(document).ready(function () {
+
+
+if (navigator.geolocation) {
+    fetched = true
+    navigator.geolocation.getCurrentPosition(refreshHomepage);
+} else {
+console.log("Geolocation is not supported by your browser");
+}
+
+
+function refreshHomepage(position) {
+    var refresh = window.localStorage.getItem('refresh');
+    if (refresh===null){
+        window.location = window.location.href.split('?')[0] + `?loclong=${position.coords.longitude}&loclat=${position.coords.latitude}`
+        window.localStorage.setItem('refresh', "1");
+        }
+
+}
+
+
+});
+
+</script> -->
+
 <script type="text/javascript">
 
-    
+
 
 
     $(document).ready(function(){
-   
+
+
     if (user === "AnonymousUser") {
      console.log(user)
 
@@ -673,18 +760,16 @@
             if (json_data.fields.profile_set_up === false){
                 $("#trigger_authenticated_not_updated_profile").click();
             }
-          
+
         }
 
         );
     }
 
-
-        
 });
 </script>
 
-	
+
 
 {% endblock extra_scripts %}
 

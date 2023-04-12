@@ -26,3 +26,10 @@ def queData(request):
         items = None
 
     return {"cartItems": cartItems, "order": que, "items": items}
+
+
+# from geopy.distance import geodesic
+
+# def calculate_item_distance(origin, dest):
+# origin = (30.172705, 31.526725)  # (latitude, longitude) don't confuse
+# dist = (30.288281, 31.732326)

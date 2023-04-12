@@ -56,7 +56,7 @@
 		}
 
 		var cart = JSON.parse(getCookie('cart'))
-		
+
 		if(cart == undefined){
 			cart = {}
 			console.log("Cart was created")
@@ -70,7 +70,7 @@
 <style type="text/css">
 
 .not-visible {
-	display:none 
+	display:none
 }
 .search_box_cont{
 	position: relative;
@@ -83,7 +83,7 @@
   	transition: 0.5s, margin 0s;
 }
 .search_result_box {
-	
+
 }
 
 /* .search-item{
@@ -126,7 +126,7 @@
 								<li class="header__nav-item ">
 									<a class="header__nav-link {% if request.resolver_match.namespace == 'rentals' and request.resolver_match.url_name == 'rental-home' %} my-header--active {% endif %}" href="/" >Rental </a>
 
-									
+
 								</li>
 								<li class="header__nav-item">
 									<a class="header__nav-link {% if request.resolver_match.namespace == 'shop' and request.resolver_match.url_name == 'shop-home' %} my-header--active {% endif %} " href="{% url 'shop:shop-home' %}"  >Shop </a>
@@ -142,8 +142,8 @@
 									<a class="header__nav-link" target="_blank" href="https://vendor.gameon.com.ng/accounts/signup" > Become a Vendor </a>
 
 								</li>
-								
-							
+
+
 
 							</ul>
                             {% if request.user.is_authenticated %}
@@ -162,7 +162,7 @@
                             {% else %}
                             <div class="header__actions">
 								<div class="header__lang">
-									
+
 								</div>
 								<a href="/accounts/signup" class="header__login">
 									<svg xmlns='http://www.w3.org/2000/svg' width='512' height='512' viewBox='0 0 512 512'><path d='M192,176V136a40,40,0,0,1,40-40H392a40,40,0,0,1,40,40V376a40,40,0,0,1-40,40H240c-22.09,0-48-17.91-48-40V336' style='fill:none;stroke-linecap:round;stroke-linejoin:round;stroke-width:32px'/><polyline points='288 336 368 256 288 176' style='fill:none;stroke-linecap:round;stroke-linejoin:round;stroke-width:32px'/><line x1='80' y1='256' x2='352' y2='256' style='fill:none;stroke-linecap:round;stroke-linejoin:round;stroke-width:32px'/></svg>
@@ -187,11 +187,11 @@
 									<svg xmlns='http://www.w3.org/2000/svg' width='512' height='512' viewBox='0 0 512 512'><path d='M221.09,64A157.09,157.09,0,1,0,378.18,221.09,157.1,157.1,0,0,0,221.09,64Z' style='fill:none;stroke-miterlimit:10;stroke-width:32px'/><line x1='338.29' y1='338.29' x2='448' y2='448' style='fill:none;stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px'/></svg>
 								</button>
 							</form>
-							
+
 							{% if '/shop/' in   request.path %}
 							<div class="header__actions header__actions--2">
 								<a href="#" class="header__link">
-									
+
 								</a>
 								<a href="{% url 'shop:shop-cart' %}" class="header__link">
 									<svg xmlns='http://www.w3.org/2000/svg' width='512' height='512' viewBox='0 0 512 512'><circle cx='176' cy='416' r='16' style='fill:none;stroke-linecap:round;stroke-linejoin:round;stroke-width:32px'/><circle cx='400' cy='416' r='16' style='fill:none;stroke-linecap:round;stroke-linejoin:round;stroke-width:32px'/><polyline points='48 80 112 80 160 352 416 352' style='fill:none;stroke-linecap:round;stroke-linejoin:round;stroke-width:32px'/><path d='M160,288H409.44a8,8,0,0,0,7.85-6.43l28.8-144a8,8,0,0,0-7.85-9.57H128' style='fill:none;stroke-linecap:round;stroke-linejoin:round;stroke-width:32px'/></svg>
@@ -201,7 +201,7 @@
 							{% else %}
 							<div class="header__actions header__actions--2">
 								<a href="#" class="header__link">
-									
+
 								</a>
 								<a href="{% url 'rentals:que' %}" class="header__link">
 									<svg xmlns='http://www.w3.org/2000/svg' width='512' height='512' viewBox='0 0 512 512'><circle cx='176' cy='416' r='16' style='fill:none;stroke-linecap:round;stroke-linejoin:round;stroke-width:32px'/><circle cx='400' cy='416' r='16' style='fill:none;stroke-linecap:round;stroke-linejoin:round;stroke-width:32px'/><polyline points='48 80 112 80 160 352 416 352' style='fill:none;stroke-linecap:round;stroke-linejoin:round;stroke-width:32px'/><path d='M160,288H409.44a8,8,0,0,0,7.85-6.43l28.8-144a8,8,0,0,0-7.85-9.57H128' style='fill:none;stroke-linecap:round;stroke-linejoin:round;stroke-width:32px'/></svg>
@@ -214,7 +214,7 @@
 						</div>
 					</div>
 
-					
+
 
 
 
@@ -226,7 +226,7 @@
 
 	<div style="padding-top: 5%;" id="search_result_cont"  class="not-visible">
 		<div  id="search_result_box" class="container search_result_box">
-			
+
 		</div>
 	</div>
 
@@ -236,7 +236,7 @@
 
     {% endblock content %}
 
-	
+
 	<!-- footer -->
 	<footer class="footer">
 		<div class="container">
@@ -248,9 +248,9 @@
 
 							<nav class="footer__list">
 								<a href="/about-us">About Us</a>
-							
+
 								<a href="#">Help Center</a>
-							
+
 							</nav>
 						</div>
 
@@ -260,13 +260,13 @@
 							<nav class="footer__list footer__list--double">
 								<a href="#">Play Station 4</a>
 								<a href="#">Play Station 5</a>
-								
+
 							</nav>
 
 							<nav class="footer__list footer__list--double">
 								<a href="#">Nigeria Party Games</a>
 								<a href="#">Foreign Party Games</a>
-								
+
 							</nav>
 						</div>
 
@@ -279,13 +279,13 @@
 								<a href="/terms-and-conditions">Terms and conditions</a>
 								<a href="/privacy-and-policy">Privacy policy</a>
 								<a href="https://vendor.gameon.com.ng/accounts/signup" target="_blank">Become a Vendor</a>
-						
+
 							</nav>
 
 							<div class="footer__contacts">
 								<a class="footer__link" href="#">+234 809 234-56-78</a>
 								<a class="footer__link" href="mailto:support@gameon.com.ng">support@gameon.com.ng</a>
-								
+
 								<div class="footer__social">
 									<!-- <a class="fb" href="#"><svg xmlns='http://www.w3.org/2000/svg' width='512' height='512' viewBox='0 0 512 512'><path d='M455.27,32H56.73A24.74,24.74,0,0,0,32,56.73V455.27A24.74,24.74,0,0,0,56.73,480H256V304H202.45V240H256V189c0-57.86,40.13-89.36,91.82-89.36,24.73,0,51.33,1.86,57.51,2.68v60.43H364.15c-28.12,0-33.48,13.3-33.48,32.9V240h67l-8.75,64H330.67V480h124.6A24.74,24.74,0,0,0,480,455.27V56.73A24.74,24.74,0,0,0,455.27,32Z'/></svg></a> -->
 									<a class="inst" href="https://instagram.com/game_on_ng?utm_medium=copy_link"><svg xmlns='http://www.w3.org/2000/svg' width='512' height='512' viewBox='0 0 512 512'><path d='M349.33,69.33a93.62,93.62,0,0,1,93.34,93.34V349.33a93.62,93.62,0,0,1-93.34,93.34H162.67a93.62,93.62,0,0,1-93.34-93.34V162.67a93.62,93.62,0,0,1,93.34-93.34H349.33m0-37.33H162.67C90.8,32,32,90.8,32,162.67V349.33C32,421.2,90.8,480,162.67,480H349.33C421.2,480,480,421.2,480,349.33V162.67C480,90.8,421.2,32,349.33,32Z'/><path d='M377.33,162.67a28,28,0,1,1,28-28A27.94,27.94,0,0,1,377.33,162.67Z'/><path d='M256,181.33A74.67,74.67,0,1,1,181.33,256,74.75,74.75,0,0,1,256,181.33M256,144A112,112,0,1,0,368,256,112,112,0,0,0,256,144Z'/></svg></a>
@@ -309,15 +309,33 @@
 				</div>
 			</div>
 		</div>
-	</footer> 
+	</footer>
 	<!-- end footer -->
 
 
-	
+
+	<div id="location_not_enabled" class="zoom-anim-dialog mfp-hide modal" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false">
+		<button id="trigger_close_location_not_enabled" class="modal__close" type="button" hidden><svg xmlns='http://www.w3.org/2000/svg' width='512' height='512' viewBox='0 0 512 512'><line x1='368' y1='368' x2='144' y2='144' style='fill:none;stroke-linecap:round;stroke-linejoin:round;stroke-width:32px'/><line x1='368' y1='144' x2='144' y2='368' style='fill:none;stroke-linecap:round;stroke-linejoin:round;stroke-width:32px'/></svg></button>
+
+		<h3 class="modal__title"> Location Services Required. </h3>
+
+		<div class="modal__group">
+			<span class="modal__text"> Kindly allow us access your location to serve you better </span>
+
+		</div>
+
+
+
+	</div>
+
+	<a class="open-modal" id="trigger_location_not_enabled" href="#location_not_enabled" style="visibility: hidden"></a>
+
+
+
 
 	{% block modals %}
 
-	
+
 	{% endblock modals %}
 
 	<!-- JS -->
@@ -330,13 +348,13 @@
 	<script src="{% static 'js/jquery.mousewheel.min.js' %}"></script>
 	<script src="{% static 'js/jquery.mCustomScrollbar.min.js' %}"></script>
 	<script src="{% static 'js/rental_main.js' %}"></script>
-	
+
 	<script src="{% static 'js/cart.js' %}"></script>
 	<script src="{% static 'js/que.js' %}"></script>
 
 <script>
 
-	
+
 
 		$(document).ready(function(){
 
@@ -349,20 +367,20 @@
 						'query':query
 					},
 					success:(res) =>{
-						const data = res.data 
+						const data = res.data
 						if (Array.isArray(data)){
 							search_result_cont.classList.remove('not-visible')
 							console.log(data)
-							
+
 							let dtResult = [... new Set(data)]
 							console.log(dtResult)
 							dtResult.forEach((item) =>{
-								
+
 
 								search_result_box.innerHTML = `
 					<div class="table-responsive table-responsive--border">
-				
-			
+
+
 					<table class="profile__table">
 					<thead>
 						<tr>
@@ -370,7 +388,7 @@
 							<th><a href="#" class="active">Title <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17,13.41,12.71,9.17a1,1,0,0,0-1.42,0L7.05,13.41a1,1,0,0,0,0,1.42,1,1,0,0,0,1.41,0L12,11.29l3.54,3.54a1,1,0,0,0,.7.29,1,1,0,0,0,.71-.29A1,1,0,0,0,17,13.41Z"/></svg></a></th>
 							<th><a href="#" class="active">OS </a></th>
 							<th><a href="#">Price </a></th>
-							
+
 						</tr>
 					</thead>
 					<tbody>
@@ -378,17 +396,17 @@
 									<td>
 										<div class="cart__img">
 												<img src="${item.thumbnail}" alt="">
-										</div>	
+										</div>
 									</td>
 									<td><a href="${item.url}">${item.name} </a></td>
-									
+
 									<td><span>₦${item.price}</span></td>
-									
+
 								</tr>
 							</tbody>
 						</table>
 					</div>
-								
+
 								`
 							})
 						}else{
@@ -427,11 +445,16 @@
 
 
 </script>
-	{% block extra_scripts %}
 
-	
+<script src="{% static 'js/custom_geolocation.js' %}"></script>
 
-    {% endblock extra_scripts %}
-	
+
+
+{% block extra_scripts %}
+
+
+
+{% endblock extra_scripts %}
+
 </body>
 </html>

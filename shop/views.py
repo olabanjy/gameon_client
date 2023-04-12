@@ -92,13 +92,14 @@ def search_result(request):
 
 
 def shopHome(request):
-    # if request.user.is_authenticated and request.user.profile.profile_set_up == False:
-    #     return redirect("users:user-profile")
 
     template = "shop/shopHome.html"
 
     get_category = request.GET.get("item_categories", None)
     # get_plat = request.GET.get("item_platforms", None)
+
+    loclong = request.GET.get("loclong", None)
+    loclat = request.GET.get("loclat", None)
 
     featured_items = Item.objects.filter(featured=True).all()
     the_featured_banner = Item.objects.filter(featured_banner=True).last()
@@ -119,6 +120,12 @@ def shopHome(request):
     else:
         all_items = Item.objects.all().order_by("-created_at")
         print(all_items.count())
+
+    if loclat is not None and loclong is not None:
+        dest = (loclat, loclong)
+        range_items_id = [o.id for o in all_items if o.checkInRadius(dest) == True]
+        print(range_items_id)
+        all_items = all_items.filter(id__in=range_items_id)
 
     page = request.GET.get("page", 1)
     paginator = Paginator(all_items, 15)
@@ -181,7 +188,7 @@ def process_checkout(request):
         shipping_address = data["shippingInfo"]["shipping_address"]
         # shipping_address2 = data["shippingInfo"]["shipping_address2"]
         shipping_city = data["shippingInfo"]["shipping_city"]
-        shipping_area = data["shippingInfo"]["shipping_area"]
+        # shipping_area = data["shippingInfo"]["shipping_area"]
 
         billing_address = data["billingInfo"]["billing_address"]
         # billing_address2 = data["billingInfo"]["billing_address2"]
@@ -207,7 +214,7 @@ def process_checkout(request):
                 shipping_address = Address.objects.create(
                     user=the_profile,
                     street_address=shipping_address,
-                    region=shipping_area,
+                    # region=shipping_area,
                     # apartment_address=shipping_address2,
                     city=shipping_city,
                     state="Lagos State ",
@@ -220,19 +227,19 @@ def process_checkout(request):
             # else:
             #     order.shipping_fee = 5000
 
-            shipping_fee = 0
-            for region in settings.ADDRESS_REGIONS:
-                if region["slug"] == shipping_area:
-                    print(region["price"])
-                    shipping_fee = int(region["price"])
+            # shipping_fee = 0
+            # for region in settings.ADDRESS_REGIONS:
+            #     if region["slug"] == shipping_area:
+            #         print(region["price"])
+            #         shipping_fee = int(region["price"])
 
-            print(shipping_fee)
+            # print(shipping_fee)
             try:
                 order.shipping_fee = 0
                 order.save()
             except:
                 pass
-            order.shipping_fee = shipping_fee
+            order.shipping_fee = 1500
             order.save()
         except ObjectDoesNotExist:
             print("You don not have any item in the cart")

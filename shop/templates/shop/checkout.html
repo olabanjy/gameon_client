@@ -41,7 +41,7 @@
 		</div>
 	</section>
 	<!-- end page title -->
-	
+
 	<!-- section -->
 	<div class="section">
 		<div class="container">
@@ -50,7 +50,7 @@
 				<div class="col-12 col-lg-8">
 					<!-- cart -->
 					<div class="cart">
-                        
+
 						<div class="form">
 
                             <div id="user-info" class="row">
@@ -66,14 +66,14 @@
                                 </div>
 
                                 <div class="col-12 col-md-6 col-lg-12 col-xl-6">
-                                
+
                                     <input id="email" type="email" name="email" class="form__input" placeholder="email@email.com" required>
                                 </div>
 
                             </div>
 
-                            <br> 
-                            
+                            <br>
+
                             <!-- <div>
                                 <p style="color: whitesmoke !important;"> Delivery Option </p>
                                 <select class="form__select delivery_select" name="delivery_option" id="delivery_option">
@@ -81,8 +81,8 @@
                                     {% if order.instant_delivery_eligible == True %}
                                     <option id="instant" value="instant"> Instant Delivery </option>
                                     {% endif %}
-                                   
-                                   
+
+
                                 </select>
 
                             </div> -->
@@ -96,21 +96,21 @@
                             <br>
                             <div id="locationList"></div> -->
 
-                           
-                             
+
+
 
                             <div class="hideable_shipping_form">
                             <p style="color: whitesmoke !important;"> Shipping Address </p>
-                            <select class="form__select" name="shipping_area" id="shipping_area" required>
+                            <!-- <select class="form__select" name="shipping_area" id="shipping_area" required>
                                 <option value="" disabled selected hidden>Select your region </option>
 
                                 {% if address_regions %}
-                              
+
                                 {% for reg in address_regions %}
                                 <option value="{{reg.slug}}"> {{reg.display}} - ({{reg.areas}}) </option>
                                 {% endfor %}
                                 {% endif %}
-                            </select>
+                            </select> -->
                             <input type="text" id="shipping_address_iddd"  name="shipping_address" class="form__input" placeholder="House Address"  required>
 
                             <input type="text" id="shipping_city_id" name="shipping_city" class="form__input" placeholder="LGA"  required>
@@ -121,21 +121,21 @@
                             <br>
                             <div class="hideable_billing_form">
 
-                            
+
                             <p style="color: whitesmoke !important;"> Billing Address </p>
                             <input type="text" name="billing_address" class="form__input" placeholder="Address" required>
                             <!-- <input type="text" name="billing_address2" class="form__input" placeholder="Apartment Address" required> -->
-                          
+
                             <input type="text" name="billing_city" class="form__input" placeholder="City" required>
                             <input type="text" name="billing_state" class="form__input" placeholder="State" required>
 
-                           
+
 
                             </div>
 
                         </div>
 
-						
+
 					</div>
 					<!-- end cart -->
 				</div>
@@ -152,15 +152,16 @@
 					<div action="#" class="form">
                         <p style="color: whitesmoke !important;"> Order Summary </p>
 						<input type="text"  class="form__input" value="Total: {{order.get_order_total}}" disabled>
-                        <p style="color: whitesmoke !important; ">Shipping/Pickup Fee </p>
-						<input type="text"  class="form__input" id="final_shipping_fee" value="Shipping Fee: ₦{{order.get_shipping_total|intcomma}}" disabled>
+                        <!-- <p style="color: whitesmoke !important; ">Shipping/Pickup Fee </p> -->
+                        <p style="color: whitesmoke !important; ">Shipping Fee </p>
+						<input type="text"  class="form__input" id="final_shipping_fee" value="Shipping Fee: ₦1,500" disabled>
 						<span class="form__text">Your personal data will be used to process your order, support your experience throughout this website, and for other purposes described in our privacy policy.</span>
 						<button type="submit" class="form__btn">>> Payment</button>
 					</div>
 
-                    
+
 				</div>
-			</div>	
+			</div>
         </form>
 		</div>
 	</div>
@@ -180,7 +181,7 @@ $(document).ready(function(){
         $('#showMeBtn').show();
         } else {
         $('#showMeBtn').hide();
-     
+
         }
     })
 })
@@ -193,8 +194,8 @@ $(document).ready(function(){
 <script type="text/javascript">
 
     $(document).ready(function(){
-    
-    
+
+
         $('#shipping_area').on('change', function () {
             console.log($(this).children("option:selected").val())
             if ($(this).children("option:selected").val() == "lagos_island_1") {
@@ -208,7 +209,7 @@ $(document).ready(function(){
             }
         })
 
-    
+
     })
 </script>
 
@@ -248,7 +249,7 @@ if (user != 'AnonymousUser'){
                 'shipping_address':form.shipping_address.value,
 				// 'shipping_address2':form.shipping_address2.value,
 				'shipping_city':form.shipping_city.value,
-				'shipping_area':form.shipping_area.value
+				// 'shipping_area':form.shipping_area.value
                 // 'shipping_long':form.shipping_long.value,
                 // 'shipping_lat': form.shipping_lat.value,
                 // 'delivery_option': form.delivery_option.value,

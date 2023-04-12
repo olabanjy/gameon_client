@@ -120,7 +120,7 @@ def guestOrder(request, data):
     shipping_address = data["shippingInfo"]["shipping_address"]
     # shipping_address2 = data["shippingInfo"]["shipping_address2"]
     shipping_city = data["shippingInfo"]["shipping_city"]
-    shipping_area = data["shippingInfo"]["shipping_area"]
+    # shipping_area = data["shippingInfo"]["shipping_area"]
 
     billing_address = data["billingInfo"]["billing_address"]
     # billing_address2 = data["billingInfo"]["billing_address2"]
@@ -149,7 +149,7 @@ def guestOrder(request, data):
     guest_shipping_address = Address.objects.create(
         user=the_profile,
         street_address=shipping_address,
-        region=shipping_area,
+        # region=shipping_area,
         # apartment_address=shipping_address2,
         city=shipping_city,
         state="Lagos State",
@@ -177,19 +177,19 @@ def guestOrder(request, data):
     # else:
     #     order.shipping_fee = 5000
 
-    shipping_fee = 0
-    for region in settings.ADDRESS_REGIONS:
-        if region["slug"] == shipping_area:
-            print(region["price"])
-            shipping_fee = int(region["price"])
+    # shipping_fee = 0
+    # for region in settings.ADDRESS_REGIONS:
+    #     if region["slug"] == shipping_area:
+    #         print(region["price"])
+    #         shipping_fee = int(region["price"])
 
-    print(shipping_fee)
+    # print(shipping_fee)
     try:
         order.shipping_fee = 0
         order.save()
     except:
         pass
-    order.shipping_fee = shipping_fee
+    order.shipping_fee = 1500
 
     order.save()
     print(order.get_total())

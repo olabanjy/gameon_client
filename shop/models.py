@@ -16,6 +16,8 @@ import pyotp
 from users.models import Address, Profile
 from decimal import Decimal
 
+from geopy.distance import geodesic
+
 
 class GeneralSetting(models.Model):
     location_range = models.IntegerField(blank=True, null=True)
@@ -112,6 +114,22 @@ class Item(models.Model):
 
     def get_absolute_url(self):
         return reverse("shop:details", kwargs={"item_id": self.id})
+
+    def checkInRadius(self, destination):
+
+        if self.vendor_lat and self.vendor_long:
+            origin = (self.vendor_lat, self.vendor_long)
+            print(origin, destination)
+
+            km_dist = geodesic(origin, destination).kilometers
+            print(km_dist)
+
+            if km_dist < 500:
+                return True
+            else:
+                return False
+        else:
+            return False
 
 
 class OrderItem(models.Model):

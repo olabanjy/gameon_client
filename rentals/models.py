@@ -13,6 +13,7 @@ import random, string
 import pyotp
 
 from django.urls import reverse
+from geopy.distance import geodesic
 
 
 class RentalPlatform(models.Model):
@@ -84,6 +85,22 @@ class RentalGame(models.Model):
 
     def get_absolute_url(self):
         return reverse("rentals:details", kwargs={"item_id": self.id})
+
+    def checkInRadius(self, destination):
+
+        if self.vendor_lat and self.vendor_long:
+            origin = (self.vendor_lat, self.vendor_long)
+            print(origin, destination)
+
+            km_dist = geodesic(origin, destination).kilometers
+            print(km_dist)
+
+            if km_dist < 500:
+                return True
+            else:
+                return False
+        else:
+            return False
 
 
 class RentalGameTrailer(models.Model):

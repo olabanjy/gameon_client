@@ -59,17 +59,14 @@ def error500(request):
 
 
 def rentalsHome(request):
-    # if request.user.is_authenticated and request.user.profile.profile_set_up == False:
-    #     return redirect("users:user-profile")
 
     template = "rentals/rentalHome.html"
 
     get_category = request.GET.get("que_categories", None)
     # get_plat = request.GET.get("que_platforms", None)
-    print(get_category)
+    loclong = request.GET.get("loclong", None)
+    loclat = request.GET.get("loclat", None)
 
-    # all_games = RentalGame.objects.all()
-    # all_games = RentalGame.objects.filter(featured=False).all()
     featured_rentals = RentalGame.objects.filter(featured=True).all()
     the_featured_banner = RentalGame.objects.filter(featured_banner=True).last()
 
@@ -92,6 +89,12 @@ def rentalsHome(request):
     else:
         all_games = RentalGame.objects.all().order_by("-created_at")
 
+    if loclat is not None and loclong is not None:
+        dest = (loclat, loclong)
+        range_items_id = [o.id for o in all_games if o.checkInRadius(dest) == True]
+        print(range_items_id)
+        all_games = all_games.filter(id__in=range_items_id)
+
     page = request.GET.get("page", 1)
 
     paginator = Paginator(all_games, 15)
@@ -105,6 +108,9 @@ def rentalsHome(request):
 
     cats = RentalCat.objects.all()
     print(showing_cat)
+    print(all_games)
+    for it in all_games:
+        print(it)
     context = {
         "featured_rentals": featured_rentals,
         "all_items": all_games,
@@ -261,12 +267,12 @@ def process_checkout(request):
     data = json.loads(request.body)
     the_profile = request.user.profile
 
-    pickup_option = data["pickupInfo"]["pickup_option"]
+    # pickup_option = data["pickupInfo"]["pickup_option"]
 
     shipping_address = data["shippingInfo"]["shipping_address"]
     # shipping_address2 = data["shippingInfo"]["shipping_address2"]
     shipping_city = data["shippingInfo"]["shipping_city"]
-    shipping_area = data["shippingInfo"]["shipping_area"]
+    # shipping_area = data["shippingInfo"]["shipping_area"]
 
     billing_address = data["billingInfo"]["billing_address"]
     # billing_address2 = data["billingInfo"]["billing_address2"]
@@ -293,7 +299,6 @@ def process_checkout(request):
                 user=the_profile,
                 street_address=shipping_address,
                 city=shipping_city,
-                region=shipping_area,
                 state="Lagos State",
                 address_type="S",
             )
@@ -305,49 +310,49 @@ def process_checkout(request):
         # else:
         #     que.shipping_fee = 5000
 
-        shipping_fee = 0
-        for region in settings.ADDRESS_REGIONS:
-            if region["slug"] == shipping_area:
-                print(region["price"])
-                shipping_fee = int(region["price"])
+        # shipping_fee = 0
+        # for region in settings.ADDRESS_REGIONS:
+        #     if region["slug"] == shipping_area:
+        #         print(region["price"])
+        #         shipping_fee = int(region["price"])
 
-        print(shipping_fee)
+        # print(shipping_fee)
         try:
             que.shipping_fee = 0
             que.pickup_fee = 0
             que.save()
         except:
             pass
-        que.shipping_fee = shipping_fee
+        que.shipping_fee = 1500
         que.save()
 
-        if pickup_option == "pickup":
-            pickup_region = data["pickupInfo"]["hidden_pickup_region"]
-            pickup_address = data["pickupInfo"]["pickup_address"]
-            pickup_city = data["pickupInfo"]["pickup_city"]
+        # if pickup_option == "pickup":
+        #     pickup_region = data["pickupInfo"]["hidden_pickup_region"]
+        #     pickup_address = data["pickupInfo"]["pickup_address"]
+        #     pickup_city = data["pickupInfo"]["pickup_city"]
 
-            newPickupAdd = Address.objects.create(
-                user=the_profile,
-                street_address=pickup_address,
-                city=pickup_city,
-                region=pickup_region,
-                state="Lagos State",
-                address_type="P",
-            )
+        #     newPickupAdd = Address.objects.create(
+        #         user=the_profile,
+        #         street_address=pickup_address,
+        #         city=pickup_city,
+        #         region=pickup_region,
+        #         state="Lagos State",
+        #         address_type="P",
+        #     )
 
-            pickup_price = 0
-            for region in settings.ADDRESS_REGIONS:
-                if region["slug"] == pickup_region:
-                    print(region["price"])
-                    pickup_price = int(region["price"])
-            print(pickup_price)
+        #     pickup_price = 0
+        #     for region in settings.ADDRESS_REGIONS:
+        #         if region["slug"] == pickup_region:
+        #             print(region["price"])
+        #             pickup_price = int(region["price"])
+        #     print(pickup_price)
 
-            que.pickup_fee = pickup_price
-            que.pickup_address = newPickupAdd
-            que.save()
+        #     que.pickup_fee = pickup_price
+        #     que.pickup_address = newPickupAdd
+        #     que.save()
 
-        else:
-            pass
+        # else:
+        #     pass
 
     except ObjectDoesNotExist:
         print("You don not have any item in the Q")
@@ -553,4 +558,10 @@ def RentalGameDetails(request, item_id):
     all_items = RentalGame.objects.all().exclude(id=item_id)[:10]
     print(item)
     context = {"item": item, "all_items": all_items}
+    return render(request, template, context)
+
+
+def not_available(request):
+    template = "rentals/not_available.html"
+    context = {"page_title": "Not Available"}
     return render(request, template, context)
