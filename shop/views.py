@@ -107,6 +107,15 @@ def shopHome(request):
     showing_cat = "All categories"
     # showing_plat = "All platforms"
 
+
+    all_items = Item.objects.all().order_by("-created_at")
+
+    if loclat is not None and loclong is not None:
+        dest = (loclat, loclong)
+        range_items_id = [o.id for o in all_items if o.checkInRadius(dest) == True]
+        print(range_items_id)
+        all_items = all_items.filter(id__in=range_items_id)
+
     if get_category is not None:
         # if get_cat is all
 
@@ -114,18 +123,12 @@ def shopHome(request):
             the_cat = ItemCat.objects.get(name=get_category)
             all_items = Item.objects.filter(cat=the_cat).all().order_by("-created_at")
             showing_cat = the_cat.name
-        elif get_category == "all":
-            all_items = Item.objects.all().order_by("-created_at")
+        # elif get_category == "all":
+        #     all_items = Item.objects.all().order_by("-created_at")
 
-    else:
-        all_items = Item.objects.all().order_by("-created_at")
-        print(all_items.count())
-
-    if loclat is not None and loclong is not None:
-        dest = (loclat, loclong)
-        range_items_id = [o.id for o in all_items if o.checkInRadius(dest) == True]
-        print(range_items_id)
-        all_items = all_items.filter(id__in=range_items_id)
+    # else:
+    #     all_items = Item.objects.all().order_by("-created_at")
+    #     print(all_items.count())
 
     page = request.GET.get("page", 1)
     paginator = Paginator(all_items, 15)

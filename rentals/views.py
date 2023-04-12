@@ -72,6 +72,14 @@ def rentalsHome(request):
 
     trailers = RentalGameTrailer.objects.all().order_by("created_at")[:4]
 
+    all_games = RentalGame.objects.all().order_by("-created_at")
+
+    if loclat is not None and loclong is not None:
+        dest = (loclat, loclong)
+        range_items_id = [o.id for o in all_games if o.checkInRadius(dest) == True]
+        print(range_items_id)
+        all_games = all_games.filter(id__in=range_items_id)
+
     showing_cat = "All categories"
 
     if get_category is not None:
@@ -79,21 +87,13 @@ def rentalsHome(request):
 
         if get_category != "all":
             the_cat = RentalCat.objects.get(name=get_category)
-            all_games = (
-                RentalGame.objects.filter(cat=the_cat).all().order_by("-created_at")
-            )
+            all_games = all_games.filter(cat=the_cat).all().order_by("-created_at")
             showing_cat = the_cat.name
-        elif get_category == "all":
-            all_games = RentalGame.objects.all().order_by("-created_at")
+        # elif get_category == "all":
+        #     all_games = RentalGame.objects.all().order_by("-created_at")
 
-    else:
-        all_games = RentalGame.objects.all().order_by("-created_at")
-
-    if loclat is not None and loclong is not None:
-        dest = (loclat, loclong)
-        range_items_id = [o.id for o in all_games if o.checkInRadius(dest) == True]
-        print(range_items_id)
-        all_games = all_games.filter(id__in=range_items_id)
+    # else:
+    #     all_games = RentalGame.objects.all().order_by("-created_at")
 
     page = request.GET.get("page", 1)
 
@@ -107,10 +107,7 @@ def rentalsHome(request):
         all_games = paginator.page(paginator.num_pages)
 
     cats = RentalCat.objects.all()
-    print(showing_cat)
-    print(all_games)
-    for it in all_games:
-        print(it)
+
     context = {
         "featured_rentals": featured_rentals,
         "all_items": all_games,
