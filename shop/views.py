@@ -107,21 +107,20 @@ def shopHome(request):
     showing_cat = "All categories"
     # showing_plat = "All platforms"
 
-
-    all_items = Item.objects.all().order_by("-created_at")
+    all_items = Item.objects.none()
 
     if loclat is not None and loclong is not None:
         dest = (loclat, loclong)
-        range_items_id = [o.id for o in all_items if o.checkInRadius(dest) == True]
-        print(range_items_id)
-        all_items = all_items.filter(id__in=range_items_id)
+        all_shop_items = Item.objects.all().order_by("-created_at")
+        range_items_id = [o.id for o in all_shop_items if o.checkInRadius(dest) == True]
+        all_items = all_shop_items.filter(id__in=range_items_id)
 
     if get_category is not None:
         # if get_cat is all
 
         if get_category != "all":
             the_cat = ItemCat.objects.get(name=get_category)
-            all_items = Item.objects.filter(cat=the_cat).all().order_by("-created_at")
+            all_items = all_items.filter(cat=the_cat).all().order_by("-created_at")
             showing_cat = the_cat.name
         # elif get_category == "all":
         #     all_items = Item.objects.all().order_by("-created_at")

@@ -72,13 +72,16 @@ def rentalsHome(request):
 
     trailers = RentalGameTrailer.objects.all().order_by("created_at")[:4]
 
-    all_games = RentalGame.objects.all().order_by("-created_at")
+    all_games = RentalGame.objects.none()
 
     if loclat is not None and loclong is not None:
         dest = (loclat, loclong)
-        range_items_id = [o.id for o in all_games if o.checkInRadius(dest) == True]
+        all_rental_games = RentalGame.objects.all().order_by("-created_at")
+        range_items_id = [
+            o.id for o in all_rental_games if o.checkInRadius(dest) == True
+        ]
         print(range_items_id)
-        all_games = all_games.filter(id__in=range_items_id)
+        all_games = all_rental_games.filter(id__in=range_items_id)
 
     showing_cat = "All categories"
 
