@@ -399,6 +399,7 @@
                     <div class="row align-items-center">
                         <div class="col-12">
                             <!-- article content -->
+                            {% if location_pulled == True %}
                             <div class="article__content article__content--page" style="text-align: center;">
                                 <!-- <img src="{% static 'img/abt_us.jpg' %}" alt=""> -->
 
@@ -422,6 +423,17 @@
 
 
                             </div>
+                            {% else %}
+                            <div class="article__content article__content--page" style="text-align: center;">
+                                <!-- <img src="{% static 'img/abt_us.jpg' %}" alt=""> -->
+
+                                <h1>Location Services Required</h1>
+                                <p>Kindly allow us access your location to serve you better</p>
+
+
+
+                            </div>
+                            {% endif %}
                             <!-- end article content -->
                         </div>
                     </div>

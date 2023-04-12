@@ -93,6 +93,7 @@ def search_result(request):
 
 def shopHome(request):
 
+    location_pulled = False
     template = "shop/shopHome.html"
 
     get_category = request.GET.get("item_categories", None)
@@ -114,6 +115,7 @@ def shopHome(request):
         all_shop_items = Item.objects.all().order_by("-created_at")
         range_items_id = [o.id for o in all_shop_items if o.checkInRadius(dest) == True]
         all_items = all_shop_items.filter(id__in=range_items_id)
+        location_pulled = True
 
     if get_category is not None:
         # if get_cat is all
@@ -151,6 +153,7 @@ def shopHome(request):
         "cats": cats,
         "showing_cat": showing_cat,
         # "showing_plat": showing_plat,
+        "location_pulled": location_pulled,
     }
 
     return render(request, template, context)

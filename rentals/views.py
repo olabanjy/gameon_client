@@ -62,6 +62,8 @@ def rentalsHome(request):
 
     template = "rentals/rentalHome.html"
 
+    location_pulled = False
+
     get_category = request.GET.get("que_categories", None)
     # get_plat = request.GET.get("que_platforms", None)
     loclong = request.GET.get("loclong", None)
@@ -75,6 +77,7 @@ def rentalsHome(request):
     all_games = RentalGame.objects.none()
 
     if loclat is not None and loclong is not None:
+
         dest = (loclat, loclong)
         all_rental_games = RentalGame.objects.all().order_by("-created_at")
         range_items_id = [
@@ -82,6 +85,7 @@ def rentalsHome(request):
         ]
         print(range_items_id)
         all_games = all_rental_games.filter(id__in=range_items_id)
+        location_pulled = True
 
     showing_cat = "All categories"
 
@@ -118,6 +122,7 @@ def rentalsHome(request):
         "trailers": trailers,
         "cats": cats,
         "showing_cat": showing_cat,
+        "location_pulled": location_pulled,
     }
 
     return render(request, template, context)
