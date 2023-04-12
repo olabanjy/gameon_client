@@ -60,7 +60,7 @@ function fetchRegion(position) {
       for (var i = 0; i < addressComp.length; i++) {
         if (addressComp[i].types[0] == "administrative_area_level_1") {
           let region = addressComp[i].short_name;
-          if (region === "LA") {
+          if (region !== "LA") {
             window.location.replace("/not-available/");
           }
           break;
