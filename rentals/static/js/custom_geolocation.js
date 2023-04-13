@@ -14,9 +14,9 @@ function handlePermission() {
 }
 
 function report(state) {
-  console.log(`Permission ${state}`);
+  // console.log(`Permission ${state}`);
   if (state === "denied") {
-    console.log("sorry you need location services to access the website");
+    // console.log("sorry you need location services to access the website");
     window.localStorage.removeItem("loc");
     $("#trigger_location_not_enabled").click();
   } else if (state === "granted") {
@@ -61,7 +61,7 @@ function fetchRegion(position) {
         if (addressComp[i].types[0] == "administrative_area_level_1") {
           let region = addressComp[i].short_name;
           if (region !== "LA") {
-          // if (region !== "CU") {
+            // if (region !== "CU") {
             window.location.replace("/not-available/#");
           }
           break;
@@ -71,7 +71,7 @@ function fetchRegion(position) {
 }
 
 function handleError(error) {
-  console.log(error);
+  // console.log(error);
   $("#trigger_location_not_enabled").click();
 }
 
@@ -86,7 +86,7 @@ function handleSuccess(pos) {
   };
   window.localStorage.setItem("loc", JSON.stringify(loc));
   // refresh homepage here
-  console.log("refreshing homepage now");
+  // console.log("refreshing homepage now");
   refreshHomepage();
 }
 
@@ -96,7 +96,7 @@ function getLocation() {
       maximumAge: 0,
     });
   } else {
-    console.log("location service not enabled");
+    // console.log("location service not enabled");
     $("#trigger_location_not_enabled").click();
   }
 }
