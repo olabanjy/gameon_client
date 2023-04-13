@@ -61,7 +61,8 @@ function fetchRegion(position) {
         if (addressComp[i].types[0] == "administrative_area_level_1") {
           let region = addressComp[i].short_name;
           if (region !== "LA") {
-            window.location.replace("/not-available/");
+          // if (region !== "CU") {
+            window.location.replace("/not-available/#");
           }
           break;
         }
