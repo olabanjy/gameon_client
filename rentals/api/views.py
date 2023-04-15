@@ -443,6 +443,16 @@ class TrailersViewSet(ModelViewSet):
         )
         return Response(serializer.data, status=status.HTTP_200_OK)
 
+    @action(methods=["GET"], detail=False)
+    def get_list(self, request):
+        all_items = self.queryset.order_by("-id")
+
+        serializer = TrailerSerializer(all_items, many=True)
+
+        response = Response(serializer.data, status=status.HTTP_200_OK)
+        response["Cache-Control"] = "no-cache"
+        return response
+
     @action(methods=["POST"], detail=False)
     def admin_create_trailer(self, request):
 
