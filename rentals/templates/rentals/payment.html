@@ -26,12 +26,12 @@
 		</div>
 	</section>
 	<!-- end page title -->
-	
+
 	<!-- section -->
 	<div class="section">
 		<div class="container">
-            
-			
+
+
                     <div class="container" style="text-align: center !important;">
                         <form id="paystack-payment-form"  action="#" class="form" method="POST">
                             {% csrf_token %}
@@ -48,27 +48,27 @@
                                 <input id="pay-email" type="hidden" value="{{the_profile.user.email}}" />
 
                                 <div class="">
-                                    <img src="{% static 'img/paystack.png' %}" width="50%"  height="auto" alt=""> 
+                                    <img src="{% static 'img/paystack.png' %}" width="50%"  height="auto" alt="">
                                 </div>
 
                                 <br>
                                 <button  class="form__btn__payment" onclick= "payWithPaystack()" type="button">Proceed </button>
-                                
+
                             </div>
 
-                  
-                              
-                       
+
+
+
 
                         </form>
-                      
+
                     </div>
 
-                    
-        
 
 
-		
+
+
+
 		</div>
 	</div>
 	<!-- end section -->

@@ -74,18 +74,18 @@ def rentalsHome(request):
 
     trailers = RentalGameTrailer.objects.all().order_by("created_at")[:4]
 
-    all_games = RentalGame.objects.none()
+    all_games = RentalGame.objects.all()
 
-    if loclat is not None and loclong is not None:
+    # if loclat is not None and loclong is not None:
 
-        dest = (loclat, loclong)
-        all_rental_games = RentalGame.objects.all().order_by("-created_at")
-        range_items_id = [
-            o.id for o in all_rental_games if o.checkInRadius(dest) == True
-        ]
-        print(range_items_id)
-        all_games = all_rental_games.filter(id__in=range_items_id)
-        location_pulled = True
+    #     dest = (loclat, loclong)
+    #     all_rental_games = RentalGame.objects.all().order_by("-created_at")
+    #     range_items_id = [
+    #         o.id for o in all_rental_games if o.checkInRadius(dest) == True
+    #     ]
+    #     print(range_items_id)
+    #     all_games = all_rental_games.filter(id__in=range_items_id)
+    #     location_pulled = True
 
     showing_cat = "All categories"
 
@@ -393,11 +393,12 @@ class PaymentView(View):
 
         # if pay_method == 'paystack':
 
-        headers = {"Authorization": f"Bearer {settings.LIVE_PAYSTACK_PUBLIC_KEY}"}
+        headers = {"Authorization": f"Bearer {settings.LIVE_PAYSTACK_SECRET_KEY}"}
         resp = requests.get(
             f"https://api.paystack.co/transaction/verify/{reference}", headers=headers
         )
         response = resp.json()
+
         try:
             status = response["data"]["status"]
             auth_code = response["data"]["authorization"]["authorization_code"]
@@ -428,6 +429,7 @@ class PaymentView(View):
                         "YOUR ORDER IS ON THE WAY",
                         "GameOn <noreply@gameon.com.ng>",
                         [que.user.user.email],
+                        # ["shola.albert@gmail.com"],
                     )
 
                     html_content = render_to_string(
@@ -453,6 +455,7 @@ class PaymentView(View):
                         "NEW RENTAL ORDER MADE ",
                         "GameOn <noreply@gameon.com.ng>",
                         ["admin@gameon.com.ng"],
+                        # ["shola.albert@gmail.com"],
                     )
 
                     html_content = render_to_string(
