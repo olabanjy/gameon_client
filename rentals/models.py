@@ -178,13 +178,15 @@ class RentalQue(models.Model):
         null=True,
     )
     shipping_address_area = models.CharField(max_length=200, null=True)
-    pickup_address = models.ForeignKey(
+    return_prompt = models.BooleanField(default=False)
+    return_address = models.ForeignKey(
         "users.Address",
-        related_name="rental_pickup_address",
+        related_name="rental_return_address",
         on_delete=models.SET_NULL,
         null=True,
     )
-    pickup_address_area = models.CharField(max_length=200, null=True)
+    return_address_area = models.CharField(max_length=200, null=True)
+    pick_up_prompt = models.BooleanField(default=False)
     billing_address = models.ForeignKey(
         "users.Address",
         related_name="rental_billing_address",
@@ -197,6 +199,7 @@ class RentalQue(models.Model):
     )
     shipping_fee = models.IntegerField(default=0)
     pickup_fee = models.IntegerField(default=0)
+    return_fee = models.IntegerField(default=0)
     being_delivered = models.BooleanField(default=False)
     received = models.BooleanField(default=False)
     refund_requested = models.BooleanField(default=False)
@@ -216,8 +219,16 @@ class RentalQue(models.Model):
     def get_pickup_total(self):
         total = 0
         if self.pickup_fee == 0:
-            print("adding shipping fee")
+            print("adding pickup fee")
             total += self.pickup_fee
+
+        return total
+
+    def get_return_total(self):
+        total = 0
+        if self.return_fee == 0:
+            print("adding return fee")
+            total += self.return_fee
 
         return total
 
@@ -241,6 +252,10 @@ class RentalQue(models.Model):
         if self.pickup_fee != 0:
             print("adding pickup fee")
             total += self.pickup_fee
+
+        if self.return_fee != 0:
+            print("adding return fee")
+            total += self.return_fee
 
         return total
 

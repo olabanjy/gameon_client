@@ -117,9 +117,11 @@ def guestOrder(request, data):
     phone = data["userInfo"]["phone"]
     user_email = data["userInfo"]["email"]
 
-    shipping_address = data["shippingInfo"]["shipping_address"]
+    pickup_option = data["shippingInfo"]["pickup_option"]
+
+    # shipping_address = data["shippingInfo"]["shipping_address"]
     # shipping_address2 = data["shippingInfo"]["shipping_address2"]
-    shipping_city = data["shippingInfo"]["shipping_city"]
+    # shipping_city = data["shippingInfo"]["shipping_city"]
     # shipping_area = data["shippingInfo"]["shipping_area"]
 
     billing_address = data["billingInfo"]["billing_address"]
@@ -145,17 +147,6 @@ def guestOrder(request, data):
     the_profile, created = Profile.objects.get_or_create(user=the_user)
 
     # send welcome email to user
-
-    guest_shipping_address = Address.objects.create(
-        user=the_profile,
-        street_address=shipping_address,
-        # region=shipping_area,
-        # apartment_address=shipping_address2,
-        city=shipping_city,
-        state="Lagos State",
-        address_type="S",
-    )
-
     guest_billing_address = Address.objects.create(
         user=the_profile,
         street_address=billing_address,
@@ -168,28 +159,32 @@ def guestOrder(request, data):
     order = Order.objects.create(
         user=the_profile,
         ordered=False,
-        shipping_address=guest_shipping_address,
         billing_address=guest_billing_address,
     )
 
-    # if "lagos" in shipping_state.lower():
-    #     order.shipping_fee = 3000
-    # else:
-    #     order.shipping_fee = 5000
-
-    # shipping_fee = 0
-    # for region in settings.ADDRESS_REGIONS:
-    #     if region["slug"] == shipping_area:
-    #         print(region["price"])
-    #         shipping_fee = int(region["price"])
-
-    # print(shipping_fee)
     try:
         order.shipping_fee = 0
         order.save()
     except:
         pass
-    order.shipping_fee = 1500
+
+    if pickup_option == "no_pickup":
+        shipping_address = data["shippingInfo"]["shipping_address"]
+        shipping_city = data["shippingInfo"]["shipping_city"]
+
+        guest_shipping_address = Address.objects.create(
+            user=the_profile,
+            street_address=shipping_address,
+            city=shipping_city,
+            state="Lagos State",
+            address_type="S",
+        )
+        order.shipping_address = guest_shipping_address
+
+        order.shipping_fee = 1500
+
+    else:
+        order.pick_up_prompt = True
 
     order.save()
     print(order.get_total())

@@ -90,17 +90,11 @@ def rentalsHome(request):
     showing_cat = "All categories"
 
     if get_category is not None:
-        # if get_cat is all
 
         if get_category != "all":
             the_cat = RentalCat.objects.get(name=get_category)
             all_games = all_games.filter(cat=the_cat).all().order_by("-created_at")
             showing_cat = the_cat.name
-        # elif get_category == "all":
-        #     all_games = RentalGame.objects.all().order_by("-created_at")
-
-    # else:
-    #     all_games = RentalGame.objects.all().order_by("-created_at")
 
     page = request.GET.get("page", 1)
 
@@ -272,22 +266,23 @@ def process_checkout(request):
     data = json.loads(request.body)
     the_profile = request.user.profile
 
-    # pickup_option = data["pickupInfo"]["pickup_option"]
-
-    shipping_address = data["shippingInfo"]["shipping_address"]
-    # shipping_address2 = data["shippingInfo"]["shipping_address2"]
-    shipping_city = data["shippingInfo"]["shipping_city"]
-    # shipping_area = data["shippingInfo"]["shipping_area"]
-
     billing_address = data["billingInfo"]["billing_address"]
-    # billing_address2 = data["billingInfo"]["billing_address2"]
     billing_city = data["billingInfo"]["billing_city"]
     billing_state = data["billingInfo"]["billing_state"]
+
+    return_option = data["returnInfo"]["return_option"]
+    pickup_option = data["shippingInfo"]["pickup_option"]
 
     try:
         que = RentalQue.objects.filter(
             user=the_profile, ordered=False, items__isnull=False
         ).last()
+        try:
+            que.shipping_fee = 0
+            que.return_fee = 0
+            que.save()
+        except:
+            pass
         if not que.billing_address:
             billing_address = Address.objects.create(
                 user=the_profile,
@@ -297,67 +292,45 @@ def process_checkout(request):
                 address_type="B",
             )
             que.billing_address = billing_address
-            que.save()
 
-        if not que.shipping_address:
-            shipping_address = Address.objects.create(
+        if pickup_option == "no_pickup":
+            shipping_address = data["shippingInfo"]["shipping_address"]
+            shipping_city = data["shippingInfo"]["shipping_city"]
+
+            new_shipping_address = Address.objects.create(
                 user=the_profile,
                 street_address=shipping_address,
                 city=shipping_city,
                 state="Lagos State",
                 address_type="S",
             )
-            que.shipping_address = shipping_address
-            que.save()
 
-        # if "lagos" in shipping_state.lower():
-        #     que.shipping_fee = 3000
-        # else:
-        #     que.shipping_fee = 5000
+            que.shipping_address = new_shipping_address
+            que.shipping_fee = 1500
 
-        # shipping_fee = 0
-        # for region in settings.ADDRESS_REGIONS:
-        #     if region["slug"] == shipping_area:
-        #         print(region["price"])
-        #         shipping_fee = int(region["price"])
+        else:
+            que.pick_up_prompt = True
 
-        # print(shipping_fee)
-        try:
-            que.shipping_fee = 0
-            que.pickup_fee = 0
-            que.save()
-        except:
+        if return_option == "return":
+            return_address = data["returnInfo"]["return_address"]
+            return_city = data["returnInfo"]["return_city"]
+
+            new_return_address = Address.objects.create(
+                user=the_profile,
+                street_address=return_address,
+                city=return_city,
+                state="Lagos State",
+                address_type="R",
+            )
+
+            que.return_address = new_return_address
+            que.return_fee = 1500
+            que.return_prompt = True
+
+        else:
             pass
-        que.shipping_fee = 1500
+
         que.save()
-
-        # if pickup_option == "pickup":
-        #     pickup_region = data["pickupInfo"]["hidden_pickup_region"]
-        #     pickup_address = data["pickupInfo"]["pickup_address"]
-        #     pickup_city = data["pickupInfo"]["pickup_city"]
-
-        #     newPickupAdd = Address.objects.create(
-        #         user=the_profile,
-        #         street_address=pickup_address,
-        #         city=pickup_city,
-        #         region=pickup_region,
-        #         state="Lagos State",
-        #         address_type="P",
-        #     )
-
-        #     pickup_price = 0
-        #     for region in settings.ADDRESS_REGIONS:
-        #         if region["slug"] == pickup_region:
-        #             print(region["price"])
-        #             pickup_price = int(region["price"])
-        #     print(pickup_price)
-
-        #     que.pickup_fee = pickup_price
-        #     que.pickup_address = newPickupAdd
-        #     que.save()
-
-        # else:
-        #     pass
 
     except ObjectDoesNotExist:
         print("You don not have any item in the Q")

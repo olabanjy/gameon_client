@@ -97,7 +97,6 @@ def shopHome(request):
     template = "shop/shopHome.html"
 
     get_category = request.GET.get("item_categories", None)
-    # get_plat = request.GET.get("item_platforms", None)
 
     loclong = request.GET.get("loclong", None)
     loclat = request.GET.get("loclat", None)
@@ -106,7 +105,6 @@ def shopHome(request):
     the_featured_banner = Item.objects.filter(featured_banner=True).last()
     trailers = RentalGameTrailer.objects.all().order_by("created_at")[:4]
     showing_cat = "All categories"
-    # showing_plat = "All platforms"
 
     all_items = Item.objects.none()
 
@@ -118,18 +116,11 @@ def shopHome(request):
         location_pulled = True
 
     if get_category is not None:
-        # if get_cat is all
 
         if get_category != "all":
             the_cat = ItemCat.objects.get(name=get_category)
             all_items = all_items.filter(cat=the_cat).all().order_by("-created_at")
             showing_cat = the_cat.name
-        # elif get_category == "all":
-        #     all_items = Item.objects.all().order_by("-created_at")
-
-    # else:
-    #     all_items = Item.objects.all().order_by("-created_at")
-    #     print(all_items.count())
 
     page = request.GET.get("page", 1)
     paginator = Paginator(all_items, 15)
@@ -190,19 +181,19 @@ def process_checkout(request):
 
     if request.user.is_authenticated:
         the_profile = request.user.profile
-        shipping_address = data["shippingInfo"]["shipping_address"]
-        # shipping_address2 = data["shippingInfo"]["shipping_address2"]
-        shipping_city = data["shippingInfo"]["shipping_city"]
-        # shipping_area = data["shippingInfo"]["shipping_area"]
-
+        pickup_option = data["shippingInfo"]["pickup_option"]
         billing_address = data["billingInfo"]["billing_address"]
-        # billing_address2 = data["billingInfo"]["billing_address2"]
         billing_city = data["billingInfo"]["billing_city"]
         billing_state = data["billingInfo"]["billing_state"]
         try:
             order = Order.objects.filter(
                 user=the_profile, ordered=False, items__isnull=False
             ).last()
+            try:
+                order.shipping_fee = 0
+                order.save()
+            except:
+                pass
             if not order.billing_address:
                 billing_address = Address.objects.create(
                     user=the_profile,
@@ -213,38 +204,21 @@ def process_checkout(request):
                     address_type="B",
                 )
                 order.billing_address = billing_address
-                order.save()
 
-            if not order.shipping_address:
-                shipping_address = Address.objects.create(
+            if pickup_option == "no_pickup":
+                shipping_address = data["shippingInfo"]["shipping_address"]
+                shipping_city = data["shippingInfo"]["shipping_city"]
+
+                guest_shipping_address = Address.objects.create(
                     user=the_profile,
                     street_address=shipping_address,
-                    # region=shipping_area,
-                    # apartment_address=shipping_address2,
                     city=shipping_city,
-                    state="Lagos State ",
+                    state="Lagos State",
                     address_type="S",
                 )
-                order.shipping_address = shipping_address
-                order.save()
-            # if "lagos" in shipping_state.lower():
-            #     order.shipping_fee = 3000
-            # else:
-            #     order.shipping_fee = 5000
+                order.shipping_address = guest_shipping_address
 
-            # shipping_fee = 0
-            # for region in settings.ADDRESS_REGIONS:
-            #     if region["slug"] == shipping_area:
-            #         print(region["price"])
-            #         shipping_fee = int(region["price"])
-
-            # print(shipping_fee)
-            try:
-                order.shipping_fee = 0
-                order.save()
-            except:
-                pass
-            order.shipping_fee = 1500
+                order.shipping_fee = 1500
             order.save()
         except ObjectDoesNotExist:
             print("You don not have any item in the cart")

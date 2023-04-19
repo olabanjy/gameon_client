@@ -191,6 +191,7 @@ class Order(models.Model):
     coupon = models.ForeignKey(
         "Coupon", on_delete=models.SET_NULL, blank=True, null=True
     )
+    pick_up_prompt = models.BooleanField(default=False)
     shipping_fee = models.IntegerField(default=0)
     delivery_option = models.CharField(max_length=200, default="standard")
     being_delivered = models.BooleanField(default=False)

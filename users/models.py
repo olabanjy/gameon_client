@@ -48,14 +48,12 @@ class Profile(models.Model):
             return user_last_login
         return None
 
-
     @property
     def address_setup(self, *args, **kwargs):
         user_ad = self.user_addresses
         if user_ad.exists():
             return True
         return False
-
 
     @property
     def kyc_status(self, *args, **kwargs):
@@ -135,11 +133,14 @@ ADDRESS_CHOICES = (
     ("B", "Billing"),
     ("S", "Shipping"),
     ("P", "Primary"),
+    ("R", "Returns"),
 )
 
 
 class Address(models.Model):
-    user = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name="user_addresses")
+    user = models.ForeignKey(
+        Profile, on_delete=models.CASCADE, related_name="user_addresses"
+    )
     street_address = models.CharField(max_length=100, null=True)
     region = models.CharField(max_length=200, null=True)
     apartment_address = models.CharField(max_length=100, null=True)
