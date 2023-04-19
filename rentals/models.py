@@ -166,7 +166,7 @@ class RentalQue(models.Model):
         "users.Profile", on_delete=models.SET_NULL, null=True, blank=True
     )
     items = models.ManyToManyField(RentalQueItems)
-    ref_code = models.CharField(max_length=20, blank=True, null=True)
+    ref_code = models.CharField(max_length=200, blank=True, null=True)
     start_date = models.DateTimeField(auto_now_add=True)
     ordered_date = models.DateTimeField(default=timezone.now)
     ordered = models.BooleanField(default=False)
