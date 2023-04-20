@@ -154,7 +154,7 @@ def itemDetail(request, item_id):
     template = "shop/item_details.html"
     item = Item.objects.get(id=item_id)
     dest = (item.vendor_lat, item.vendor_long)
-    all_other_items_qs = Item.objects.all().exclude(id=item_id)[:5]
+    all_other_items_qs = Item.objects.all().exclude(id=item_id)
     range_items_id = [o.id for o in all_other_items_qs if o.checkInRadius(dest) == True]
     all_items = Item.objects.filter(id__in=range_items_id)
     context = {"item": item, "all_items": all_items}
