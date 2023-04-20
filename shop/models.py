@@ -124,7 +124,7 @@ class Item(models.Model):
             km_dist = geodesic(origin, destination).kilometers
             print(km_dist)
 
-            if km_dist < 500:
+            if km_dist < 50:
                 return True
             else:
                 return False

@@ -536,8 +536,10 @@ def t_and_c(request):
 def RentalGameDetails(request, item_id):
     template = "rentals/rental_game_details.html"
     item = RentalGame.objects.get(id=item_id)
-    all_items = RentalGame.objects.all().exclude(id=item_id)[:10]
-    print(item)
+    dest = (item.vendor_lat, item.vendor_long)
+    all_other_items_qs = RentalGame.objects.all().exclude(id=item_id)[:5]
+    range_items_id = [o.id for o in all_other_items_qs if o.checkInRadius(dest) == True]
+    all_items = RentalGame.objects.filter(id__in=range_items_id)
     context = {"item": item, "all_items": all_items}
     return render(request, template, context)
 
