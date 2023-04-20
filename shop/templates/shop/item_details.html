@@ -26,13 +26,13 @@
                             </ul>
 
                             <div class="details__text">
-                              
+
                                 <p> {% if item.desc %} {{item.desc}} {% else %} No Description {% endif %}</p>
                             </div>
                         </div>
                     </div>
 
-                   
+
 
                     <div class="details__cart">
                         <!-- <span class="details__cart-title">Available on platforms:</span>
@@ -50,7 +50,7 @@
                             {% else %}
                             <span>₦{{item.price|intcomma}}</span>
                             {% endif %}
-                           
+
                         </div>
 
                         <div class="details__actions">
@@ -64,11 +64,11 @@
 
                     <div class="details__content">
                         <div class="row">
-                           
+
 
                             <div class="col-12 col-xl-8 order-xl-1">
                                 <!-- comments -->
-                           
+
                                 <!-- end comments -->
                             </div>
                         </div>
@@ -90,7 +90,7 @@
                     <h2 class="section__title"> Also check out! </h2>
 
                     <div class="section__nav-wrap">
-                  
+
 
                         <button class="section__nav section__nav--prev" type="button" data-nav="#carousel1">
                             <svg xmlns='http://www.w3.org/2000/svg' width='512' height='512' viewBox='0 0 512 512'><polyline points='328 112 184 256 328 400' style='fill:none;stroke-linecap:round;stroke-linejoin:round;stroke-width:48px'/></svg>
@@ -140,12 +140,26 @@
         {% endfor %}
         {% endif %}
 
-        
-      
-    
-        
+
+
+
+
     </div>
     <!-- end carousel -->
 </section>
 <!-- end section -->
 {% endblock content %}
+
+
+{% block extra_scripts %}
+<script type="text/javascript">
+    $(document).ready(function(){
+        $('#carousel1').owlCarousel({
+            loop:false
+        });
+
+    });
+</script>
+
+
+{% endblock extra_scripts %}
