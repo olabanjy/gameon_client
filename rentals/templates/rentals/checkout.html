@@ -57,8 +57,8 @@
                                 <p style="color: whitesmoke !important;"> Pick Up Option </p>
                                 <select class="form__select" name="pickup_option" id="pickup_option" required>
                                     <option value="" disabled selected hidden>Will you like to pick up from the store ?</option>
-                                    <option id="pickup" value="pickup"> YES </option>
-                                    <option id="no_pickup" value="no_pickup"> NO</option>
+                                    <option id="pickup" value="pickup"> Yes, I would pickup </option>
+                                    <option id="no_pickup" value="no_pickup"> No, I want it delivered </option>
                                 </select>
 
                             </div>
@@ -70,7 +70,7 @@
 
                             <input type="text" name="shipping_address" class="form__input" placeholder="House Address" >
 
-                            <input type="text" name="shipping_city" class="form__input" placeholder="LGA">
+                            <input type="text" name="shipping_city" class="form__input" placeholder="City">
 
 
                              </div>
@@ -80,12 +80,9 @@
                                 <p style="color: whitesmoke !important;"> Return Option </p>
                                 <select class="form__select" name="return_option" id="return_option" required>
                                     <option value="" disabled selected hidden>Do you want us to handle return logistics ?</option>
-                                    <option id="no_return" value="no_return"> NO</option>
-                                    <option id="return" value="return"> YES </option>
+                                    <option id="no_return" value="no_return"> No, I will return myself. </option>
+                                    <option id="return" value="return"> Yes, I will like GameOn to handle it. </option>
                                 </select>
-
-
-
 
                             </div>
 
@@ -96,7 +93,7 @@
 
                                 <input type="text" name="return_address"  class="form__input" placeholder="House Address">
 
-                                <input type="text" name="return_city" class="form__input" placeholder="LGA">
+                                <input type="text" name="return_city" class="form__input" placeholder="City">
 
 
 
