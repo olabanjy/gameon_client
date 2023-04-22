@@ -367,10 +367,11 @@ class RentalQueViewSet(ModelViewSet):
     @action(methods=["GET"], detail=False)
     def get_list(self, request):
         all_items = (
-            RentalQue.objects.filter(ordered=False, payment__isnull=False)
+            RentalQue.objects.filter(ordered=False, payment__isnull=True)
             .exclude(items=None, user=None)
             .all()
         )
+        print(all_items)
 
         serializer = RentalQueSerializer(all_items, many=True)
 
