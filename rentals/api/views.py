@@ -367,9 +367,7 @@ class RentalQueViewSet(ModelViewSet):
     @action(methods=["GET"], detail=False)
     def get_list(self, request):
         all_items = (
-            RentalQue.objects.filter(ordered=False, payment__isnull=True)
-            .exclude(items=None, user=None)
-            .all()
+            RentalQue.objects.filter(ordered=True).exclude(items=None, user=None).all()
         )
         print(all_items)
 
@@ -401,7 +399,9 @@ class RentalQueViewSet(ModelViewSet):
                     {"message": "Vendor code needed to fetch orders"},
                     status=status.HTTP_400_BAD_REQUEST,
                 )
-            vendorItems = RentalQueItems.objects.filter(item__vendor_code=vendor_code)
+            vendorItems = RentalQueItems.objects.filter(
+                item__vendor_code=vendor_code, rental_que_item__ordered=True
+            )
             if vendorItems.exists():
                 print(vendorItems)
                 serializer = RentalQueItemsSerializer(vendorItems, many=True)

@@ -142,7 +142,9 @@ class RentalQueItems(models.Model):
         "users.Profile", on_delete=models.SET_NULL, null=True, blank=True
     )
     ordered = models.BooleanField(default=False)
-    item = models.ForeignKey(RentalGame, on_delete=models.SET_NULL, null=True)
+    item = models.ForeignKey(
+        RentalGame, on_delete=models.SET_NULL, null=True, related_name="rental_que_item"
+    )
     quantity = models.IntegerField(default=1)
     from_date = models.DateField(null=True, blank=True)
     to_date = models.DateField(null=True, blank=True)

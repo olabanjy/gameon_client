@@ -135,7 +135,9 @@ class Item(models.Model):
 class OrderItem(models.Model):
     user = models.ForeignKey(Profile, on_delete=models.SET_NULL, null=True, blank=True)
     ordered = models.BooleanField(default=False)
-    item = models.ForeignKey(Item, on_delete=models.SET_NULL, null=True)
+    item = models.ForeignKey(
+        Item, on_delete=models.SET_NULL, null=True, related_name="order_item"
+    )
     quantity = models.IntegerField(default=1)
 
     def __str__(self):

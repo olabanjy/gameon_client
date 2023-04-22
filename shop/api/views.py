@@ -359,9 +359,7 @@ class OrderViewSet(ModelViewSet):
     @action(methods=["GET"], detail=False)
     def get_list(self, request):
         all_items = (
-            Order.objects.filter(ordered=True, payment__isnull=False)
-            .exclude(items=None, user=None)
-            .all()
+            Order.objects.filter(ordered=True).exclude(items=None, user=None).all()
         )
 
         serializer = OrderSerializer(all_items, many=True)
@@ -392,7 +390,9 @@ class OrderViewSet(ModelViewSet):
                     {"message": "Vendor code needed to fetch orders"},
                     status=status.HTTP_400_BAD_REQUEST,
                 )
-            vendorItems = OrderItem.objects.filter(item__vendor_code=vendor_code)
+            vendorItems = OrderItem.objects.filter(
+                item__vendor_code=vendor_code, order_item__ordered=True
+            )
             if vendorItems.exists():
                 print(vendorItems)
                 serializer = OrderItemsSerializer(vendorItems, many=True)
