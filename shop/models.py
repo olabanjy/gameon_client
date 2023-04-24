@@ -135,9 +135,7 @@ class Item(models.Model):
 class OrderItem(models.Model):
     user = models.ForeignKey(Profile, on_delete=models.SET_NULL, null=True, blank=True)
     ordered = models.BooleanField(default=False)
-    item = models.ForeignKey(
-        Item, on_delete=models.SET_NULL, null=True, related_name="order_item"
-    )
+    item = models.ForeignKey(Item, on_delete=models.SET_NULL, null=True)
     quantity = models.IntegerField(default=1)
 
     def __str__(self):
@@ -167,7 +165,7 @@ class OrderItem(models.Model):
 
 class Order(models.Model):
     user = models.ForeignKey(Profile, on_delete=models.SET_NULL, null=True, blank=True)
-    items = models.ManyToManyField(OrderItem)
+    items = models.ManyToManyField(OrderItem, related_name="order_item")
     ref_code = models.CharField(max_length=200, blank=True, null=True)
     start_date = models.DateTimeField(auto_now_add=True)
     ordered_date = models.DateTimeField(default=timezone.now)

@@ -390,9 +390,7 @@ class OrderViewSet(ModelViewSet):
                     {"message": "Vendor code needed to fetch orders"},
                     status=status.HTTP_400_BAD_REQUEST,
                 )
-            vendorItems = OrderItem.objects.filter(
-                item__vendor_code=vendor_code, order_item__ordered=True
-            )
+            vendorItems = OrderItem.objects.filter(item__vendor_code=vendor_code)
             if vendorItems.exists():
                 print(vendorItems)
                 serializer = OrderItemsSerializer(vendorItems, many=True)

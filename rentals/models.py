@@ -142,9 +142,7 @@ class RentalQueItems(models.Model):
         "users.Profile", on_delete=models.SET_NULL, null=True, blank=True
     )
     ordered = models.BooleanField(default=False)
-    item = models.ForeignKey(
-        RentalGame, on_delete=models.SET_NULL, null=True, related_name="rental_que_item"
-    )
+    item = models.ForeignKey(RentalGame, on_delete=models.SET_NULL, null=True)
     quantity = models.IntegerField(default=1)
     from_date = models.DateField(null=True, blank=True)
     to_date = models.DateField(null=True, blank=True)
@@ -167,7 +165,7 @@ class RentalQue(models.Model):
     user = models.ForeignKey(
         "users.Profile", on_delete=models.SET_NULL, null=True, blank=True
     )
-    items = models.ManyToManyField(RentalQueItems)
+    items = models.ManyToManyField(RentalQueItems, related_name="rental_que_item")
     ref_code = models.CharField(max_length=200, blank=True, null=True)
     start_date = models.DateTimeField(auto_now_add=True)
     ordered_date = models.DateTimeField(default=timezone.now)

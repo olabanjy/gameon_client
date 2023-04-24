@@ -399,9 +399,7 @@ class RentalQueViewSet(ModelViewSet):
                     {"message": "Vendor code needed to fetch orders"},
                     status=status.HTTP_400_BAD_REQUEST,
                 )
-            vendorItems = RentalQueItems.objects.filter(
-                item__vendor_code=vendor_code, rental_que_item__ordered=True
-            )
+            vendorItems = RentalQueItems.objects.filter(item__vendor_code=vendor_code)
             if vendorItems.exists():
                 print(vendorItems)
                 serializer = RentalQueItemsSerializer(vendorItems, many=True)
