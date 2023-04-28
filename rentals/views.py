@@ -127,7 +127,7 @@ def update_que(request):
     data = json.loads(request.body)
     productId = data["productId"]
     action = data["action"]
-    no_of_days = data["no_of_days"]
+    number_of_days = data["no_of_days"]
     # from_date_data = data["from_date"]
     # to_date_data = data["to_date"]
 
@@ -157,7 +157,7 @@ def update_que(request):
             ordered=False,
         )
         if not que_item_qs.exists():
-            que_item = RentalQueItems.objects.get_or_create(
+            que_item = RentalQueItems.objects.create(
                 item=product,
                 user=customer,
                 ordered=False,
@@ -165,8 +165,8 @@ def update_que(request):
         else:
             que_item = que_item_qs.last()
 
-        if no_of_days:
-            que_item.no_of_days = int(no_of_days)
+        if number_of_days:
+            que_item.no_of_days = int(number_of_days)
             que_item.save()
 
         que_qs = RentalQue.objects.filter(user=customer, ordered=False)
@@ -198,7 +198,7 @@ def update_que(request):
                 que_item.delete()
                 print("This item was removed from your Q")
             else:
-                print("This item was not in ur Q")
+                print("This item was not  in ur Q")
         else:
             print("you do not have an active Q order")
     elif action == "remove-single":
