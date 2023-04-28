@@ -166,6 +166,11 @@ class ItemsViewSet(ModelViewSet):
     def admin_delete_item(self, request):
         try:
             the_item = Item.objects.get(id=int(request.data["id"]))
+            # delete every cart that has the game#
+            try:
+                OrderItem.objects.filter(item=the_item).delete()
+            except:
+                pass
             the_item.delete()
             return Response(
                 {"message": ["Shop Item deleted "]},

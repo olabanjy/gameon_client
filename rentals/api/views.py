@@ -177,7 +177,13 @@ class RentalGamesViewSet(ModelViewSet):
     def admin_delete_item(self, request):
         try:
             the_item = RentalGame.objects.get(id=int(request.data["id"]))
+            # delete every cart that has the game#
+            try:
+                RentalQueItems.objects.filter(item=the_item).delete()
+            except:
+                pass
             the_item.delete()
+
             return Response(
                 {"message": ["Rental Game deleted "]},
                 status=status.HTTP_200_OK,
@@ -426,6 +432,21 @@ class RentalQueViewSet(ModelViewSet):
             the_que.received = True
             the_que.save()
             print(the_que.received)
+
+            try:
+                ####set days here
+                datetime_today = datetime.datetime.today()
+                date_today = datetime.datetime.date(datetime_today)
+
+                if the_que.items:
+                    for que_item in the_que.items:
+                        que_item.from_date = date_today
+                        que_item.to_date = date_today + datetime.timedelta(
+                            que_item.no_of_days
+                        )
+                        que_item.save()
+            except:
+                pass
 
             serializer = self.get_serializer(the_que)
 
