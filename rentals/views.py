@@ -459,7 +459,7 @@ class PaymentView(View):
                     )
 
                     html_content = render_to_string(
-                        "events/new_rental_order_admin.html",
+                        "events/admin_new_rental_order.html",
                         {
                             "que_items": que_items,
                             "que_item_total": que_item_total,
