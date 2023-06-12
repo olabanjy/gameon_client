@@ -5,11 +5,31 @@
 
 
 {% block content %}
-<!-- home -->
-<section class="section section--bg section--first" data-bg="{{the_featured_banner.bannerImagePath.url}}">
+
+<section class="section section--first section--last section--headbg" data-bg="{% static 'img/banner_bg_2.jpg' %}">
+    <div style="height: 50vh;" class="container">
+        <div class="row align-items-center">
+            <div class="col-md-7">
+                <div style="padding-top: 15%;" class="section__wraped">
+
+                    <h2 class="section__titledd">Rent out your idle games and earn an income</h2>
+
+                    <div style="margin-top: 5%;">
+                        <a style="width: 200px;" class="card__buy" href="https://vendor.gameon.com.ng/accounts/signup" target="_blank"> Become a Vendor </a>
+                    </div>
+
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- <section class="section section--bg section--first" data-bg="{{the_featured_banner.bannerImagePath.url}}">
     <div class="container">
         <div class="row">
-            <!-- title -->
+
             <div class="col-12">
                 <div class="section__title-wrap">
                     <h2 class="section__title section__title--title"></h2>
@@ -25,13 +45,12 @@
                     </div>
                 </div>
             </div>
-            <!-- end title -->
+
         </div>
     </div>
 
-    <!-- carousel -->
     <div class="owl-carousel section__carousel section__carousel--big" id="carousel0">
-        <!-- big card -->
+
 
         {% if featured_items %}
         {% for val in featured_items %}
@@ -55,7 +74,7 @@
 
             </div>
 
-            <!-- added to cart modal  -->
+
 
 
 
@@ -72,7 +91,7 @@
                 <div class="modal__group">
                     <label class="modal__label" for="method"><b>Checkout Now</b></label>
 
-                    <!-- <span class="modal__text"> {{val.name}}  has been added to cart, Checkout now!</span> -->
+
 
                     <span class="modal__text"> Head over to <a href="/shop/cart/">Shopping Cart </a>  to checkout  or continue shopping !</span>
                 </div>
@@ -80,7 +99,7 @@
 
 
         </div>
-        <!-- end big card -->
+
 
 
 
@@ -89,9 +108,9 @@
 
 
     </div>
-    <!-- end carousel -->
-</section>
-<!-- end home -->
+
+</section> -->
+
 
 
 	<!-- section -->
